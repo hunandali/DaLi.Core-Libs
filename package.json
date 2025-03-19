@@ -12,8 +12,7 @@
 	"scripts": {
 		"build": "tsup src/index.ts --format cjs,esm --dts",
 		"test": "jest",
-		"prepublishOnly": "npm run build",
-		"type-check": "tsc --noEmit"
+		"check": "tsc --noEmit"
 	},
 	"keywords": [
 		"dali",

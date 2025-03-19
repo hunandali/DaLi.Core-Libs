@@ -12,7 +12,7 @@
 		"skipDefaultLibCheck": true,
 		"declaration": true,
 		"outDir": "dist",
-		"types": ["node"]
+		"types": ["node", "jest"]
 	},
 	"include": ["src/**/*", "src/types.ts"],
 	"exclude": ["node_modules", "dist"]

@@ -102,9 +102,9 @@ export function stringCut(str: string, len: number = 10, eli: string = '……',
 
 	switch (mode) {
 		case 1:
-			return eli + str.substring(str.length - len);
-		case 2:
 			return str.substring(0, len) + eli;
+		case 2:
+			return eli + str.substring(str.length - len);
 		default:
 			const mid = Math.floor(len / 2);
 			return str.substring(0, mid) + eli + str.substring(str.length - mid);

@@ -118,34 +118,33 @@ export function isEmail(val: string) {
 	return isMatch(val, /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/);
 }
 
-/** 判断是否为网址，支持 http / https / ftp */
+// 公共正则组件
+const DOMAIN = `([a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*|localhost|\\[([0-9a-fA-F:]+)\\])`;
+const PORT = `(:\\d+)?`;
+const PATH = `(\\/[\\w-._~!$&'()*+,;=:@/%#?]*)*`; // 使用标准RFC 3986允许字符集
+const QUERY = `(\\?[^#]*)?(#[\\w-]*)?`;
+
+/** 判断是否为网址，必须含 http / https / ftp */
 export function isUrl(val: string) {
-	return isMatch(
-		val,
-		/^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&%\$#_]*)?$/
-	);
+	return isMatch(val, new RegExp(`^(ht|f)tps?://${DOMAIN}${PORT}(/[\\w/.?#-]*)?$`));
 }
 
-/** 判断是否为全网址，支持 http / https / ftp ，带参数 */
+/** 判断是否为全网址，http / https / ftp 可选，且可以带路径与参数 */
 export function isFullUrl(val: string) {
-	return isMatch(
-		val,
-		/^(https?:\/\/)?(([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*)|(localhost)|(\[([0-9a-fA-F:]+)\]))(:\d+)?(\/[^\s?#]*)?(?:\?([^#]*))?(?:#(.*))?$/
-	);
-	// return isMatch(val, /^(?:(http|https|ftp):\/\/)?((|[\w-]+\.)+[a-z0-9]+)(?:(\/[^/?#]+)*)?(\?[^#]+)?(#.+)?$/i);
+	return isMatch(val, new RegExp(`^((ht|f)tps?://)?${DOMAIN}${PORT}${PATH}${QUERY}$`));
 }
 
 /** 判断是否为网址，仅支持 http / https */
 export function isHttp(val: string) {
-	return isMatch(
-		val,
-		/^(https?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&%\$#_]*)?$/
-	);
+	return isMatch(val, new RegExp(`^https?://${DOMAIN}${PORT}${PATH}${QUERY}$`));
 }
 
 /** 判断是否为 GUID */
 export function isGuid(val: string) {
-	return isMatch(val, /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/);
+	return isMatch(
+		val,
+		/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+	);
 }
 
 /** 判断是否为汉字 */
@@ -158,8 +157,10 @@ export function isEnglish(val: string) {
 	return isMatch(val, /^[A-Za-z]+$/);
 }
 
-/** 判断是否为名称，即：英文开头的字符串（仅包含半角字母、数字、下划线与横线），类似于账号名 */
+/** 判断是否为名称，即：英文开头的字符串（仅包含半角字母、数字、下划线与横线），类似于账号名，最少两个字符 */
 export function isName(val: string, len: number = 100) {
+	len -= 1;
+	if (len < 1) len = 1;
 	return isMatch(val, new RegExp('^[a-zA-Z]{1,1}[0-9\\.\\-_a-zA-Z]{1,' + len + '}$'));
 }
 

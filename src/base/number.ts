@@ -28,7 +28,7 @@ export function number(value: any): number {
 /**
  * 检查给定的数值是否在 0 到指定数值之间(包括 0 与指定数值)。
  * @param number 需要检查的数值
- * @param end    最大值
+ * @param end    最大值(不包括)
  */
 export function inRange(number: number, end: number): boolean;
 
@@ -36,7 +36,7 @@ export function inRange(number: number, end: number): boolean;
  * 检查给定的数值是否在指定数值之间(包括指定数值)
  * @param number    需要检查的数值
  * @param start     最小值(包括)
- * @param end       最大值(包括)
+ * @param end       最大值(不包括)
  */
 export function inRange(number: number, start: number, end: number): boolean;
 export function inRange(number: number, start: number, end?: number): boolean {
@@ -58,7 +58,10 @@ export function inRange(number: number, start: number, end?: number): boolean {
 }
 
 /** 将数值转换成浮点数 */
-export const toFloat = <T extends number | null = number>(value: any, defaultValue?: T): number | T => {
+export const toFloat = <T extends number | null = number>(
+	value: any,
+	defaultValue?: T
+): number | T => {
 	const def = defaultValue === undefined ? 0.0 : defaultValue;
 	if (value === null || value === undefined) {
 		return def;
@@ -68,7 +71,10 @@ export const toFloat = <T extends number | null = number>(value: any, defaultVal
 };
 
 /** 将数值转换成整数 */
-export const toInt = <T extends number | null = number>(value: any, defaultValue?: T): number | T => {
+export const toInt = <T extends number | null = number>(
+	value: any,
+	defaultValue?: T
+): number | T => {
 	const def = defaultValue === undefined ? 0 : defaultValue;
 	if (value === null || value === undefined) {
 		return def;

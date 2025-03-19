@@ -37,8 +37,8 @@ import {
 	isEmail,
 	isEnglish,
 	isFn,
-	isFullUrl,
 	isGuid,
+	isHttp,
 	isIP,
 	isJSON,
 	isMobile,
@@ -228,7 +228,7 @@ export class FormValidate {
 		value = value.toString();
 
 		if (rule.type === 'json') return isJSON(value) ? true : message('JSON');
-		if (rule.type === 'url') return isFullUrl(value) ? true : message('网址');
+		if (rule.type === 'url') return isHttp(value) ? true : message('网址');
 		if (rule.type === 'email') return isEmail(value) ? true : message('邮箱');
 		if (rule.type === 'tel') return isPhone(value) ? true : message('电话号码');
 		if (rule.type === 'phone') return isPhone(value) ? true : message('电话号码');
@@ -238,7 +238,8 @@ export class FormValidate {
 		if (rule.type === 'chinese') return isChinese(value) ? true : message('中文字符');
 		if (rule.type === 'english') return isEnglish(value) ? true : message('英文字符');
 		if (rule.type === 'ip') return isIP(value) ? true : message('IP');
-		if (rule.type === 'name') return isName(value) ? true : '仅支持字母数字横线小数点，且需字母开头';
+		if (rule.type === 'name')
+			return isName(value) ? true : '仅支持字母数字横线小数点，且需字母开头';
 
 		return '不支持此格式 [' + rule.type + '] 验证';
 	}
@@ -255,7 +256,8 @@ export class FormValidate {
 				if (isString(value)) value = Number(value);
 				if (isNaN(value)) return '此值必须为数值';
 
-				if (isNumber(value) && value < min) return rule.message || '此值必须大于等于 ' + min;
+				if (isNumber(value) && value < min)
+					return rule.message || '此值必须大于等于 ' + min;
 			}
 		}
 
@@ -265,7 +267,8 @@ export class FormValidate {
 				if (isString(value)) value = Number(value);
 				if (isNaN(value)) return '此值必须为数值';
 
-				if (isNumber(value) && value > max) return rule.message || '此值必须小于等于 ' + max;
+				if (isNumber(value) && value > max)
+					return rule.message || '此值必须小于等于 ' + max;
 			}
 		}
 
