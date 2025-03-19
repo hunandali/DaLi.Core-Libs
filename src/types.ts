@@ -96,11 +96,3 @@ export interface ITreeMap extends IListMap {
 	/** 下级字段 */
 	children?: string;
 }
-
-/////////////////////////////////////////////////////////////////
-
-/** 统一样式类型, 基础样式 */
-export type ThemeEnum = 'primary' | 'success' | 'error' | 'warning';
-
-/** 统一样式类型, 扩展样式 */
-export type ThemeExtendEnum = ThemeEnum | 'default' | 'info' | 'gray' | 'danger';
