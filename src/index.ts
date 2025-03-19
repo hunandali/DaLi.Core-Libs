@@ -2,7 +2,7 @@ export * from '../config';
 export * from './base';
 export * from './encrypt';
 export * from './files';
-export * from './LUR';
+export * from './LRU';
 export * from './formValidate';
 export * from './waterMark';
 export * from './types';

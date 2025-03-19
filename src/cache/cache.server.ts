@@ -19,7 +19,7 @@
 */
 
 import { isEmpty, isFn } from '../base';
-import lur from '../LUR';
+import lru from '../LRU';
 import { CACHE_TIME_MAX } from '../../config';
 
 /** 类型 */
@@ -34,7 +34,7 @@ const DEFAULT_COUNT = 10000;
 /** 内存缓存 */
 export default class implements ICache {
 	/** LUR 缓存对象，最大缓存 1000 个项目 */
-	readonly instance = new lur(DEFAULT_COUNT);
+	readonly instance = new lru(DEFAULT_COUNT);
 
 	/**
 	 * 获取缓存数据

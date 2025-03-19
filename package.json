@@ -19,9 +19,10 @@
 		"utils",
 		"typescript"
 	],
+	"company": "Hunan DaLi Network Technology Co., Ltd.",
 	"author": "木炭(WOODCOAL) <i@woodcoal.cn>",
-	"license": "MIT",
 	"homepage": "http://www.hunandali.com/",
+	"license": "MIT",
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^4.6.1",
 		"chalk": "^5.4.1",
