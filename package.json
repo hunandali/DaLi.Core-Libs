@@ -1,0 +1,43 @@
+{
+	"name": "@hndl/core-libs",
+	"title": "大沥网络函数库",
+	"version": "1.25.319",
+	"description": "大沥网络公共函数库，提供了一系列常用的工具函数和组件。",
+	"main": "dist/index.js",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup src/index.ts --format cjs,esm --dts",
+		"test": "jest",
+		"prepublishOnly": "npm run build",
+		"type-check": "tsc --noEmit"
+	},
+	"keywords": [
+		"dali",
+		"utils",
+		"typescript"
+	],
+	"author": "木炭(WOODCOAL) <i@woodcoal.cn>",
+	"license": "MIT",
+	"homepage": "http://www.hunandali.com/",
+	"dependencies": {
+		"@fingerprintjs/fingerprintjs": "^4.6.1",
+		"chalk": "^5.4.1",
+		"dayjs": "^1.11.13",
+		"isomorphic-dompurify": "^2.22.0",
+		"localforage": "^1.10.0",
+		"ufo": "^1.5.4"
+	},
+	"devDependencies": {
+		"@types/jest": "^29.5.14",
+		"@types/node": "^22.13.10",
+		"jest": "^29.7.0",
+		"ts-jest": "^29.2.6",
+		"tsc": "^2.0.4",
+		"tsup": "^8.4.0",
+		"typescript": "^5.8.2"
+	}
+}
