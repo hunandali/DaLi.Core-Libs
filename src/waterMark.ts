@@ -11,7 +11,7 @@
 '
 ' 	水印
 '
-' 	name: lib.waterMark
+' 	name: waterMark
 ' 	create: 2024-07-12
 ' 	memo: 水印
 ' 	

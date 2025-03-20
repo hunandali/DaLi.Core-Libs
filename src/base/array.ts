@@ -11,7 +11,7 @@
 '
 ' 	数组操作
 '
-' 	name: lib.base.array
+' 	name: base/array
 ' 	create: 2023-05-10
 ' 	memo: 数组操作
 ' 	

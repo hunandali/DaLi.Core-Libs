@@ -11,7 +11,7 @@
 '
 ' 	数值操作
 '
-' 	name: lib.base.number
+' 	name: base/number
 ' 	create: 2024-03-21
 ' 	memo: 数值操作
 ' 	

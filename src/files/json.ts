@@ -11,7 +11,7 @@
 '
 ' 	导出 JSON 文件
 '
-' 	name: lib.file.json
+' 	name: files/json
 ' 	create: 2023-08-20
 ' 	memo: 导出 JSON 文件
 ' 	

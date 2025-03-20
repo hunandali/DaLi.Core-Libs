@@ -11,7 +11,7 @@
 '
 ' 	模块加载操作
 '
-' 	name: lib.base.modules
+' 	name: base/modules
 ' 	create: 2023-05-10
 ' 	memo: 模块加载操作
 ' 	

@@ -11,7 +11,7 @@
 '
 ' 	常用类型判断
 '
-' 	name: lib.base.type
+' 	name: base/type
 ' 	create: 2024-03-20
 ' 	memo: 常用类型判断
 ' 	https://github.com/rayepps/radash/blob/master/src/typed.ts
@@ -50,7 +50,11 @@ export const isObject = (value: any): value is object => {
  * 原始类型: number, string, boolean, symbol, bigint, undefined, null
  */
 export const isPrimitive = (value: any): boolean => {
-	return value === undefined || value === null || (typeof value !== 'object' && typeof value !== 'function');
+	return (
+		value === undefined ||
+		value === null ||
+		(typeof value !== 'object' && typeof value !== 'function')
+	);
 };
 
 /** 是否函数 */
@@ -131,7 +135,8 @@ export const isRegExp = (value: any): value is RegExp => !!value && value instan
 export const isReg = isRegExp;
 
 /** 判断是否 null 或者 undefined */
-export const isNil = (value: any): value is null | undefined => value === null || value === undefined;
+export const isNil = (value: any): value is null | undefined =>
+	value === null || value === undefined;
 
 /**
  * 判断是否 NaN
@@ -143,7 +148,8 @@ export const isNaN = (value: any): boolean => !isNumber(value);
 export const notEmpty = (value: any): boolean => !isEmpty(value);
 
 /** 判断是否 Object 对象且对象存在内容 */
-export const hasObject = (value: any): value is object => isObject(value) && Object.keys(value).length > 0;
+export const hasObject = (value: any): value is object =>
+	isObject(value) && Object.keys(value).length > 0;
 
 /** 对象是否包含指定的属性 */
 export const hasObjectName = (value: any, name: string): boolean =>

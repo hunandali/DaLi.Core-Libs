@@ -1,7 +1,7 @@
 {
-	"name": "@hndl/core-libs",
+	"name": "@da.li/core-libs",
 	"title": "大沥网络函数库",
-	"version": "1.25.319",
+	"version": "1.25.320",
 	"description": "大沥网络公共函数库，提供了一系列常用的工具函数和组件。",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
@@ -23,6 +23,10 @@
 	"author": "木炭(WOODCOAL) <i@woodcoal.cn>",
 	"homepage": "http://www.hunandali.com/",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/woodcoal/DaLi.Core-Libs.git"
+	},
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^4.6.1",
 		"chalk": "^5.4.1",

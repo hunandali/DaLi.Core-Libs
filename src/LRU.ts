@@ -11,7 +11,7 @@
 '
 ' 	LRU 缓存
 '
-' 	name: lib.LRU
+' 	name: LRU
 ' 	create: 2023-11-02
 ' 	memo: 操作则移到队列，数据满则移除队尾
 '		  https://github.com/jin5354/axios-cache-plugin/blob/master/src/lru.js

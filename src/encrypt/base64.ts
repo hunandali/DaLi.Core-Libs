@@ -11,7 +11,7 @@
 '
 ' 	base64 编码库
 '
-' 	name: lib.encrypt.base64
+' 	name: encrypt/base64
 ' 	create: 2023-05-12
 ' 	memo: base64 编码
 ' 	
@@ -41,7 +41,12 @@ export default class {
 			} else if (isNaN(chr3)) {
 				enc4 = 64;
 			}
-			output = output + this.CODE.charAt(enc1) + this.CODE.charAt(enc2) + this.CODE.charAt(enc3) + this.CODE.charAt(enc4);
+			output =
+				output +
+				this.CODE.charAt(enc1) +
+				this.CODE.charAt(enc2) +
+				this.CODE.charAt(enc3) +
+				this.CODE.charAt(enc4);
 		}
 		return output;
 	}

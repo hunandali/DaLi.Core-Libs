@@ -11,7 +11,7 @@
 '
 ' 	二维码生成
 '
-' 	name: lib.file.qr
+' 	name: files/qr
 ' 	create: 2023-05-12
 ' 	memo: 二维码生成，基于 uQRCode 二维码生成插件 v4.0.7
 ' 	
@@ -45,7 +45,12 @@ function o(o) {
 	(this.mode = r.MODE_8BIT_BYTE), (this.data = o);
 }
 function e(o, e) {
-	(this.typeNumber = o), (this.errorCorrectLevel = e), (this.modules = null), (this.moduleCount = 0), (this.dataCache = null), (this.dataList = new Array());
+	(this.typeNumber = o),
+		(this.errorCorrectLevel = e),
+		(this.modules = null),
+		(this.moduleCount = 0),
+		(this.dataCache = null),
+		(this.dataList = new Array());
 }
 (o.prototype = {
 	getLength: function (o) {
@@ -61,7 +66,8 @@ function e(o, e) {
 			this.dataList.push(r), (this.dataCache = null);
 		},
 		isDark: function (o, e) {
-			if (o < 0 || this.moduleCount <= o || e < 0 || this.moduleCount <= e) throw new Error(o + ',' + e);
+			if (o < 0 || this.moduleCount <= o || e < 0 || this.moduleCount <= e)
+				throw new Error(o + ',' + e);
 			return this.modules[o][e];
 		},
 		getModuleCount: function () {
@@ -71,10 +77,17 @@ function e(o, e) {
 			if (this.typeNumber < 1) {
 				var o = 1;
 				for (o = 1; o < 40; o++) {
-					for (var e = v.getRSBlocks(o, this.errorCorrectLevel), r = new p(), t = 0, i = 0; i < e.length; i++) t += e[i].dataCount;
+					for (
+						var e = v.getRSBlocks(o, this.errorCorrectLevel), r = new p(), t = 0, i = 0;
+						i < e.length;
+						i++
+					)
+						t += e[i].dataCount;
 					for (i = 0; i < this.dataList.length; i++) {
 						var n = this.dataList[i];
-						r.put(n.mode, 4), r.put(n.getLength(), h.getLengthInBits(n.mode, o)), n.write(r);
+						r.put(n.mode, 4),
+							r.put(n.getLength(), h.getLengthInBits(n.mode, o)),
+							n.write(r);
 					}
 					if (r.getLengthInBits() <= 8 * t) break;
 				}
@@ -83,7 +96,8 @@ function e(o, e) {
 			this.makeImpl(!1, this.getBestMaskPattern());
 		},
 		makeImpl: function (o, r) {
-			(this.moduleCount = 4 * this.typeNumber + 17), (this.modules = new Array(this.moduleCount));
+			(this.moduleCount = 4 * this.typeNumber + 17),
+				(this.modules = new Array(this.moduleCount));
 			for (var t = 0; t < this.moduleCount; t++) {
 				this.modules[t] = new Array(this.moduleCount);
 				for (var i = 0; i < this.moduleCount; i++) this.modules[t][i] = null;
@@ -95,7 +109,12 @@ function e(o, e) {
 				this.setupTimingPattern(),
 				this.setupTypeInfo(o, r),
 				this.typeNumber >= 7 && this.setupTypeNumber(o),
-				null == this.dataCache && (this.dataCache = e.createData(this.typeNumber, this.errorCorrectLevel, this.dataList)),
+				null == this.dataCache &&
+					(this.dataCache = e.createData(
+						this.typeNumber,
+						this.errorCorrectLevel,
+						this.dataList
+					)),
 				this.mapData(this.dataCache, r);
 		},
 		setupPositionProbePattern: function (o, e) {
@@ -105,7 +124,9 @@ function e(o, e) {
 						e + t <= -1 ||
 							this.moduleCount <= e + t ||
 							(this.modules[o + r][e + t] =
-								(0 <= r && r <= 6 && (0 == t || 6 == t)) || (0 <= t && t <= 6 && (0 == r || 6 == r)) || (2 <= r && r <= 4 && 2 <= t && t <= 4));
+								(0 <= r && r <= 6 && (0 == t || 6 == t)) ||
+								(0 <= t && t <= 6 && (0 == r || 6 == r)) ||
+								(2 <= r && r <= 4 && 2 <= t && t <= 4));
 		},
 		getBestMaskPattern: function () {
 			for (var o = 0, e = 0, r = 0; r < 8; r++) {
@@ -121,13 +142,21 @@ function e(o, e) {
 			for (var i = 0; i < this.modules.length; i++)
 				for (var n = 1 * i, a = 0; a < this.modules[i].length; a++) {
 					var d = 1 * a;
-					this.modules[i][a] && (t.beginFill(0, 100), t.moveTo(d, n), t.lineTo(d + 1, n), t.lineTo(d + 1, n + 1), t.lineTo(d, n + 1), t.endFill());
+					this.modules[i][a] &&
+						(t.beginFill(0, 100),
+						t.moveTo(d, n),
+						t.lineTo(d + 1, n),
+						t.lineTo(d + 1, n + 1),
+						t.lineTo(d, n + 1),
+						t.endFill());
 				}
 			return t;
 		},
 		setupTimingPattern: function () {
-			for (var o = 8; o < this.moduleCount - 8; o++) null == this.modules[o][6] && (this.modules[o][6] = o % 2 == 0);
-			for (var e = 8; e < this.moduleCount - 8; e++) null == this.modules[6][e] && (this.modules[6][e] = e % 2 == 0);
+			for (var o = 8; o < this.moduleCount - 8; o++)
+				null == this.modules[o][6] && (this.modules[o][6] = o % 2 == 0);
+			for (var e = 8; e < this.moduleCount - 8; e++)
+				null == this.modules[6][e] && (this.modules[6][e] = e % 2 == 0);
 		},
 		setupPositionAdjustPattern: function () {
 			for (var o = h.getPatternPosition(this.typeNumber), e = 0; e < o.length; e++)
@@ -136,7 +165,9 @@ function e(o, e) {
 						i = o[r];
 					if (null == this.modules[t][i])
 						for (var n = -2; n <= 2; n++)
-							for (var a = -2; a <= 2; a++) this.modules[t + n][i + a] = -2 == n || 2 == n || -2 == a || 2 == a || (0 == n && 0 == a);
+							for (var a = -2; a <= 2; a++)
+								this.modules[t + n][i + a] =
+									-2 == n || 2 == n || -2 == a || 2 == a || (0 == n && 0 == a);
 				}
 		},
 		setupTypeNumber: function (o) {
@@ -150,18 +181,34 @@ function e(o, e) {
 			}
 		},
 		setupTypeInfo: function (o, e) {
-			for (var r = (this.errorCorrectLevel << 3) | e, t = h.getBCHTypeInfo(r), i = 0; i < 15; i++) {
+			for (
+				var r = (this.errorCorrectLevel << 3) | e, t = h.getBCHTypeInfo(r), i = 0;
+				i < 15;
+				i++
+			) {
 				var n = !o && 1 == ((t >> i) & 1);
-				i < 6 ? (this.modules[i][8] = n) : i < 8 ? (this.modules[i + 1][8] = n) : (this.modules[this.moduleCount - 15 + i][8] = n);
+				i < 6
+					? (this.modules[i][8] = n)
+					: i < 8
+					? (this.modules[i + 1][8] = n)
+					: (this.modules[this.moduleCount - 15 + i][8] = n);
 			}
 			for (i = 0; i < 15; i++) {
 				n = !o && 1 == ((t >> i) & 1);
-				i < 8 ? (this.modules[8][this.moduleCount - i - 1] = n) : i < 9 ? (this.modules[8][15 - i - 1 + 1] = n) : (this.modules[8][15 - i - 1] = n);
+				i < 8
+					? (this.modules[8][this.moduleCount - i - 1] = n)
+					: i < 9
+					? (this.modules[8][15 - i - 1 + 1] = n)
+					: (this.modules[8][15 - i - 1] = n);
 			}
 			this.modules[this.moduleCount - 8][8] = !o;
 		},
 		mapData: function (o, e) {
-			for (var r = -1, t = this.moduleCount - 1, i = 7, n = 0, a = this.moduleCount - 1; a > 0; a -= 2)
+			for (
+				var r = -1, t = this.moduleCount - 1, i = 7, n = 0, a = this.moduleCount - 1;
+				a > 0;
+				a -= 2
+			)
 				for (6 == a && a--; ; ) {
 					for (var d = 0; d < 2; d++)
 						if (null == this.modules[t][a - d]) {
@@ -187,13 +234,24 @@ function e(o, e) {
 		}
 		var u = 0;
 		for (a = 0; a < i.length; a++) u += i[a].dataCount;
-		if (n.getLengthInBits() > 8 * u) throw new Error('code length overflow. (' + n.getLengthInBits() + '>' + 8 * u + ')');
-		for (n.getLengthInBits() + 4 <= 8 * u && n.put(0, 4); n.getLengthInBits() % 8 != 0; ) n.putBit(!1);
-		for (; !(n.getLengthInBits() >= 8 * u || (n.put(e.PAD0, 8), n.getLengthInBits() >= 8 * u)); ) n.put(e.PAD1, 8);
+		if (n.getLengthInBits() > 8 * u)
+			throw new Error('code length overflow. (' + n.getLengthInBits() + '>' + 8 * u + ')');
+		for (n.getLengthInBits() + 4 <= 8 * u && n.put(0, 4); n.getLengthInBits() % 8 != 0; )
+			n.putBit(!1);
+		for (
+			;
+			!(n.getLengthInBits() >= 8 * u || (n.put(e.PAD0, 8), n.getLengthInBits() >= 8 * u));
+
+		)
+			n.put(e.PAD1, 8);
 		return e.createBytes(n, i);
 	}),
 	(e.createBytes = function (o, e) {
-		for (var r = 0, t = 0, i = 0, n = new Array(e.length), a = new Array(e.length), d = 0; d < e.length; d++) {
+		for (
+			var r = 0, t = 0, i = 0, n = new Array(e.length), a = new Array(e.length), d = 0;
+			d < e.length;
+			d++
+		) {
 			var u = e[d].dataCount,
 				s = e[d].totalCount - u;
 			(t = Math.max(t, u)), (i = Math.max(i, s)), (n[d] = new Array(u));
@@ -211,8 +269,10 @@ function e(o, e) {
 		for (g = 0; g < e.length; g++) v += e[g].totalCount;
 		var p = new Array(v),
 			C = 0;
-		for (g = 0; g < t; g++) for (d = 0; d < e.length; d++) g < n[d].length && (p[C++] = n[d][g]);
-		for (g = 0; g < i; g++) for (d = 0; d < e.length; d++) g < a[d].length && (p[C++] = a[d][g]);
+		for (g = 0; g < t; g++)
+			for (d = 0; d < e.length; d++) g < n[d].length && (p[C++] = n[d][g]);
+		for (g = 0; g < i; g++)
+			for (d = 0; d < e.length; d++) g < a[d].length && (p[C++] = a[d][g]);
 		return p;
 	});
 for (
@@ -273,11 +333,13 @@ for (
 			G18: 7973,
 			G15_MASK: 21522,
 			getBCHTypeInfo: function (o) {
-				for (var e = o << 10; h.getBCHDigit(e) - h.getBCHDigit(h.G15) >= 0; ) e ^= h.G15 << (h.getBCHDigit(e) - h.getBCHDigit(h.G15));
+				for (var e = o << 10; h.getBCHDigit(e) - h.getBCHDigit(h.G15) >= 0; )
+					e ^= h.G15 << (h.getBCHDigit(e) - h.getBCHDigit(h.G15));
 				return ((o << 10) | e) ^ h.G15_MASK;
 			},
 			getBCHTypeNumber: function (o) {
-				for (var e = o << 12; h.getBCHDigit(e) - h.getBCHDigit(h.G18) >= 0; ) e ^= h.G18 << (h.getBCHDigit(e) - h.getBCHDigit(h.G18));
+				for (var e = o << 12; h.getBCHDigit(e) - h.getBCHDigit(h.G18) >= 0; )
+					e ^= h.G18 << (h.getBCHDigit(e) - h.getBCHDigit(h.G18));
 				return (o << 12) | e;
 			},
 			getBCHDigit: function (o) {
@@ -310,7 +372,8 @@ for (
 				}
 			},
 			getErrorCorrectPolynomial: function (o) {
-				for (var e = new f([1], 0), r = 0; r < o; r++) e = e.multiply(new f([1, c.gexp(r)], 0));
+				for (var e = new f([1], 0), r = 0; r < o; r++)
+					e = e.multiply(new f([1, c.gexp(r)], 0));
 				return e;
 			},
 			getLengthInBits: function (o, e) {
@@ -360,7 +423,11 @@ for (
 					for (var i = 0; i < e; i++) {
 						for (var n = 0, a = o.isDark(t, i), d = -1; d <= 1; d++)
 							if (!(t + d < 0 || e <= t + d))
-								for (var u = -1; u <= 1; u++) i + u < 0 || e <= i + u || (0 == d && 0 == u) || (a == o.isDark(t + d, i + u) && n++);
+								for (var u = -1; u <= 1; u++)
+									i + u < 0 ||
+										e <= i + u ||
+										(0 == d && 0 == u) ||
+										(a == o.isDark(t + d, i + u) && n++);
 						n > 5 && (r += 3 + n - 5);
 					}
 				for (t = 0; t < e - 1; t++)
@@ -415,7 +482,9 @@ for (
 	m++
 )
 	c.EXP_TABLE[m] = 1 << m;
-for (m = 8; m < 256; m++) c.EXP_TABLE[m] = c.EXP_TABLE[m - 4] ^ c.EXP_TABLE[m - 5] ^ c.EXP_TABLE[m - 6] ^ c.EXP_TABLE[m - 8];
+for (m = 8; m < 256; m++)
+	c.EXP_TABLE[m] =
+		c.EXP_TABLE[m - 4] ^ c.EXP_TABLE[m - 5] ^ c.EXP_TABLE[m - 6] ^ c.EXP_TABLE[m - 8];
 for (m = 0; m < 255; m++) c.LOG_TABLE[c.EXP_TABLE[m]] = m;
 function f(o, e) {
 	if (null == o.length) throw new Error(o.length + '/' + e);
@@ -464,7 +533,10 @@ function C(o) {
 		(o.setShadow =
 			o.setShadow ||
 			function (e, r, t, i) {
-				(o.shadowOffsetX = e), (o.shadowOffsetY = r), (o.shadowBlur = t), (o.shadowColor = i);
+				(o.shadowOffsetX = e),
+					(o.shadowOffsetY = r),
+					(o.shadowBlur = t),
+					(o.shadowColor = i);
 			}),
 		(o.draw =
 			o.draw ||
@@ -482,7 +554,9 @@ function b(o, e) {
 	var i = (this.typeNumber = -1);
 	this.errorCorrectLevel = b.errorCorrectLevel.H;
 	var n = (this.margin = 0);
-	(this.areaColor = '#FFFFFF'), (this.backgroundColor = 'rgba(255,255,255,0)'), (this.backgroundImageSrc = void 0);
+	(this.areaColor = '#FFFFFF'),
+		(this.backgroundColor = 'rgba(255,255,255,0)'),
+		(this.backgroundImageSrc = void 0);
 	var a = (this.backgroundImageWidth = void 0),
 		d = (this.backgroundImageHeight = void 0),
 		u = (this.backgroundImageX = void 0),
@@ -520,7 +594,11 @@ function b(o, e) {
 		Object.defineProperties(this, {
 			data: {
 				get() {
-					if ('' === r || void 0 === r) throw (console.error('[uQRCode]: data must be set!'), new b.Error('data must be set!'));
+					if ('' === r || void 0 === r)
+						throw (
+							(console.error('[uQRCode]: data must be set!'),
+							new b.Error('data must be set!'))
+						);
 					return r;
 				},
 				set(o) {
@@ -547,7 +625,11 @@ function b(o, e) {
 			},
 			backgroundImageWidth: {
 				get() {
-					return void 0 === a ? this.dynamicSize : this.useDynamicSize ? (this.dynamicSize / this.size) * a : a;
+					return void 0 === a
+						? this.dynamicSize
+						: this.useDynamicSize
+						? (this.dynamicSize / this.size) * a
+						: a;
 				},
 				set(o) {
 					a = Number(o);
@@ -555,7 +637,11 @@ function b(o, e) {
 			},
 			backgroundImageHeight: {
 				get() {
-					return void 0 === d ? this.dynamicSize : this.useDynamicSize ? (this.dynamicSize / this.size) * d : d;
+					return void 0 === d
+						? this.dynamicSize
+						: this.useDynamicSize
+						? (this.dynamicSize / this.size) * d
+						: d;
 				},
 				set(o) {
 					d = Number(o);
@@ -563,7 +649,11 @@ function b(o, e) {
 			},
 			backgroundImageX: {
 				get() {
-					return void 0 === u ? 0 : this.useDynamicSize ? (this.dynamicSize / this.size) * u : u;
+					return void 0 === u
+						? 0
+						: this.useDynamicSize
+						? (this.dynamicSize / this.size) * u
+						: u;
 				},
 				set(o) {
 					u = Number(o);
@@ -571,7 +661,11 @@ function b(o, e) {
 			},
 			backgroundImageY: {
 				get() {
-					return void 0 === s ? 0 : this.useDynamicSize ? (this.dynamicSize / this.size) * s : s;
+					return void 0 === s
+						? 0
+						: this.useDynamicSize
+						? (this.dynamicSize / this.size) * s
+						: s;
 				},
 				set(o) {
 					s = Number(o);
@@ -585,7 +679,11 @@ function b(o, e) {
 			},
 			foregroundImageWidth: {
 				get() {
-					return void 0 === l ? (this.dynamicSize - 2 * this.margin) / 4 : this.useDynamicSize ? (this.dynamicSize / this.size) * l : l;
+					return void 0 === l
+						? (this.dynamicSize - 2 * this.margin) / 4
+						: this.useDynamicSize
+						? (this.dynamicSize / this.size) * l
+						: l;
 				},
 				set(o) {
 					l = Number(o);
@@ -593,7 +691,11 @@ function b(o, e) {
 			},
 			foregroundImageHeight: {
 				get() {
-					return void 0 === h ? (this.dynamicSize - 2 * this.margin) / 4 : this.useDynamicSize ? (this.dynamicSize / this.size) * h : h;
+					return void 0 === h
+						? (this.dynamicSize - 2 * this.margin) / 4
+						: this.useDynamicSize
+						? (this.dynamicSize / this.size) * h
+						: h;
 				},
 				set(o) {
 					h = Number(o);
@@ -601,7 +703,11 @@ function b(o, e) {
 			},
 			foregroundImageX: {
 				get() {
-					return void 0 === c ? this.dynamicSize / 2 - this.foregroundImageWidth / 2 : this.useDynamicSize ? (this.dynamicSize / this.size) * c : c;
+					return void 0 === c
+						? this.dynamicSize / 2 - this.foregroundImageWidth / 2
+						: this.useDynamicSize
+						? (this.dynamicSize / this.size) * c
+						: c;
 				},
 				set(o) {
 					c = Number(o);
@@ -609,7 +715,11 @@ function b(o, e) {
 			},
 			foregroundImageY: {
 				get() {
-					return void 0 === m ? this.dynamicSize / 2 - this.foregroundImageHeight / 2 : this.useDynamicSize ? (this.dynamicSize / this.size) * m : m;
+					return void 0 === m
+						? this.dynamicSize / 2 - this.foregroundImageHeight / 2
+						: this.useDynamicSize
+						? (this.dynamicSize / this.size) * m
+						: m;
 				},
 				set(o) {
 					m = Number(o);
@@ -745,7 +855,9 @@ function b(o, e) {
 				get() {
 					if (void 0 === M)
 						throw (
-							(console.error('[uQRCode]: use drawCanvas, you need to set the canvasContext!'),
+							(console.error(
+								'[uQRCode]: use drawCanvas, you need to set the canvasContext!'
+							),
 							new b.Error('use drawCanvas, you need to set the canvasContext!'))
 						);
 					return M;
@@ -767,13 +879,23 @@ function b(o, e) {
 		return this.num.length;
 	},
 	multiply: function (o) {
-		for (var e = new Array(this.getLength() + o.getLength() - 1), r = 0; r < this.getLength(); r++)
-			for (var t = 0; t < o.getLength(); t++) e[r + t] ^= c.gexp(c.glog(this.get(r)) + c.glog(o.get(t)));
+		for (
+			var e = new Array(this.getLength() + o.getLength() - 1), r = 0;
+			r < this.getLength();
+			r++
+		)
+			for (var t = 0; t < o.getLength(); t++)
+				e[r + t] ^= c.gexp(c.glog(this.get(r)) + c.glog(o.get(t)));
 		return new f(e, 0);
 	},
 	mod: function (o) {
 		if (this.getLength() - o.getLength() < 0) return this;
-		for (var e = c.glog(this.get(0)) - c.glog(o.get(0)), r = new Array(this.getLength()), t = 0; t < this.getLength(); t++) r[t] = this.get(t);
+		for (
+			var e = c.glog(this.get(0)) - c.glog(o.get(0)), r = new Array(this.getLength()), t = 0;
+			t < this.getLength();
+			t++
+		)
+			r[t] = this.get(t);
 		for (t = 0; t < o.getLength(); t++) r[t] ^= c.gexp(c.glog(o.get(t)) + e);
 		return new f(r, 0).mod(o);
 	}
@@ -942,9 +1064,11 @@ function b(o, e) {
 	]),
 	(v.getRSBlocks = function (o, e) {
 		var r = v.getRsBlockTable(o, e);
-		if (null == r) throw new Error('bad rs block @ typeNumber:' + o + '/errorCorrectLevel:' + e);
+		if (null == r)
+			throw new Error('bad rs block @ typeNumber:' + o + '/errorCorrectLevel:' + e);
 		for (var t = r.length / 3, i = new Array(), n = 0; n < t; n++)
-			for (var a = r[3 * n + 0], d = r[3 * n + 1], u = r[3 * n + 2], s = 0; s < a; s++) i.push(new v(d, u));
+			for (var a = r[3 * n + 0], d = r[3 * n + 1], u = r[3 * n + 2], s = 0; s < a; s++)
+				i.push(new v(d, u));
 		return i;
 	}),
 	(v.getRsBlockTable = function (o, e) {
@@ -974,7 +1098,9 @@ function b(o, e) {
 		},
 		putBit: function (o) {
 			var e = Math.floor(this.length / 8);
-			this.buffer.length <= e && this.buffer.push(0), o && (this.buffer[e] |= 128 >>> this.length % 8), this.length++;
+			this.buffer.length <= e && this.buffer.push(0),
+				o && (this.buffer[e] |= 128 >>> this.length % 8),
+				this.length++;
 		}
 	}),
 	(e.errorCorrectLevel = t),
@@ -1054,7 +1180,12 @@ function b(o, e) {
 				let t;
 				for (var i in ((t = r ? o : { ...o }), e)) {
 					var n = e[i];
-					null != n && (n.constructor == Object ? (t[i] = this.deepReplace(t[i], n)) : n.constructor != String || n ? (t[i] = n) : (t[i] = t[i]));
+					null != n &&
+						(n.constructor == Object
+							? (t[i] = this.deepReplace(t[i], n))
+							: n.constructor != String || n
+							? (t[i] = n)
+							: (t[i] = t[i]));
 				}
 			})(
 				this,
@@ -1067,84 +1198,222 @@ function b(o, e) {
 					errorCorrectLevel: o.errorCorrectLevel,
 					margin: o.margin,
 					areaColor: o.areaColor,
-					backgroundColor: o.backgroundColor || (null === (e = o.background) || void 0 === e ? void 0 : e.color),
+					backgroundColor:
+						o.backgroundColor ||
+						(null === (e = o.background) || void 0 === e ? void 0 : e.color),
 					backgroundImageSrc:
-						o.backgroundImageSrc || (null === (r = o.background) || void 0 === r || null === (t = r.image) || void 0 === t ? void 0 : t.src),
+						o.backgroundImageSrc ||
+						(null === (r = o.background) ||
+						void 0 === r ||
+						null === (t = r.image) ||
+						void 0 === t
+							? void 0
+							: t.src),
 					backgroundImageWidth:
-						o.backgroundImageWidth || (null === (i = o.background) || void 0 === i || null === (n = i.image) || void 0 === n ? void 0 : n.width),
+						o.backgroundImageWidth ||
+						(null === (i = o.background) ||
+						void 0 === i ||
+						null === (n = i.image) ||
+						void 0 === n
+							? void 0
+							: n.width),
 					backgroundImageHeight:
-						o.backgroundImageHeight || (null === (a = o.background) || void 0 === a || null === (d = a.image) || void 0 === d ? void 0 : d.height),
+						o.backgroundImageHeight ||
+						(null === (a = o.background) ||
+						void 0 === a ||
+						null === (d = a.image) ||
+						void 0 === d
+							? void 0
+							: d.height),
 					backgroundImageX:
-						o.backgroundImageX || (null === (u = o.background) || void 0 === u || null === (s = u.image) || void 0 === s ? void 0 : s.x),
+						o.backgroundImageX ||
+						(null === (u = o.background) ||
+						void 0 === u ||
+						null === (s = u.image) ||
+						void 0 === s
+							? void 0
+							: s.x),
 					backgroundImageY:
-						o.backgroundImageY || (null === (g = o.background) || void 0 === g || null === (l = g.image) || void 0 === l ? void 0 : l.y),
+						o.backgroundImageY ||
+						(null === (g = o.background) ||
+						void 0 === g ||
+						null === (l = g.image) ||
+						void 0 === l
+							? void 0
+							: l.y),
 					backgroundImageAlpha:
-						o.backgroundImageAlpha || (null === (h = o.background) || void 0 === h || null === (c = h.image) || void 0 === c ? void 0 : c.alpha),
+						o.backgroundImageAlpha ||
+						(null === (h = o.background) ||
+						void 0 === h ||
+						null === (c = h.image) ||
+						void 0 === c
+							? void 0
+							: c.alpha),
 					backgroundImageBorderRadius:
 						o.backgroundImageBorderRadius ||
-						(null === (m = o.background) || void 0 === m || null === (f = m.image) || void 0 === f ? void 0 : f.borderRadius),
+						(null === (m = o.background) ||
+						void 0 === m ||
+						null === (f = m.image) ||
+						void 0 === f
+							? void 0
+							: f.borderRadius),
 					backgroundPadding: o.backgroundPadding,
-					foregroundColor: o.foregroundColor || (null === (v = o.foreground) || void 0 === v ? void 0 : v.color),
+					foregroundColor:
+						o.foregroundColor ||
+						(null === (v = o.foreground) || void 0 === v ? void 0 : v.color),
 					foregroundImageSrc:
-						o.foregroundImageSrc || (null === (p = o.foreground) || void 0 === p || null === (C = p.image) || void 0 === C ? void 0 : C.src),
+						o.foregroundImageSrc ||
+						(null === (p = o.foreground) ||
+						void 0 === p ||
+						null === (C = p.image) ||
+						void 0 === C
+							? void 0
+							: C.src),
 					foregroundImageWidth:
-						o.foregroundImageWidth || (null === (b = o.foreground) || void 0 === b || null === (k = b.image) || void 0 === k ? void 0 : k.width),
+						o.foregroundImageWidth ||
+						(null === (b = o.foreground) ||
+						void 0 === b ||
+						null === (k = b.image) ||
+						void 0 === k
+							? void 0
+							: k.width),
 					foregroundImageHeight:
-						o.foregroundImageHeight || (null === (y = o.foreground) || void 0 === y || null === (w = y.image) || void 0 === w ? void 0 : w.height),
+						o.foregroundImageHeight ||
+						(null === (y = o.foreground) ||
+						void 0 === y ||
+						null === (w = y.image) ||
+						void 0 === w
+							? void 0
+							: w.height),
 					foregroundImageX:
-						o.foregroundImageX || (null === (I = o.foreground) || void 0 === I || null === (B = I.image) || void 0 === B ? void 0 : B.x),
+						o.foregroundImageX ||
+						(null === (I = o.foreground) ||
+						void 0 === I ||
+						null === (B = I.image) ||
+						void 0 === B
+							? void 0
+							: B.x),
 					foregroundImageY:
-						o.foregroundImageY || (null === (S = o.foreground) || void 0 === S || null === (P = S.image) || void 0 === P ? void 0 : P.y),
+						o.foregroundImageY ||
+						(null === (S = o.foreground) ||
+						void 0 === S ||
+						null === (P = S.image) ||
+						void 0 === P
+							? void 0
+							: P.y),
 					foregroundImagePadding:
 						o.foregroundImagePadding ||
-						(null === (E = o.foreground) || void 0 === E || null === (L = E.image) || void 0 === L ? void 0 : L.padding),
+						(null === (E = o.foreground) ||
+						void 0 === E ||
+						null === (L = E.image) ||
+						void 0 === L
+							? void 0
+							: L.padding),
 					foregroundImageBackgroundColor:
 						o.foregroundImageBackgroundColor ||
-						(null === (D = o.foreground) || void 0 === D || null === (A = D.image) || void 0 === A ? void 0 : A.backgroundColor),
+						(null === (D = o.foreground) ||
+						void 0 === D ||
+						null === (A = D.image) ||
+						void 0 === A
+							? void 0
+							: A.backgroundColor),
 					foregroundImageBorderRadius:
 						o.foregroundImageBorderRadius ||
-						(null === (T = o.foreground) || void 0 === T || null === (N = T.image) || void 0 === N ? void 0 : N.borderRadius),
+						(null === (T = o.foreground) ||
+						void 0 === T ||
+						null === (N = T.image) ||
+						void 0 === N
+							? void 0
+							: N.borderRadius),
 					foregroundImageShadowOffsetX:
 						o.foregroundImageShadowOffsetX ||
-						(null === (M = o.foreground) || void 0 === M || null === (z = M.image) || void 0 === z ? void 0 : z.shadowOffsetX),
+						(null === (M = o.foreground) ||
+						void 0 === M ||
+						null === (z = M.image) ||
+						void 0 === z
+							? void 0
+							: z.shadowOffsetX),
 					foregroundImageShadowOffsetY:
 						o.foregroundImageShadowOffsetY ||
-						(null === (_ = o.foreground) || void 0 === _ || null === (O = _.image) || void 0 === O ? void 0 : O.shadowOffsetY),
+						(null === (_ = o.foreground) ||
+						void 0 === _ ||
+						null === (O = _.image) ||
+						void 0 === O
+							? void 0
+							: O.shadowOffsetY),
 					foregroundImageShadowBlur:
 						o.foregroundImageShadowBlur ||
-						(null === (R = o.foreground) || void 0 === R || null === (F = R.image) || void 0 === F ? void 0 : F.shadowBlur),
+						(null === (R = o.foreground) ||
+						void 0 === R ||
+						null === (F = R.image) ||
+						void 0 === F
+							? void 0
+							: F.shadowBlur),
 					foregroundImageShadowColor:
 						o.foregroundImageShadowColor ||
-						(null === (x = o.foreground) || void 0 === x || null === (H = x.image) || void 0 === H ? void 0 : H.shadowColor),
+						(null === (x = o.foreground) ||
+						void 0 === x ||
+						null === (H = x.image) ||
+						void 0 === H
+							? void 0
+							: H.shadowColor),
 					foregroundPadding: o.foregroundPadding,
 					positionProbeBackgroundColor:
 						o.positionProbeBackgroundColor ||
-						(null === (X = o.positionProbe) || void 0 === X ? void 0 : X.backgroundColor) ||
-						(null === (Y = o.positionDetection) || void 0 === Y ? void 0 : Y.backgroundColor),
+						(null === (X = o.positionProbe) || void 0 === X
+							? void 0
+							: X.backgroundColor) ||
+						(null === (Y = o.positionDetection) || void 0 === Y
+							? void 0
+							: Y.backgroundColor),
 					positionProbeForegroundColor:
 						o.positionProbeForegroundColor ||
-						(null === (j = o.positionProbe) || void 0 === j ? void 0 : j.foregroundColor) ||
-						(null === (W = o.positionDetection) || void 0 === W ? void 0 : W.foregroundColor),
-					separatorColor: o.separatorColor || (null === (G = o.separator) || void 0 === G ? void 0 : G.color),
+						(null === (j = o.positionProbe) || void 0 === j
+							? void 0
+							: j.foregroundColor) ||
+						(null === (W = o.positionDetection) || void 0 === W
+							? void 0
+							: W.foregroundColor),
+					separatorColor:
+						o.separatorColor ||
+						(null === (G = o.separator) || void 0 === G ? void 0 : G.color),
 					positionAdjustBackgroundColor:
 						o.positionAdjustBackgroundColor ||
-						(null === (K = o.positionAdjust) || void 0 === K ? void 0 : K.backgroundColor) ||
+						(null === (K = o.positionAdjust) || void 0 === K
+							? void 0
+							: K.backgroundColor) ||
 						(null === (Q = o.alignment) || void 0 === Q ? void 0 : Q.backgroundColor),
 					positionAdjustForegroundColor:
 						o.positionAdjustForegroundColor ||
-						(null === (U = o.positionAdjust) || void 0 === U ? void 0 : U.foregroundColor) ||
+						(null === (U = o.positionAdjust) || void 0 === U
+							? void 0
+							: U.foregroundColor) ||
 						(null === ($ = o.alignment) || void 0 === $ ? void 0 : $.foregroundColor),
-					timingBackgroundColor: o.timingBackgroundColor || (null === (J = o.timing) || void 0 === J ? void 0 : J.backgroundColor),
-					timingForegroundColor: o.timingForegroundColor || (null === (q = o.timing) || void 0 === q ? void 0 : q.foregroundColor),
+					timingBackgroundColor:
+						o.timingBackgroundColor ||
+						(null === (J = o.timing) || void 0 === J ? void 0 : J.backgroundColor),
+					timingForegroundColor:
+						o.timingForegroundColor ||
+						(null === (q = o.timing) || void 0 === q ? void 0 : q.foregroundColor),
 					typeNumberBackgroundColor:
 						o.typeNumberBackgroundColor ||
-						(null === (V = o.typeNumber) || void 0 === V ? void 0 : V.backgroundColor) ||
-						(null === (Z = o.versionInformation) || void 0 === Z ? void 0 : Z.backgroundColor),
+						(null === (V = o.typeNumber) || void 0 === V
+							? void 0
+							: V.backgroundColor) ||
+						(null === (Z = o.versionInformation) || void 0 === Z
+							? void 0
+							: Z.backgroundColor),
 					typeNumberForegroundColor:
 						o.typeNumberForegroundColor ||
-						(null === (oo = o.typeNumber) || void 0 === oo ? void 0 : oo.foregroundColor) ||
-						(null === (eo = o.versionInformation) || void 0 === eo ? void 0 : eo.foregroundColor),
-					darkBlockColor: o.darkBlockColor || (null === (ro = o.darkBlock) || void 0 === ro ? void 0 : ro.color)
+						(null === (oo = o.typeNumber) || void 0 === oo
+							? void 0
+							: oo.foregroundColor) ||
+						(null === (eo = o.versionInformation) || void 0 === eo
+							? void 0
+							: eo.foregroundColor),
+					darkBlockColor:
+						o.darkBlockColor ||
+						(null === (ro = o.darkBlock) || void 0 === ro ? void 0 : ro.color)
 				},
 				!0
 			));
@@ -1163,7 +1432,9 @@ function b(o, e) {
 		} = this;
 		if (o === r)
 			throw (
-				(console.error('[uQRCode]: foregroundColor and backgroundColor cannot be the same!'),
+				(console.error(
+					'[uQRCode]: foregroundColor and backgroundColor cannot be the same!'
+				),
 				new b.Error('foregroundColor and backgroundColor cannot be the same!'))
 			);
 		a &&
@@ -1176,7 +1447,8 @@ function b(o, e) {
 						? ((r += String.fromCharCode(224 | ((e >> 12) & 15))),
 						  (r += String.fromCharCode(128 | ((e >> 6) & 63))),
 						  (r += String.fromCharCode(128 | ((e >> 0) & 63))))
-						: ((r += String.fromCharCode(192 | ((e >> 6) & 31))), (r += String.fromCharCode(128 | ((e >> 0) & 63))));
+						: ((r += String.fromCharCode(192 | ((e >> 6) & 31))),
+						  (r += String.fromCharCode(128 | ((e >> 0) & 63))));
 				return r;
 			})(n));
 		var g = new e(t, i);
@@ -1186,7 +1458,9 @@ function b(o, e) {
 			(this.typeNumber = g.typeNumber),
 			(this.modules = g.modules),
 			(this.moduleCount = g.moduleCount),
-			(this.dynamicSize = s ? Math.ceil((d - 2 * u) / g.moduleCount) * g.moduleCount + 2 * u : d),
+			(this.dynamicSize = s
+				? Math.ceil((d - 2 * u) / g.moduleCount) * g.moduleCount + 2 * u
+				: d),
 			(function (o) {
 				let {
 					dynamicSize: e,
@@ -1260,7 +1534,12 @@ function b(o, e) {
 					}
 			})(this),
 			(function (o) {
-				let { modules: e, moduleCount: r, positionProbeBackgroundColor: t, positionProbeForegroundColor: i } = o;
+				let {
+					modules: e,
+					moduleCount: r,
+					positionProbeBackgroundColor: t,
+					positionProbeForegroundColor: i
+				} = o;
 				var n = r - 7;
 				[
 					[0, 0, 1],
@@ -1346,7 +1625,12 @@ function b(o, e) {
 					var i = e[o[0]][o[1]],
 						n = e[r - o[0] - 1][o[1]],
 						a = e[o[0]][r - o[1] - 1];
-					a.type.push('separator'), n.type.push('separator'), i.type.push('separator'), (i.color = t), (n.color = t), (a.color = t);
+					a.type.push('separator'),
+						n.type.push('separator'),
+						i.type.push('separator'),
+						(i.color = t),
+						(n.color = t),
+						(a.color = t);
 				});
 			})(this),
 			(function (o) {
@@ -1454,11 +1738,19 @@ function b(o, e) {
 						}
 			})(this),
 			(function (o) {
-				let { modules: e, moduleCount: r, timingForegroundColor: t, timingBackgroundColor: i } = o;
+				let {
+					modules: e,
+					moduleCount: r,
+					timingForegroundColor: t,
+					timingBackgroundColor: i
+				} = o;
 				for (var n = r - 16, a = 0; a < n; a++) {
 					var d = e[6][8 + a],
 						u = e[8 + a][6];
-					d.type.push('timing'), u.type.push('timing'), (d.color = (1 & a) ^ 1 ? t : i), (u.color = (1 & a) ^ 1 ? t : i);
+					d.type.push('timing'),
+						u.type.push('timing'),
+						(d.color = (1 & a) ^ 1 ? t : i),
+						(u.color = (1 & a) ^ 1 ? t : i);
 				}
 			})(this),
 			(function (o) {
@@ -1467,7 +1759,13 @@ function b(o, e) {
 				i.type.push('darkBlock'), (i.color = t);
 			})(this),
 			(function (o) {
-				let { typeNumber: e, modules: r, moduleCount: t, typeNumberBackgroundColor: i, typeNumberForegroundColor: n } = o;
+				let {
+					typeNumber: e,
+					modules: r,
+					moduleCount: t,
+					typeNumberBackgroundColor: i,
+					typeNumberForegroundColor: n
+				} = o;
 				if (e < 7) return r;
 				var a = [
 						0,
@@ -1685,7 +1983,11 @@ function b(o, e) {
 			drawReserve: s,
 			margin: g
 		} = this;
-		if (!e) return console.error('[uQRCode]: please execute the make method first!'), Promise.reject(new b.Error('please execute the make method first!'));
+		if (!e)
+			return (
+				console.error('[uQRCode]: please execute the make method first!'),
+				Promise.reject(new b.Error('please execute the make method first!'))
+			);
 		let l = this.getDrawModules(),
 			h = async (e, t) => {
 				try {
@@ -1705,7 +2007,10 @@ function b(o, e) {
 								break;
 							case 'image':
 								if ('backgroundImage' === n.name) {
-									(a = Math.round(n.x)), (d = Math.round(n.y)), (u = Math.round(n.width)), (g = Math.round(n.height));
+									(a = Math.round(n.x)),
+										(d = Math.round(n.y)),
+										(u = Math.round(n.width)),
+										(g = Math.round(n.height));
 									u < 2 * (c = Math.round(n.borderRadius)) && (c = u / 2),
 										g < 2 * c && (c = g / 2),
 										r.setGlobalAlpha(n.alpha),
@@ -1724,13 +2029,20 @@ function b(o, e) {
 										var h = await this.loadImage(n.imageSrc);
 										r.drawImage(h, a, d, u, g);
 									} catch (o) {
-										throw (console.error(`[uQRCode]: ${n.mappingName} invalid!`), new b.Error(`${n.mappingName} invalid!`));
+										throw (
+											(console.error(`[uQRCode]: ${n.mappingName} invalid!`),
+											new b.Error(`${n.mappingName} invalid!`))
+										);
 									}
 								} else if ('foregroundImage' === n.name) {
-									(a = Math.round(n.x)), (d = Math.round(n.y)), (u = Math.round(n.width)), (g = Math.round(n.height));
+									(a = Math.round(n.x)),
+										(d = Math.round(n.y)),
+										(u = Math.round(n.width)),
+										(g = Math.round(n.height));
 									var c,
 										m = Math.round(n.padding);
-									u < 2 * (c = Math.round(n.borderRadius)) && (c = u / 2), g < 2 * c && (c = g / 2);
+									u < 2 * (c = Math.round(n.borderRadius)) && (c = u / 2),
+										g < 2 * c && (c = g / 2);
 									var f = a - m,
 										v = d - m,
 										p = u + 2 * m,
@@ -1739,7 +2051,12 @@ function b(o, e) {
 									p < 2 * k && (k = p / 2),
 										C < 2 * k && (k = C / 2),
 										r.save(),
-										r.setShadow(n.shadowOffsetX, n.shadowOffsetY, n.shadowBlur, n.shadowColor),
+										r.setShadow(
+											n.shadowOffsetX,
+											n.shadowOffsetY,
+											n.shadowBlur,
+											n.shadowColor
+										),
 										k > 0
 											? (r.beginPath(),
 											  r.moveTo(f + k, v),
@@ -1750,7 +2067,8 @@ function b(o, e) {
 											  r.closePath(),
 											  r.setFillStyle(n.backgroundColor),
 											  r.fill())
-											: (r.setFillStyle(n.backgroundColor), r.fillRect(f, v, p, C)),
+											: (r.setFillStyle(n.backgroundColor),
+											  r.fillRect(f, v, p, C)),
 										r.restore(),
 										r.save(),
 										k > 0
@@ -1761,9 +2079,14 @@ function b(o, e) {
 											  r.arcTo(f, v + C, f, v, k),
 											  r.arcTo(f, v, f + p, v, k),
 											  r.closePath(),
-											  r.setFillStyle(m > 0 ? n.backgroundColor : 'rgba(0,0,0,0)'),
+											  r.setFillStyle(
+													m > 0 ? n.backgroundColor : 'rgba(0,0,0,0)'
+											  ),
 											  r.fill())
-											: (r.setFillStyle(m > 0 ? n.backgroundColor : 'rgba(0,0,0,0)'), r.fillRect(f, v, p, C)),
+											: (r.setFillStyle(
+													m > 0 ? n.backgroundColor : 'rgba(0,0,0,0)'
+											  ),
+											  r.fillRect(f, v, p, C)),
 										r.restore(),
 										c > 0 &&
 											(r.beginPath(),
@@ -1780,7 +2103,10 @@ function b(o, e) {
 										h = await this.loadImage(n.imageSrc);
 										r.drawImage(h, a, d, u, g);
 									} catch (o) {
-										throw (console.error(`[uQRCode]: ${n.mappingName} invalid!`), new b.Error(`${n.mappingName} invalid!`));
+										throw (
+											(console.error(`[uQRCode]: ${n.mappingName} invalid!`),
+											new b.Error(`${n.mappingName} invalid!`))
+										);
 									}
 								}
 						}

@@ -11,7 +11,7 @@
 '
 ' 	字符串相关操作
 '
-' 	name: lib.base.string
+' 	name: base/string
 ' 	create: 2023-11-02
 ' 	memo: 字符串相关操作
 ' 	

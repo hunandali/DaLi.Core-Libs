@@ -11,7 +11,7 @@
 '
 ' 	缓存结构
 '
-' 	name: cache.d
+' 	name: cache/cache.d
 ' 	create: 2023-05-12
 ' 	memo: 缓存结构
 ' 	

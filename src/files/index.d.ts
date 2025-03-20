@@ -11,7 +11,7 @@
 '
 ' 	文件相关类型定义
 '
-' 	name: lib.file.d
+' 	name: files/index.d
 ' 	create: 2023-11-012
 ' 	memo: 文件相关类型定义
 ' 	

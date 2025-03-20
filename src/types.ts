@@ -11,7 +11,7 @@
 '
 ' 	全局类型
 '
-' 	name: global.d.ts
+' 	name: types.ts
 ' 	create: 2023-05-14
 ' 	memo: 全局类型
 ' 	

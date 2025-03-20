@@ -1,13 +1,13 @@
-# @hndl/core-libs
+# @da.li/core-libs
 
 大沥网络公共函数库，提供了一系列常用的工具函数和组件。
 
 ## 安装
 
 ```bash
-npm install @hndl/core-libs
+npm install @da.li/core-libs
 # 或者
-yarn add @hndl/core-libs
+yarn add @da.li/core-libs
 ```
 
 ## 功能模块
@@ -34,7 +34,7 @@ yarn add @hndl/core-libs
 #### base64 - Base64 编码解码
 
 ```typescript
-import { encrypt } from '@hndl/core-libs';
+import { encrypt } from '@da.li/core-libs';
 
 // 编码
 const encoded = encrypt.base64Encode('Hello World');
@@ -47,7 +47,7 @@ const decoded = encrypt.base64Decode(encoded);
 #### excel - Excel 文件处理
 
 ```typescript
-import { files } from '@hndl/core-libs';
+import { files } from '@da.li/core-libs';
 
 // 导出 JSON 数据到 Excel
 files.excel.exportJson(
@@ -71,7 +71,7 @@ files.excel.exportJson(
 -   常用格式验证（URL、Email、手机号等）
 
 ```typescript
-import { formValidate } from '@hndl/core-libs';
+import { formValidate } from '@da.li/core-libs';
 
 const rules = {
 	name: { required: true, minLength: 2, maxLength: 20 },
@@ -87,7 +87,7 @@ const isValid = formValidate.validate(rules, formData);
 在页面上添加自定义水印：
 
 ```typescript
-import { waterMark } from '@hndl/core-libs';
+import { waterMark } from '@da.li/core-libs';
 
 // 添加水印
 waterMark('url("data:image/svg+xml;base64,...")', 5); // 第二个参数为刷新间隔（秒）

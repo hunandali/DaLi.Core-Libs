@@ -11,7 +11,7 @@
 '
 ' 	导出 Excel
 '
-' 	name: lib.file.excel
+' 	name: files/excel
 ' 	create: 2023-08-20
 ' 	memo: https://github.com/sunhuihuibuhui/JavaScript-export-Excel
 ' 	
@@ -39,7 +39,8 @@ export function exportJson(data: any, fileName: string, title: string, filter?: 
 
 		for (var index in data[i]) {
 			// 判断是否有过滤行
-			(!filter || filter?.indexOf(index) == -1) && excel.push(`<td>${data[i][index] ?? ''}</td>`);
+			(!filter || filter?.indexOf(index) == -1) &&
+				excel.push(`<td>${data[i][index] ?? ''}</td>`);
 		}
 
 		excel.push('</tr>');
@@ -60,7 +61,8 @@ export function exportTable(tableHtml: string, fileName: string, title: string) 
 
 	let excelFile =
 		"<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>";
-	excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
+	excelFile +=
+		'<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
 	excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel';
 	excelFile += '; charset=UTF-8">';
 	excelFile += '<head>';

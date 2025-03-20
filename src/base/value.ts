@@ -11,7 +11,7 @@
 '
 ' 	常用值判断
 '
-' 	name: lib.base.value
+' 	name: base/value
 ' 	create: 2023-05-10
 ' 	memo: 判断值是否指定格式
 ' 	

@@ -11,7 +11,7 @@
 '
 ' 	对象操作
 '
-' 	name: lib.base.object
+' 	name: base/object
 ' 	create: 2023-05-10
 ' 	memo: 对象操作
 ' 	

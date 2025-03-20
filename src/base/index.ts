@@ -11,7 +11,7 @@
 '
 ' 	常用基础函数
 '
-' 	name: lib.base
+' 	name: base/index
 ' 	create: 2023-11-02
 ' 	memo: 常用基础函数
 ' 	
@@ -64,7 +64,16 @@ export {
 } from './value';
 
 /** 字符串相关操作 */
-export { htmlClear, htmlEncode, htmlSafe, string2Value, stringClear, stringCut, template, trim } from './string';
+export {
+	htmlClear,
+	htmlEncode,
+	htmlSafe,
+	string2Value,
+	stringClear,
+	stringCut,
+	template,
+	trim
+} from './string';
 
 /** 数组及对象相关操作 */
 export {

@@ -11,7 +11,7 @@
 '
 ' 	二维码生成类型定义
 '
-' 	name: lib.file.qr.d
+' 	name: files/qr.d
 ' 	create: 2023-05-12
 ' 	memo: 二维码生成类型定义
 ' 	
@@ -19,45 +19,45 @@
 */
 
 declare class QR {
-  /** 二维码内容 */
-  data: string;
+	/** 二维码内容 */
+	data: string;
 
-  /** 二维码大小 */
-  size: number;
+	/** 二维码大小 */
+	size: number;
 
-  /** 纠错等级 */
-  static errorCorrectLevel: {
-    L: number;
-    M: number;
-    Q: number;
-    H: number;
-  };
+	/** 纠错等级 */
+	static errorCorrectLevel: {
+		L: number;
+		M: number;
+		Q: number;
+		H: number;
+	};
 
-  /** 当前纠错等级 */
-  errorCorrectLevel: number;
+	/** 当前纠错等级 */
+	errorCorrectLevel: number;
 
-  /** 前景色 */
-  foregroundColor: string;
+	/** 前景色 */
+	foregroundColor: string;
 
-  /** 背景色 */
-  backgroundColor: string;
+	/** 背景色 */
+	backgroundColor: string;
 
-  /** 前景图片 */
-  foregroundImageSrc: string;
+	/** 前景图片 */
+	foregroundImageSrc: string;
 
-  /** 生成二维码 */
-  make(): void;
+	/** 生成二维码 */
+	make(): void;
 
-  /** 获取绘制的模块 */
-  getDrawModules(): Array<{
-    type: 'tile' | 'image';
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    color: string;
-    imageSrc?: string;
-  }>;
+	/** 获取绘制的模块 */
+	getDrawModules(): Array<{
+		type: 'tile' | 'image';
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+		color: string;
+		imageSrc?: string;
+	}>;
 }
 
 export = QR;

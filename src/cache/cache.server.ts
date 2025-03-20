@@ -11,7 +11,7 @@
 '
 ' 	缓存操作
 '
-' 	name: cache.server
+' 	name: cache/cache.server
 ' 	create: 2023-05-12
 ' 	memo: 统一缓存操作；客户端使用 localForage；服务端使用内存
 ' 	

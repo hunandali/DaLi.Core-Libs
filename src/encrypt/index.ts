@@ -11,7 +11,7 @@
 '
 ' 	常用编码库
 '
-' 	name: lib.encrypt
+' 	name: encrypt/index
 ' 	create: 2023-11-01
 ' 	memo: 常用编码库
 ' 	

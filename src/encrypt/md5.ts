@@ -11,7 +11,7 @@
 '
 ' 	MD5 编码库
 '
-' 	name: lib.encrypt.md5
+' 	name: encrypt/md5
 ' 	create: 2023-05-12
 ' 	memo: MD5 编码
 '
@@ -54,7 +54,9 @@ export class MD5 {
 	}
 	// Private Static Variables
 	private static stateIdentity = new Int32Array([1732584193, -271733879, -1732584194, 271733878]);
-	private static buffer32Identity = new Int32Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+	private static buffer32Identity = new Int32Array([
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	]);
 	private static hexChars = '0123456789abcdef';
 	private static hexOut: string[] = [];
 

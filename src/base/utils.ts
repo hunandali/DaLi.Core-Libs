@@ -11,7 +11,7 @@
 '
 ' 	其他相关操作
 '
-' 	name: lib.base.utils
+' 	name: base/utils
 ' 	create: 2023-05-10
 ' 	memo: 其他相关操作
 ' 	

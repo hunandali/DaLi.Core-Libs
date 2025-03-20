@@ -11,7 +11,7 @@
 '
 ' 	颜色操作
 '
-' 	name: lib.base.color
+' 	name: base/color
 ' 	create: 2023-05-11
 ' 	memo: 颜色操作
 ' 	
