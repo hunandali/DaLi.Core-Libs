@@ -1,8 +1,16 @@
 {
 	"name": "@da.li/core-libs",
 	"title": "大沥网络函数库",
-	"version": "1.25.320",
+	"version": "1.25.322",
 	"description": "大沥网络公共函数库，提供了一系列常用的工具函数和组件。",
+	"license": "MIT",
+	"company": "Hunan DaLi Network Technology Co., Ltd.",
+	"author": "木炭(WOODCOAL) <i@woodcoal.cn>",
+	"homepage": "http://www.hunandali.com/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/woodcoal/DaLi.Core-Libs.git"
+	},
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
 	"types": "dist/index.d.ts",
@@ -12,27 +20,22 @@
 	"scripts": {
 		"build": "tsup src/index.ts --format cjs,esm --dts",
 		"test": "jest",
-		"check": "tsc --noEmit"
+		"tsc-check": "tsc --noEmit"
 	},
 	"keywords": [
 		"dali",
+		"core",
+		"libs",
 		"utils",
 		"typescript"
 	],
-	"company": "Hunan DaLi Network Technology Co., Ltd.",
-	"author": "木炭(WOODCOAL) <i@woodcoal.cn>",
-	"homepage": "http://www.hunandali.com/",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/woodcoal/DaLi.Core-Libs.git"
-	},
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^4.6.1",
 		"chalk": "^5.4.1",
 		"dayjs": "^1.11.13",
 		"isomorphic-dompurify": "^2.22.0",
 		"localforage": "^1.10.0",
+		"ofetch": "^1.4.1",
 		"ufo": "^1.5.4"
 	},
 	"devDependencies": {

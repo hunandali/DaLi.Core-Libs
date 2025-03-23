@@ -1,4 +1,4 @@
-import LRU from '../src/LUR';
+import LRU from '../src/LRU';
 
 describe('LRU缓存测试', () => {
 	let lru: LRU;
