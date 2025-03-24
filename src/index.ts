@@ -18,21 +18,22 @@
 ' ------------------------------------------------------------
 */
 
-export * from './types';
 export * from '../config';
+export * from './types';
+
 export * from './base';
+export * as Base from './base';
+
+export { default as cache } from './cache';
+
 export * from './encrypt';
 export * from './files';
-export * from './formValidate';
-export { default as formValidate } from './formValidate';
-export { default as LRU } from './LRU';
-export { default as waterMark } from './waterMark';
-export { default as eventBus } from './eventBus';
+
 export * from './http';
 export * from './console';
+export { default as eventBus } from './eventBus';
+export * from './formValidate';
 
-// /** 全局控制台输出操作 */
-// import './console';
-
-// /** 全局事件总线 */
-// import './eventBus';
+export { default as LRU } from './LRU';
+export { default as formValidate } from './formValidate';
+export { default as waterMark } from './waterMark';

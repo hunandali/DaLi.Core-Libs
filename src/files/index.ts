@@ -27,8 +27,10 @@ export { exportJson as excelJson, exportTable as excelTable } from './excel';
 export { download as jsonDownload } from './json';
 
 /** 二维码对象 */
-import QR from './qr.js';
 import type { IQR } from './index.d';
+
+import _QR from './qr.js';
+export const QR = _QR;
 
 /**
  * 创建 QR 对象,后续需要进一步处理
