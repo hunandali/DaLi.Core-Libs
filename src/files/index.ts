@@ -27,9 +27,9 @@ export { exportJson as excelJson, exportTable as excelTable } from './excel';
 export { download as jsonDownload } from './json';
 
 /** 二维码对象 */
-import type { IQR } from './index.d';
+import { IQR } from './qr.d';
 
-import _QR from './qr.js';
+import _QR from './qr';
 export const QR = _QR;
 
 /**
@@ -54,12 +54,12 @@ export function QRObject(params: IQR) {
 
 	/** 纠错等级,默认为H */
 	params.level === 'L' || params.level == 1
-		? (qr.errorCorrectLevel = QR.errorCorrectLevel.L)
+		? (qr.errorCorrectLevel = 1)
 		: params.level === 'Q' || params.level == 3
-		? (qr.errorCorrectLevel = QR.errorCorrectLevel.Q)
+		? (qr.errorCorrectLevel = 3)
 		: params.level === 'M' || params.level == 0
-		? (qr.errorCorrectLevel = QR.errorCorrectLevel.M)
-		: (qr.errorCorrectLevel = QR.errorCorrectLevel.H);
+		? (qr.errorCorrectLevel = 0)
+		: (qr.errorCorrectLevel = 2);
 
 	params.color && (qr.foregroundColor = params.color);
 	params.backColor && (qr.backgroundColor = params.backColor);
