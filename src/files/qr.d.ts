@@ -27,7 +27,7 @@ export interface IQR {
 	size?: number;
 
 	/** 纠错级别 */
-	level?: 'L' | 'M' | 'Q' | 'H' | 1 | 0 | 3 | 2;
+	level?: QRErrorCorrectLevel;
 
 	/** 二维码颜色 */
 	color?: string;
@@ -40,7 +40,7 @@ export interface IQR {
 }
 
 /** 二维码纠错等级枚举 */
-declare enum QRErrorCorrectLevel {
+export enum QRErrorCorrectLevel {
 	/** 低级别纠错，约可纠错7%的数据码字 */
 	L = 1,
 	/** 默认值 */
@@ -77,7 +77,7 @@ declare class QR8bitByte {
  * QRCode 类 - 二维码类
  * 用于生成和管理二维码
  */
-declare class QRCode {
+export declare class QRCode {
 	static PAD0: number;
 	static PAD1: number;
 	typeNumber: number;
@@ -243,7 +243,7 @@ declare class QRBitBuffer {
 }
 
 /** 画布上下文接口 */
-interface CanvasContext extends CanvasRenderingContext2D {
+export interface CanvasContext extends CanvasRenderingContext2D {
 	setFillStyle?: (color: string) => void;
 	setFontSize?: (fontSize: number) => void;
 	setTextAlign?: (align: CanvasTextAlign) => void;
@@ -254,7 +254,7 @@ interface CanvasContext extends CanvasRenderingContext2D {
 	draw?: (reserve?: boolean, callback?: () => void) => void;
 }
 /** 绘制模块接口 */
-interface DrawModule {
+export interface DrawModule {
 	name: string;
 	type: string;
 	x: number;
@@ -264,7 +264,7 @@ interface DrawModule {
 	[key: string]: any;
 }
 /** 二维码模块单元格接口定义 */
-interface QRModule {
+export interface QRModule {
 	/** 模块类型数组 */
 	type: string[];
 	/** 模块颜色 */
@@ -298,8 +298,9 @@ interface QRModule {
 	/** 左内边距 */
 	paddingLeft: number;
 }
+
 /** 二维码实例配置接口 */
-interface QRCodeOptions {
+export interface QRCodeOptions {
 	/** 二维码文本内容，优先于 data */
 	text?: string;
 	/** 二维码对应内容 */
@@ -391,7 +392,7 @@ interface QRCodeOptions {
  * - options: _实例属性_
  * - isInstance: _是否来自实例注册，`false` 表示为通过 `UQRCode.use` 全局注册，`true` 表示仅当前实例注册_
  */
-type QRPlugin = (instance: UQRCode, options: QRCodeOptions, isInstance: boolean) => void;
+export type QRPlugin = (instance: UQRCode, options: QRCodeOptions, isInstance: boolean) => void;
 
 /**
  * 二维码生成器类
