@@ -594,11 +594,7 @@ function b(o, e) {
 		Object.defineProperties(this, {
 			data: {
 				get() {
-					if ('' === r || void 0 === r)
-						throw (
-							(console.error('[uQRCode]: data must be set!'),
-							new b.Error('data must be set!'))
-						);
+					if ('' === r || void 0 === r) throw new b.Error('二维码数据未设置');
 					return r;
 				},
 				set(o) {
@@ -853,13 +849,7 @@ function b(o, e) {
 			},
 			canvasContext: {
 				get() {
-					if (void 0 === M)
-						throw (
-							(console.error(
-								'[uQRCode]: use drawCanvas, you need to set the canvasContext!'
-							),
-							new b.Error('use drawCanvas, you need to set the canvasContext!'))
-						);
+					if (void 0 === M) throw new b.Error('画布无效，请设置有效画布');
 					return M;
 				},
 				set(o) {
@@ -1106,7 +1096,9 @@ function b(o, e) {
 	(e.errorCorrectLevel = t),
 	(b.errorCorrectLevel = e.errorCorrectLevel),
 	(b.Error = function (o) {
-		this.errMsg = '[uQRCode]: ' + o;
+		o = `[二维码]：${o}`;
+		console.error(o);
+		this.errMsg = o;
 	}),
 	(b.plugins = []),
 	(b.use = function (o) {
@@ -1430,13 +1422,7 @@ function b(o, e) {
 			margin: u,
 			useDynamicSize: s
 		} = this;
-		if (o === r)
-			throw (
-				(console.error(
-					'[uQRCode]: foregroundColor and backgroundColor cannot be the same!'
-				),
-				new b.Error('foregroundColor and backgroundColor cannot be the same!'))
-			);
+		if (o === r) throw new b.Error('前景与背景不能使用相同颜色！');
 		a &&
 			(n = (function (o) {
 				o = o.toString();
@@ -1983,11 +1969,7 @@ function b(o, e) {
 			drawReserve: s,
 			margin: g
 		} = this;
-		if (!e)
-			return (
-				console.error('[uQRCode]: please execute the make method first!'),
-				Promise.reject(new b.Error('please execute the make method first!'))
-			);
+		if (!e) this.make();
 		let l = this.getDrawModules(),
 			h = async (e, t) => {
 				try {
@@ -2029,10 +2011,7 @@ function b(o, e) {
 										var h = await this.loadImage(n.imageSrc);
 										r.drawImage(h, a, d, u, g);
 									} catch (o) {
-										throw (
-											(console.error(`[uQRCode]: ${n.mappingName} invalid!`),
-											new b.Error(`${n.mappingName} invalid!`))
-										);
+										throw new b.Error(`${n.mappingName} 无效！`);
 									}
 								} else if ('foregroundImage' === n.name) {
 									(a = Math.round(n.x)),
@@ -2103,10 +2082,7 @@ function b(o, e) {
 										h = await this.loadImage(n.imageSrc);
 										r.drawImage(h, a, d, u, g);
 									} catch (o) {
-										throw (
-											(console.error(`[uQRCode]: ${n.mappingName} invalid!`),
-											new b.Error(`${n.mappingName} invalid!`))
-										);
+										throw new b.Error(`${n.mappingName} 无效！`);
 									}
 								}
 						}

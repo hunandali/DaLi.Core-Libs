@@ -18,7 +18,7 @@
 ' ------------------------------------------------------------
 */
 
-import { hasObject } from '../base';
+import { hasObject, hasString } from '../base';
 
 /** excel 相关操作 */
 export { exportJson as excelJson, exportTable as excelTable } from './excel';
@@ -31,13 +31,14 @@ import { IQR, QRErrorCorrectLevel } from './qr.d';
 export * from './qr.d';
 
 import _QR from './qr';
+import { LOGO } from '../../config';
 export const QR = _QR;
 
 /**
  * 创建 QR 对象,后续需要进一步处理
  * 具体请参考 https://uqrcode.cn/doc/
  */
-export function QRObject(params: IQR) {
+export async function QRObject(params: IQR) {
 	/** 无效参数 */
 	if (!params || !hasObject(params) || !params.code) return;
 
@@ -66,22 +67,37 @@ export function QRObject(params: IQR) {
 	params.color && (qr.foregroundColor = params.color);
 	params.backColor && (qr.backgroundColor = params.backColor);
 
-	// LOGO
-	let logo = '';
-	if (!!params.logo) {
-		logo = params.logo.toString();
-
-		// xxx.png 或 data:image/svg+xml;
-		if (logo.indexOf('.') < 1 && logo.indexOf(':') < 1) logo = '/logo.png';
+	/**
+	 * **LOGO 处理**
+	 * 1. false 不显示
+	 * 2. true 显示默认 LOGO
+	 * 3. 图片地址尝试加载并转换成 base64
+	 * 4. base64 图片地址，直接显示
+	 * 5. 其他情况，不显示
+	 */
+	let logo = params.logo;
+	if (logo === true) {
+		logo = LOGO;
+	} else if (!logo) {
+		logo = false;
+	} else {
+		// base64 图片数据，直接显示
+		// 文件则远程读取
+		if (!logo.startsWith('data:image') && logo.indexOf('.') > 0) {
+			logo = await remoteFileToBase64(logo, true);
+		}
 	}
 
-	// 设置二维码前景图，可以是路径
-	// @ts-ignore
-	logo && (qr.foregroundImageSrc = logo);
+	// logo 存在内容
+	if (logo) {
+		// 如果容错率太低，可能二维码无法识别
+		if (qr.errorCorrectLevel === QRErrorCorrectLevel.L) {
+			qr.errorCorrectLevel = QRErrorCorrectLevel.M;
+		}
 
-	// logo &&
-	// 	(qr.foregroundImageSrc =
-	// 		'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAyNCAxMDI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMjQiIGhlaWdodD0iMTAyNCIgc3R5bGU9ImJhY2tncm91bmQ6ICNGRkZGRkYiPjxwYXRoIGQ9Ik03ODguNzUwMDggMzkwLjcwMzM2TDcwOS41ODg0OCA0NC43NjY3MmwtOC4wNzU1MiA0Ljg4OTYtNTY0LjYzMzYgMzQxLjkxODcyIDMyMi42NzM5MiA1ODYuMzM0NzIgMjI1LjUzODU2LTI0Ny4zMzU2OGgyNC44MDM4NGwtMjYyLjcwNzIgMjkzLjQyNDY0TDcyLjM3ODg4IDM3NC44MDk2IDcyMS41NjkyOCAwbDg1LjgxODg4IDM5MC43MDMzNmgtMTguNjM2OHogbS02MjYuODU5NTIgNy4zNjUxMkw3MDQuNjU2NjQgNjMuMTc1NjhsNzYuMjIxNDQgMzI3LjUyNzY4aC0yMi4wMDcwNEw2OTEuMjU4ODggMTEzLjExNDg4IDIyNS43MzE4NCA0MTQuNjEzNzZsMjUyLjYyMDggNDkzLjA3Nzc2IDE2Ni4yODk5Mi0xNzcuMTE3NDRoMjkuODcwMDhjLTg2LjQ0NjA4IDk0LjA3NDg4LTE4My41ODUyOCAxOTkuNzgyNC0yMDkuODg4IDIyOC40MDgzMkwxNjEuODkwNTYgMzk4LjA2ODQ4eiIgZmlsbD0iIzAwNUVBNyI+PC9wYXRoPjxwYXRoIGQ9Ik01NDYuOTUwNCA2OTMuNjcwNGwtNjguOTg2ODgtMjI0LjEwNDk2IDYuMjM2MTYgMC4xMzA1NiA0MzYuMDUxMiA5LjExMzYgOS4wNjYyNCA0NDIuMTEwNzItMjEwLjc2NDgtNjcuMDIyMDgtMTQuMTk1MiA4LjE5NTg0IDI0Ny4yNjI3MiA4MS4xMTM2VjQ0Ny45MDRINDU2LjMxODcybDc5Ljk2OTI4IDI1MS45MjE5MiAxMC42NjI0LTYuMTU2OHogbTM2MS4xMzQwOC0yMDIuODg1MTJjLTc3LjE4MDE2LTIuMjU1MzYtNDIxLjIxNzI4LTEyLjMxNjE2LTQyMS4yMTcyOC0xMi4zMTYxNmw2NC41OTEzNiAyMTIuNTk3NzYgMTIuNTkxMzYtNy4yNzE2OC01My4wMTYzMi0xODEuMTc2MzIgMzY1Ljk4NTI4IDE4LjcyNzY4IDE4LjM0MzY4IDM2NS42MDY0LTE1My42Njc4NC00Ni40MTY2NC0xNy4wOTE4NCA5Ljg2ODggMTk1LjU1ODQgNjEuMzU4MDhzLTkuOTUyLTM0Ni44NDE2LTEyLjA3NjgtNDIwLjk3NzkyeiIgZmlsbD0iI0YwODMyMSI+PC9wYXRoPjwvc3ZnPg==');
+		// 设置二维码前景图
+		qr.foregroundImageSrc = logo;
+	}
 
 	// 调用制作二维码方法
 	qr.make();
@@ -93,8 +109,8 @@ export function QRObject(params: IQR) {
  * 创建二维码图片
  * 具体请参考 https://uqrcode.cn/doc/
  */
-export function QRCreate(params: IQR) {
-	const qr = QRObject(params);
+export async function QRCreate(params: IQR) {
+	const qr = await QRObject(params);
 	if (!qr) return '';
 
 	// 获取绘制的模块
@@ -136,4 +152,40 @@ export function QRCreate(params: IQR) {
 	svg.push('</svg>');
 
 	return svg.join('');
+}
+
+/**
+ * 远程读取文件并转换成 base64
+ * @param url 文件地址
+ * @param onlyImage 是否只处理图片格式，默认 true
+ */
+export async function remoteFileToBase64(url: string, onlyImage = true): Promise<string> {
+	return new Promise(async (resolve, reject) => {
+		await fetch(url)
+			.then((res) => res.blob())
+			.then((blob) => {
+				const reader = new FileReader();
+				reader.onload = () => {
+					if (hasString(reader.result)) {
+						const data = reader.result as string;
+						if (data.startsWith('data:')) {
+							if (!onlyImage && data.startsWith('data:image')) {
+								return resolve(data);
+							}
+						}
+					}
+
+					reject(new Error('文件无效或者获取失败'));
+				};
+
+				reader.onerror = () => {
+					reject(reader.error || new Error('文件转换成 base64 格式失败'));
+				};
+
+				reader.readAsDataURL(blob);
+			})
+			.catch(() => {
+				reject('无法读取远程文件');
+			});
+	});
 }

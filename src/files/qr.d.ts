@@ -398,7 +398,7 @@ export type QRPlugin = (instance: UQRCode, options: QRCodeOptions, isInstance: b
  * 二维码生成器类
  * 用于生成和绘制二维码，支持自定义样式和图片
  */
-declare class UQRCode {
+export default class UQRCode {
 	/** 当前错误消息 */
 	errorMessage: string;
 	/** 二维码内容 */
@@ -576,5 +576,3 @@ declare class UQRCode {
 	 */
 	register(plugin: QRPlugin): void;
 }
-
-export default UQRCode;
