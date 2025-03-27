@@ -18,7 +18,7 @@
 ' ------------------------------------------------------------
 */
 
-import { Dict } from '../types';
+import { Dict, MaybePromise } from '../types';
 import {
 	$Fetch,
 	FetchContext,
@@ -29,9 +29,6 @@ import {
 	MappedResponseType,
 	ResponseMap
 } from 'ofetch';
-
-/** 扩展类型，用于处理异步或同步操作 */
-type MaybePromise<T> = T | Promise<T>;
 
 /** 全局变量 */
 declare global {
@@ -220,7 +217,7 @@ export interface $Http extends $Fetch {
 	 * @param api api 数据
 	 * @returns api 执行结果
 	 */
-	api: (api: ApiData) => Promise<void | ApiResult>;
+	api: (api: IApi) => Promise<void | IApiResult>;
 }
 
 /**
@@ -350,7 +347,7 @@ export interface HttpResponseMap {
 }
 
 /** Api 请求  */
-export interface ApiBaseData {
+export interface IApiBase {
 	/** api 地址 */
 	url?: string;
 
@@ -370,11 +367,11 @@ export interface ApiBaseData {
 	keepalive?: boolean;
 
 	/** 执行后处理, 处理过程位于 apis.$execute */
-	complete?: (options: ApiResult) => MaybePromise<ApiResult | undefined | void>;
+	complete?: (options: IApiResult) => MaybePromise<IApiResult | undefined | void>;
 }
 
 /** Api 请求  */
-export interface ApiData extends ApiBaseData {
+export interface IApi extends IApiBase {
 	/** 成功后操作 */
 	success?: (value: any) => void;
 
@@ -383,7 +380,7 @@ export interface ApiData extends ApiBaseData {
 }
 
 /** api 执行结果 */
-export interface ApiResult {
+export interface IApiResult {
 	/** 是否执行成功 */
 	succ: boolean;
 
@@ -391,5 +388,5 @@ export interface ApiResult {
 	value: any;
 
 	/** 当前操作的 api */
-	api: ApiData;
+	api: IApi;
 }

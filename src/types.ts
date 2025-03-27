@@ -41,6 +41,9 @@ export type AsyncAction = (...args: any[]) => Promise<void>;
 /** 可空类型 */
 export type Nullable<T> = T | null | undefined;
 
+/** 扩展类型，用于处理异步或同步操作 */
+export type MaybePromise<T> = T | Promise<T>;
+
 /////////////////////////////////////////////////////////////////
 
 /** 列表项目结构 */

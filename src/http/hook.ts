@@ -33,8 +33,8 @@ import {
 } from './utils';
 import {
 	$Http,
-	ApiData,
-	ApiResult,
+	IApi,
+	IApiResult,
 	CacheValue,
 	HttpCacheOptions,
 	HttpConfig,
@@ -583,7 +583,7 @@ export async function HttpDownload(
 }
 
 /** 标准 API　处理, 不验证是否已经授权, 强制通过授权 */
-export async function HttpApi(api: ApiData, http: $Http = $http) {
+export async function HttpApi(api: IApi, http: $Http = $http) {
 	/** 无效参数 */
 	if (!hasObjectName(api, 'url')) return;
 
@@ -640,7 +640,7 @@ export async function HttpApi(api: ApiData, http: $Http = $http) {
 
 	return isFn(api.complete)
 		? await api.complete({ succ, value, api })
-		: ({ succ, value, api } as ApiResult);
+		: ({ succ, value, api } as IApiResult);
 }
 
 // ==============================================

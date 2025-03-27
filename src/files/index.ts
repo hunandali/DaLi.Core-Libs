@@ -169,7 +169,7 @@ export async function remoteFileToBase64(url: string, onlyImage = true): Promise
 					if (hasString(reader.result)) {
 						const data = reader.result as string;
 						if (data.startsWith('data:')) {
-							if (!onlyImage && data.startsWith('data:image')) {
+							if (!onlyImage || data.startsWith('data:image')) {
 								return resolve(data);
 							}
 						}
