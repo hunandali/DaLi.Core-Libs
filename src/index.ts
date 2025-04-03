@@ -34,6 +34,9 @@ export * from './console';
 export { default as eventBus } from './eventBus';
 export * from './formValidate';
 
+export { default as Cookies } from './cookies';
+export * from './cookies';
+
 export { default as LRU } from './LRU';
 export { default as formValidate } from './formValidate';
 export { default as waterMark } from './waterMark';

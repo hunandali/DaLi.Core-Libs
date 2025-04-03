@@ -46,13 +46,7 @@ import {
 	HttpRuntime,
 	ResponseType
 } from './types';
-import {
-	createFetch,
-	createFetchError,
-	CreateFetchOptions,
-	FetchError,
-	MappedResponseType
-} from 'ofetch';
+import { createFetch, createFetchError, CreateFetchOptions, MappedResponseType } from 'ofetch';
 import { SERVERMODE } from '../../config';
 import { Dict } from '../types';
 import LRU from '../LRU';
