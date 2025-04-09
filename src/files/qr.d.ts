@@ -35,8 +35,14 @@ export interface IQR {
 	/** 二维码背景色 */
 	backColor?: string;
 
+	/** Logo 背景色 */
+	logoColor?: string;
+
 	/** 是否显示 logo, 或者路径 */
 	logo?: boolean | string;
+
+	/** 颜色反向，前后背景浅色交换 */
+	reserve?: boolean;
 }
 
 /** 二维码纠错等级枚举 */
