@@ -30,7 +30,7 @@ import { hasString, isNumber } from './type';
  */
 export const template = (str: string, data: Record<string, any>, regex = /\{(.+?)\}/g) => {
 	return Array.from(str.matchAll(regex)).reduce((acc, match) => {
-		const key = trim(match[1]);
+		const key = trimEx(match[1]);
 		return acc.replace(match[0], data[key] || '');
 	}, str);
 };
@@ -45,7 +45,7 @@ export const template = (str: string, data: Record<string, any>, regex = /\{(.+?
  * trim('/repos/:owner/:repo/', '/')		// => 'repos/:owner/:repo'
  * trim('222222__hello__1111111', '12_') 	// => 'hello'
  */
-export const trim = (str: string | null | undefined, charsToTrim: string = '\b\f\n\r\t\v　 ') => {
+export const trimEx = (str: string | null | undefined, charsToTrim: string = '\b\f\n\r\t\v　 ') => {
 	if (!str) return '';
 	const toTrim = charsToTrim.replace(/[\W]{1}/g, '\\$&');
 	const regex = new RegExp(`^[${toTrim}]+|[${toTrim}]+$`, 'g');
@@ -63,7 +63,7 @@ export const string2Value = (value: string, splitter?: string | RegExp): any | a
 	// 需要分割成数组
 	if (splitter) return value.split(splitter)?.map((arg) => string2Value(arg));
 
-	value = trim(value);
+	value = trimEx(value);
 
 	switch (value) {
 		case 'undefined':
@@ -164,4 +164,107 @@ export function htmlEncode(str: string): string {
 		.replace(/"/g, '&quot;')
 		.replace(/'/g, '&#39;')
 		.replace(/ /g, '&nbsp;');
+}
+
+/**
+ *	判断原始文本中是否存在目标文本（使用 * 作为通配符，匹配任意字符）
+ *	1. *xxx 匹配以 xxx 结尾的文本
+ *	2. xxx* 匹配以 xxx 开头的文本
+ *	3. *xxx* 匹配包含 xxx 的文本
+ *	4. xxx*yyy 匹配以 xxx 开头且以 yyy 结尾的文本
+ *	5. xxx 匹配完全匹配的文本
+ *	6. 使用括号包裹的文本会是为正则表达式匹配
+
+ * @param source 		原始文本
+ * @param target 		目标文本
+ * @param ingoreCase 	是否忽略大小写，默认忽略
+ */
+export function stringIncludes(source: string, target: string, ingoreCase = true) {
+	if (source === target || target === '*') return true;
+	if (!hasString(source) || !hasString(target)) return false;
+
+	// 处理大小写
+	const sourceText = ingoreCase ? source.toLowerCase() : source;
+	const targetText = ingoreCase ? target.toLowerCase() : target;
+
+	// 判断是否为完全匹配
+	if (sourceText === targetText) return true;
+
+	// 1. *xxx 匹配以 xxx 结尾的文本
+	if (targetText.endsWith('*') && !targetText.endsWith('*')) {
+		const prefix = targetText.substring(0, targetText.length - 1);
+		return sourceText.startsWith(prefix);
+	}
+
+	// 2. xxx* 匹配以 xxx 开头的文本
+	if (targetText.startsWith('*') && !targetText.startsWith('*')) {
+		const suffix = targetText.substring(1);
+		return sourceText.endsWith(suffix);
+	}
+
+	// 3. *xxx* 匹配包含 xxx 的文本
+	if (targetText.startsWith('*') && targetText.endsWith('*')) {
+		const substr = targetText.substring(1, targetText.length - 1);
+		return sourceText.includes(substr);
+	}
+
+	// 4. xxx*yyy 匹配以 xxx 开头且以 yyy 结尾的文本
+	if (!targetText.startsWith('*') && !targetText.endsWith('*') && targetText.includes('*')) {
+		const parts = targetText.split('*');
+
+		// 以第一个开头，以最后一个结尾，其他部分则必须按顺序包含
+		const prefix = parts[0];
+		const suffix = parts[parts.length - 1];
+		if (!sourceText.startsWith(prefix) || !sourceText.endsWith(suffix)) return false;
+
+		// 对于 aaa*bbb*ccc*dddd 检查中间部分是否按顺序包含
+		const middle = parts.filter((x) => !!x).slice(1, parts.length - 2);
+		if (middle.length < 1) return true;
+
+		let index = prefix.length;
+		for (const part of middle) {
+			index = sourceText.indexOf(part, index);
+			if (index === -1) return false;
+			index += part.length;
+		}
+		return true;
+	}
+
+	// 5. 括号正则匹配
+	if (targetText.startsWith('(') && targetText.endsWith(')')) {
+		try {
+			const regexStr = targetText.substring(1, targetText.length - 2);
+			const regex = new RegExp(regexStr, ingoreCase ? 'i' : '');
+			return regex.test(sourceText);
+		} catch (e) {}
+	}
+
+	// 处理通配符情况
+	if (targetText.includes('*')) {
+		// 转义正则表达式特殊字符
+		const escapeRegExp = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+		// 将通配符转换为正则表达式
+		const regexParts = targetText.split('*').map(escapeRegExp);
+		let regexStr = '';
+
+		if (targetText.startsWith('*') && targetText.endsWith('*')) {
+			// *xxx* 匹配包含 xxx 的文本
+			regexStr = regexParts.filter(Boolean).join('.*');
+		} else if (targetText.startsWith('*')) {
+			// *xxx 匹配以 xxx 结尾的文本
+			regexStr = `.*${regexParts[regexParts.length - 1]}$`;
+		} else if (targetText.endsWith('*')) {
+			// xxx* 匹配以 xxx 开头的文本
+			regexStr = `^${regexParts[0]}.*`;
+		} else {
+			// xxx*yyy 匹配以 xxx 开头且以 yyy 结尾的文本
+			regexStr = `^${regexParts.join('.*')}$`;
+		}
+
+		const regex = new RegExp(regexStr, ingoreCase ? 'i' : '');
+		return regex.test(sourceText);
+	}
+
+	return false;
 }

@@ -69,7 +69,7 @@ export async function QRObject(params: IQR) {
 
 	qr.foregroundColor = params.reserve ? params.backColor : params.color;
 	qr.backgroundColor = params.reserve ? params.color : params.backColor;
-	qr.foregroundImageBackgroundColor = params.logoColor || params.backColor;
+	// qr.foregroundImageBackgroundColor = params.logoColor || params.backColor;
 
 	/**
 	 * **LOGO 处理**

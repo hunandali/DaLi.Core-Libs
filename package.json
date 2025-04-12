@@ -1,7 +1,7 @@
 {
 	"name": "@da.li/core-libs",
 	"title": "大沥网络函数库",
-	"version": "1.25.410",
+	"version": "1.25.412",
 	"description": "大沥网络公共函数库，提供了一系列常用的工具函数和组件。",
 	"license": "MIT",
 	"company": "Hunan DaLi Network Technology Co., Ltd.",

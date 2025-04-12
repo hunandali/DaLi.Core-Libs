@@ -72,7 +72,8 @@ export {
 	stringClear,
 	stringCut,
 	template,
-	trim
+	trimEx,
+	stringIncludes
 } from './string';
 
 /** 数组及对象相关操作 */
