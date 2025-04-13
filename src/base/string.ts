@@ -146,11 +146,12 @@ export function htmlClear(str: string): string {
 
 /**
  * html 安全化处理，去除危险标记，方式 xss 攻击
- * @param html 	待处理的 html
+ * @param dirty 	待处理的 html 或者节点
+ * @param config 	配置选项，不设置则默认仅处理 html
  * @returns		处理后的 html
  */
-export function htmlSafe(html: string) {
-	return DOMPurify.sanitize(html);
+export function htmlSafe(dirty: string | Node, config?: DOMPurify.Config) {
+	return DOMPurify.sanitize(dirty, config || { USE_PROFILES: { html: true } });
 }
 
 /** 编码 HTML 符号*/
