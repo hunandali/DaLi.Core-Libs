@@ -24,7 +24,7 @@ import { hasObject, isArray, isFn } from './type';
 import type { Dict } from '../types';
 
 /** 模块加载属性 */
-declare type moduleOptions = {
+export type moduleOptions = {
 	/** 是否使用全路径做为 key，否则仅保留文件名作为 key */
 	fullPath?: boolean;
 
@@ -41,7 +41,7 @@ declare type moduleOptions = {
  * @returns 		返回处理后的模块对象
  */
 function modulesLoad(
-	modules: Dict,
+	modules: Dict | Dict[],
 	options: moduleOptions = { fullPath: false, incIndex: false }
 ): Dict | undefined {
 	if (!modules) return;
@@ -101,7 +101,7 @@ function modulesLoad(
  * @returns 		返回模块对象
  */
 export async function modulesUpdateSync(
-	modules: Dict,
+	modules: Dict | Dict[],
 	options: moduleOptions = { fullPath: false, incIndex: false },
 	...args: any
 ): Promise<Dict> {
@@ -153,7 +153,7 @@ export async function modulesUpdateSync(
  * @returns 		返回模块对象
  */
 export function modulesUpdate(
-	modules: Dict,
+	modules: Dict | Dict[],
 	options: moduleOptions = { fullPath: false, incIndex: false },
 	...args: any
 ): Dict {

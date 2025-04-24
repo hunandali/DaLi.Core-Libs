@@ -67,13 +67,22 @@ export function rnd(): string {
 /**
  * 将任何可以转换成时间的对象，按条件格式化成字符串
  * 所有早于 2000 年的时间都无效
- * @param date 		用于格式化的时间
+ * @param date 		用于格式化的时间（字符串支持:now,yesterday,tomorrow)
  * @param format 	格式。支持：YYYY MM DD HH mm ss / desc 间隔描述
  */
 export const dateFormat = (date?: any, format: string = 'YYYY-MM-DD') => {
 	if (isEmpty(date)) return '';
 
-	const day = dayjs(date);
+	if (isString(date)) date = date.toLowerCase();
+
+	const day =
+		date === 'now'
+			? dayjs()
+			: date === 'yesterday'
+			? dayjs().subtract(1, 'day')
+			: date === 'tomorrow'
+			? dayjs().add(1, 'day')
+			: dayjs(date);
 
 	if (!day.isValid()) return '✖';
 	if (day.isBefore('2000-01-01', 'day')) return '➖';
