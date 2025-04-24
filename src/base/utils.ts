@@ -65,6 +65,19 @@ export function rnd(): string {
 }
 
 /**
+ * 将任何可以转换成时间的对象，使用 dayjs 包装
+ * @param date 	用于包装的时间（字符串支持:now,yesterday,tomorrow)
+ */
+export const date = (date?: any) =>
+	date === 'now'
+		? dayjs()
+		: date === 'yesterday'
+		? dayjs().subtract(1, 'day')
+		: date === 'tomorrow'
+		? dayjs().add(1, 'day')
+		: dayjs(date);
+
+/**
  * 将任何可以转换成时间的对象，按条件格式化成字符串
  * 所有早于 2000 年的时间都无效
  * @param date 		用于格式化的时间（字符串支持:now,yesterday,tomorrow)

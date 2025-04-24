@@ -24,6 +24,8 @@ export * from './types';
 export * from './base';
 export * as Base from './base';
 
+export * from './task';
+
 export { default as cache } from './cache';
 
 export * from './encrypt';
