@@ -283,7 +283,7 @@ export interface HttpConfig {
 	 * @param options 	其他相关请求参数
 	 * @param config  相关配置数据
 	 */
-	sign?: (url: string, options: HttpOptions, config: HttpRuntime) => MaybePromise<void>;
+	sign?: (url: string, options: ResolvedHttpOptions, config: HttpRuntime) => MaybePromise<void>;
 
 	/**
 	 * 登录验证。
@@ -292,7 +292,11 @@ export interface HttpConfig {
 	 * @param options 其他相关请求参数
 	 * @param config  相关配置数据
 	 */
-	login?: (request: HttpRequest, options: HttpOptions, config: HttpRuntime) => Promise<boolean>;
+	login?: (
+		request: HttpRequest,
+		options: ResolvedHttpOptions,
+		config: HttpRuntime
+	) => Promise<boolean>;
 
 	/**
 	 * 错误处理。

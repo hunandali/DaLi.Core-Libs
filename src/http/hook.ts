@@ -120,7 +120,7 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
 	// context.options.method = context.options.method ? context.options.method.toUpperCase() : 'GET';
 
 	// 初始化 Headers 对象
-	if (!context.options.headers) context.options.headers = new Headers();
+	if (!options.headers) options.headers = new Headers();
 
 	// 更新请求
 	const data = updateReqest(request, options);
