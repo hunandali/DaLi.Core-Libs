@@ -22,6 +22,9 @@ import { $Global } from '../base';
 import { createHttp } from './hook';
 
 // 创建自定义实例
+export const createHttpInstance = createHttp;
+
+// 全局实例
 export const http = createHttp();
 export * from './types';
 

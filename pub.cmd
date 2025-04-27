@@ -12,4 +12,4 @@ if errorlevel 2 (
   exit /b 1
 )
 
-npm publish
+npm publish --access public
