@@ -23,7 +23,18 @@ import type { ChalkInstance } from 'chalk';
 
 /** 常用操作库 */
 import { SERVERMODE, DEBUG } from '../config';
-import { $Global, errorTrace, globalId, hasArray, isFn, isObject, isString } from './base';
+import {
+	$Global,
+	errorTrace,
+	globalId,
+	hasArray,
+	hasObject,
+	hasString,
+	isFn,
+	isObject,
+	isString,
+	template
+} from './base';
 import { parseFilename } from 'ufo';
 
 import type { Action } from './types';
@@ -62,6 +73,16 @@ export class consoleEcho {
 
 		// 获取信息位置
 		let source = chalk.reset.white(errorTrace(1, 1, ['$Global.echo', 'consoleEcho.']));
+
+		// 格式化内容
+		if (hasString(message) && hasArray(optionalParams)) {
+			for (let i = 0; i < optionalParams.length; i++) {
+				if (!hasObject(optionalParams[i])) continue;
+				if (message.includes('{') && message.includes('}')) break;
+
+				message = template(message, optionalParams[i]);
+			}
+		}
 
 		if (message) {
 			message = stringify(bgColor.bold, message) + '\n' + chalk.reset.white(source);
