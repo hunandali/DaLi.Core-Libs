@@ -217,7 +217,7 @@ export interface $Http extends $Fetch {
 	 * @param api api 数据
 	 * @returns api 执行结果
 	 */
-	api: (api: IApi) => Promise<void | IApiResult>;
+	api: (api: IApi, options?: HttpOptions) => Promise<void | IApiResult>;
 }
 
 /**

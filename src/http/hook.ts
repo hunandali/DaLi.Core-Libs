@@ -104,7 +104,7 @@ export function createHttp(globalOptions?: CreateFetchOptions, globalConfig?: Ht
 	// 特殊请求
 	http.upload = (files, request, options) => HttpUpload(files, request, options, http);
 	http.download = (request, options) => HttpDownload(request, options, http);
-	http.api = (api) => HttpApi(api, http);
+	http.api = (api, options) => HttpApi(api, options, http);
 
 	// 记录对象
 	runtime.http = http;
@@ -577,7 +577,7 @@ export async function HttpDownload(
 }
 
 /** 标准 API　处理, 不验证是否已经授权, 强制通过授权 */
-export async function HttpApi(api: IApi, http: $Http = $http) {
+export async function HttpApi(api: IApi, options?: HttpOptions, http: $Http = $http) {
 	/** 无效参数 */
 	if (!hasObjectName(api, 'url')) return;
 
@@ -592,10 +592,9 @@ export async function HttpApi(api: IApi, http: $Http = $http) {
 	// const data = hasObject(api.data) ? { ...(api.data as Dict) } : {};
 
 	// 需要提交的参数
-	const options: HttpOptions = {
-		method: api.method,
-		headers: api.headers
-	};
+	!hasObject(options) && (options = {});
+	options.method = api.method;
+	options.headers = api.headers;
 
 	const isPayload = isPayloadMethod(api.method);
 	if (isPayload) {
