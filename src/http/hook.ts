@@ -22,7 +22,8 @@
 // #region 参数导入
 // ==============================================
 
-import { hasObject, hasObjectName, hasString, isFn, isString, sleep } from '../base';
+import chalk from 'chalk';
+import { hasObject, hasObjectName, hasString, isFn, isObject, isString, sleep } from '../base';
 import {
 	getResponseErrorMessage,
 	getToken,
@@ -47,9 +48,96 @@ import {
 	ResponseType
 } from './types';
 import { createFetch, createFetchError, CreateFetchOptions, MappedResponseType } from 'ofetch';
-import { SERVERMODE } from '../../config';
+import { DEBUG, SERVERMODE } from '../../config';
 import { Dict } from '../types';
 import LRU from '../LRU';
+
+// ==============================================
+// #endregion
+// ==============================================
+// #region 调试设置
+// ==============================================
+
+/** 调试信息 */
+export const HTTP_DEBUG = {
+	/**
+	 * 输出模式：是否开启调试信息输出
+	 * - false: 不输出
+	 * - true: 输出详细的 http 结果
+	 * - simple: 仅输出简单结果，及请求地址与方式，结果与参数不输出
+	 */
+	output: true as boolean | 'simple' | 'request' | 'response',
+
+	/** 仅调试环境才生效，正式环境不生效 */
+	debugOnly: true,
+
+	/** 是否输出参数使用提示 */
+	show: true
+};
+
+function debug(succ: boolean, title: string, context: HttpContext, config?: HttpConfig) {
+	if (HTTP_DEBUG.output === false) return;
+	if (HTTP_DEBUG.debugOnly && !DEBUG) return;
+
+	const space = chalk.reset(' '.repeat(4));
+	const outputs = [];
+	if (HTTP_DEBUG.show) {
+		HTTP_DEBUG.show = false;
+		outputs.push(chalk.bgYellow('#'.repeat(72)));
+		outputs.push('');
+		outputs.push(space + `${chalk.bgRedBright('调试模式')}`);
+		outputs.push('');
+		outputs.push(
+			space +
+				chalk.redBright('您已经开启了 HTTP 请求的调试模式，将输出 HTTP 请求的相关信息。')
+		);
+		outputs.push(
+			space + chalk.redBright('当前模式：') + chalk.bgGreen.white(` ${HTTP_DEBUG.output} `)
+		);
+
+		outputs.push(
+			space +
+				chalk.redBright('您可以通过修改 ') +
+				chalk.bgMagentaBright.white(' HTTP_DEBUG.output ') +
+				chalk.redBright(' 参数来调整调试信息输出的情况。')
+		);
+		outputs.push('');
+		outputs.push(chalk.bgYellow('#'.repeat(72)));
+		outputs.push('');
+	}
+
+	const color = succ ? chalk.greenBright : chalk.redBright;
+	const bgColor = succ ? chalk.bgGreen : chalk.bgRed;
+
+	// 输出标题
+	outputs.push(succ ? chalk.bgGreen(title) : chalk.bgRed(title));
+
+	// 输出请求信息
+	const { request, response } = context;
+	let url = response ? response.url : isObject(request) ? request.url : request;
+	let method = isObject(request) ? request.method : 'GET';
+	outputs.push(color(`[${method}] ${url}`));
+
+	if (HTTP_DEBUG.output !== 'simple') {
+		outputs.push('');
+		outputs.push(bgColor('[参数]'));
+		outputs.push(config);
+
+		outputs.push('');
+		outputs.push(bgColor('[请求]'));
+		outputs.push(request);
+	}
+
+	outputs.push('');
+	outputs.push(bgColor('[输出]'));
+	outputs.push(response);
+
+	// 输出
+	outputs.push('');
+	outputs.forEach((item) => {
+		console.log(item);
+	});
+}
 
 // ==============================================
 // #endregion
@@ -73,6 +161,7 @@ export function createHttp(globalOptions?: CreateFetchOptions, globalConfig?: Ht
 		...globalConfig,
 		reLogin: 0
 	};
+
 	const options: CreateFetchOptions = {
 		...globalOptions,
 		defaults: {
@@ -160,14 +249,15 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
  * 以下操作仅针对与公司内部接口数据的处理格式。
  */
 export function onResponse(context: HttpContext, config: HttpRuntime) {
-	if (!config.private) return;
+	debug(true, 'HTTP Response', context, config);
 
-	const map = config.privateMap || defaultMap;
+	if (!config.private) return;
 
 	const { response, options } = context;
 	if (!response) return;
 
 	// 请求标识
+	const map = config.privateMap || defaultMap;
 	response.traceId = hasObjectName(response._data, map.Id) ? response._data[map.Id] : '';
 
 	// 非正常请求不处理
@@ -200,12 +290,13 @@ export function onResponse(context: HttpContext, config: HttpRuntime) {
  * 以下操作仅针对与公司内部接口的错误友好提示。
  */
 export function onRequestError(context: HttpContext, config: HttpRuntime) {
+	debug(false, 'HTTP Request Error', context, config);
+
 	if (!config.private) return;
 
 	// 展示错误
 	const httpError = createFetchError(context) as HttpError;
 	const flag = showError(config, httpError);
-	con.error('Request Exception', httpError);
 
 	// 处理成功的错误，直接抛出异常，跳过后续处理
 	if (flag) throw httpError;
@@ -219,9 +310,9 @@ export function onRequestError(context: HttpContext, config: HttpRuntime) {
  * @returns         错误处理结果：true 表示已处理，false 表示未处理。
  */
 export async function onResponseError(context: HttpContext, config: HttpRuntime) {
-	if (!config.private) return;
+	debug(false, 'HTTP Response Error', context, config);
 
-	con.error('Response Exception', context, config);
+	if (!config.private) return;
 
 	/** 请求数据 */
 	const { response, error, options } = context;
@@ -307,7 +398,7 @@ export async function HttpCache<T = any, R extends ResponseType = 'json'>(
 
 	// 分析缓存数据
 	if (hasObjectName(cacheValue, 'succ')) {
-		con.information('HTTP 缓存', url, cacheTime, cacheKey, cacheValue);
+		con.information('HTTP 缓存命中', url, cacheTime, cacheKey, cacheValue);
 
 		if (cacheValue.succ) {
 			// 缓存成功
@@ -331,7 +422,6 @@ export async function HttpCache<T = any, R extends ResponseType = 'json'>(
 		.then((res) => {
 			succ = true;
 			result = res;
-			con.success('HTTP 请求', url, cacheTime, cacheKey, result);
 		})
 		.catch((res) => {
 			succ = false;
@@ -618,11 +708,11 @@ export async function HttpApi(api: IApi, options?: HttpOptions, http: $Http = $h
 		.then((res: any) => {
 			value = res;
 			succ = true;
-			con.success('API 请求成功', api.url, res);
+			con.success('API 请求成功', api.url);
 		})
 		.catch((res: any) => {
 			value = res;
-			con.error('API 请求异常', api.url, res);
+			con.error('API 请求异常', api.url);
 		});
 
 	if (succ) {

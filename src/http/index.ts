@@ -21,6 +21,9 @@
 import { $Global } from '../base';
 import { createHttp } from './hook';
 
+// 调试配置
+export { HTTP_DEBUG } from './hook';
+
 // 创建自定义实例
 export const createHttpInstance = createHttp;
 
