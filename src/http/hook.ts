@@ -29,7 +29,7 @@ import {
 	isPayloadMethod,
 	showError,
 	updateId,
-	updateReqest
+	updateRequest
 } from './utils';
 import {
 	$Http,
@@ -123,7 +123,7 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
 	if (!options.headers) options.headers = new Headers();
 
 	// 更新请求
-	const data = updateReqest(request, options);
+	const data = updateRequest(request, options);
 
 	// 验证权限
 	if (options.auth && isFn(config.auth) && !config.auth(data.url, options.method!, config)) {
@@ -691,82 +691,6 @@ async function RetryLogin(context: HttpContext, config: HttpRuntime) {
 		config.reLogin = 0;
 	}
 }
-
-// ==============================================
-// #endregion
-// ==============================================
-// #region 签名操作
-// ==============================================
-
-// /** 头部数据签名 */
-// async function sign(url, options) {
-// 	//  无效参数不处理;
-// 	if (!APP.API.ID || !isGuid(APP.API.KEY)) return;
-
-// 	// 无请求参数
-// 	if (!hasObject(options)) return;
-
-// 	const clientId = APP.API.ID;
-// 	const clientKey = APP.API.KEY;
-// 	const clientMode = APP.API.MODE;
-// 	const clientVer = appVersion;
-
-// 	// 浏览器指纹
-// 	!id && (id = await fingerprint());
-
-// 	// 地址对象
-// 	const Url = new URL(url);
-
-// 	// 时间戳
-// 	const ticks = Date.now();
-
-// 	// 随机码
-// 	const code = rnd();
-
-// 	// 提交参数
-// 	let data: Dict = options.body ? (options.body as Dict) : {};
-
-// 	// queryString
-// 	Url.searchParams?.size > 0 &&
-// 		Url.searchParams.forEach((value, key) => {
-// 			data[key] = value;
-// 		});
-
-// 	// 头部信息
-// 	const headers: Dict = {};
-
-// 	headers['x-client-id'] = clientId;
-// 	headers['x-client-app'] = appName;
-// 	headers['x-client-key'] = makeSign(
-// 		clientMode,
-// 		clientId,
-// 		clientKey,
-// 		appName,
-// 		options.method!,
-// 		Url.pathname,
-// 		data,
-// 		ticks,
-// 		code
-// 	);
-// 	headers['x-client-ver'] = clientVer;
-// 	headers['x-client-date'] = ticks;
-// 	headers['x-client-code'] = code;
-
-// 	// 附加扩展信息
-// 	const info: Dict = { id };
-// 	info.date = dayjs().format('YYYY-MM-DD HH:mm:ss Z');
-
-// 	headers['x-client-extend'] = base64Encode(JSON.stringify(info));
-
-// 	if (!SERVERMODE && !hasObjectName(options.headers, 'Authorization')) {
-// 		// 如果头部不包含验证信息，则添加 token 数据
-// 		const token = useAuth().token;
-// 		token && (headers['Authorization'] = 'Bearer ' + token);
-// 	}
-
-// 	// 将头部数据覆盖到原始头部中
-// 	options.headers = { ...options.headers, ...headers };
-// }
 
 // ==============================================
 // #endregion

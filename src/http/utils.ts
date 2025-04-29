@@ -86,7 +86,7 @@ export function getToken<C extends HttpContext = HttpContext>(
  * @param options		请求参数
  * @param appenQuery	是否追加 query 参数
  */
-export function updateReqest(request: HttpRequest, options: HttpOptions, appenQuery = false) {
+export function updateRequest(request: HttpRequest, options: HttpOptions, appenQuery = false) {
 	// 分析请求地址
 	const sourceUrl = isString(request) ? request : request?.url;
 	const baseUrl = options.baseURL;
