@@ -134,6 +134,7 @@ export { modulesUpdate, modulesUpdateSync } from './modules';
 
 /** 其他相关操作 */
 export {
+	date,
 	dateFormat,
 	dateLong,
 	debounce,

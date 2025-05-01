@@ -24,7 +24,7 @@ import { hasObject, hasString } from '../base';
 export { exportJson as excelJson, exportTable as excelTable } from './excel';
 
 /** Json 操作 */
-export { download as jsonDownload } from './json';
+export * from './json';
 
 /** 二维码对象 */
 import { IQR, QRErrorCorrectLevel } from './qr.d';

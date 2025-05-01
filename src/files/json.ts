@@ -25,7 +25,7 @@ import { toJSON } from '../base';
  * @param obj 		要下载的数据
  * @param fileName	文件名
  */
-export const downloadObject = (obj: any, fileName: string = '结果') => {
+export const objectDownload = (obj: any, fileName: string = '结果') => {
 	if (!obj) return;
 
 	const code = JSON.stringify(obj, null, '\t');
@@ -43,8 +43,8 @@ export const downloadObject = (obj: any, fileName: string = '结果') => {
  * @param json 		JSON 字符串
  * @param fileName	文件名
  */
-export const download = (json: string, fileName: string = '结果') => {
+export const jsonDownload = (json: string, fileName: string = '结果') => {
 	if (!json) return;
 
-	downloadObject(toJSON(json), fileName);
+	objectDownload(toJSON(json), fileName);
 };

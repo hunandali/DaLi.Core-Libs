@@ -126,6 +126,7 @@ dist
 .tern-port
 
 # Stores VSCode versions used for testing VSCode extensions
+.vscode/
 .vscode-test
 
 # yarn v2
@@ -135,3 +136,20 @@ dist
 .yarn/install-state.gz
 .pnp.*
 yarn.lock
+
+# Auto Import Types
+auto-imports.d.ts
+typed-router.d.ts
+components.d.ts
+
+# Astro
+.astro/
+
+# Trae
+.ai/
+.trae/
+
+# Other
+pnpm-lock.yaml
+package-lock.json
+demo
