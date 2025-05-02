@@ -69,7 +69,7 @@ export function rnd(): string {
  * @param date 	用于包装的时间（字符串支持:now,yesterday,tomorrow)
  */
 export const date = (date?: any) =>
-	date === 'now'
+	!date || date === 'now'
 		? dayjs()
 		: date === 'yesterday'
 		? dayjs().subtract(1, 'day')
@@ -89,7 +89,7 @@ export const dateFormat = (date?: any, format: string = 'YYYY-MM-DD') => {
 	if (isString(date)) date = date.toLowerCase();
 
 	const day =
-		date === 'now'
+		!date || date === 'now'
 			? dayjs()
 			: date === 'yesterday'
 			? dayjs().subtract(1, 'day')

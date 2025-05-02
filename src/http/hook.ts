@@ -33,7 +33,7 @@ import {
 	updateRequest
 } from './utils';
 import {
-	$Http,
+	HttpClient,
 	IApi,
 	IApiResult,
 	CacheValue,
@@ -176,24 +176,27 @@ export function createHttp(globalOptions?: CreateFetchOptions, globalConfig?: Ht
 		}
 	};
 
-	const http = createFetch(options) as $Http;
+	const http = createFetch(options) as HttpClient;
 	http.runtime = runtime;
 
 	// 带缓存请求实例
-	http.cache = (request, options) => HttpCache(request, options, http);
+	http.cache = (request, options) => HttpCache(http, request, options);
 
 	// 通用请求
-	http.GET = (url, params, options) => HttpFast(url, 'GET', params, options, http);
-	http.POST = (url, params, options) => HttpFast(url, 'POST', params, options, http);
-	http.PUT = (url, params, options) => HttpFast(url, 'PUT', params, options, http);
-	http.PATCH = (url, params, options) => HttpFast(url, 'PATCH', params, options, http);
-	http.DELETE = (url, params, options) => HttpFast(url, 'DELETE', params, options, http);
-	http.FORM = (url, params, options) => HttpFast(url, 'FORM', params, options, http);
+	http.GET = (url, params, options) => HttpFast(http, url, 'GET', params, options);
+	http.POST = (url, params, options) => HttpFast(http, url, 'POST', params, options);
+	http.PUT = (url, params, options) => HttpFast(http, url, 'PUT', params, options);
+	http.PATCH = (url, params, options) => HttpFast(http, url, 'PATCH', params, options);
+	http.DELETE = (url, params, options) => HttpFast(http, url, 'DELETE', params, options);
+	http.FORM = (url, params, options) => HttpFast(http, url, 'FORM', params, options);
 
 	// 特殊请求
-	http.upload = (files, request, options) => HttpUpload(files, request, options, http);
-	http.download = (request, options) => HttpDownload(request, options, http);
-	http.api = (api, options) => HttpApi(api, options, http);
+	http.upload = (files, request, options) => HttpUpload(http, files, request, options);
+	http.download = (request, options) => HttpDownload(http, request, options);
+	http.api = (api, options) => HttpApi(http, api, options);
+
+	// 重置登陆状态
+	http.resetLoginStatus = (state = 0) => (runtime.reLogin = state > 4 || state < 0 ? 0 : state);
 
 	// 记录对象
 	runtime.http = http;
@@ -213,6 +216,15 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
 
 	// 更新请求
 	const data = updateRequest(request, options);
+
+	// 更新最后状态
+	config.last = {
+		url: isString(request) ? request : request.url,
+		method: options.method || 'GET',
+		time: new Date(),
+		id: '',
+		status: 0
+	};
 
 	// 验证权限
 	if (options.auth && isFn(config.auth) && !config.auth(data.url, options.method!, config)) {
@@ -251,14 +263,24 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
 export function onResponse(context: HttpContext, config: HttpRuntime) {
 	debug(true, 'HTTP Response', context, config);
 
-	if (!config.private) return;
-
-	const { response, options } = context;
+	const { request, response, options } = context;
 	if (!response) return;
+
+	// 更新最后状态
+	config.last = {
+		url: isString(request) ? request : request.url,
+		method: options.method || 'GET',
+		time: new Date(),
+		id: '',
+		status: response.status
+	};
+
+	if (!config.private) return;
 
 	// 请求标识
 	const map = config.privateMap || defaultMap;
 	response.traceId = hasObjectName(response._data, map.Id) ? response._data[map.Id] : '';
+	config.last.id = response.traceId;
 
 	// 非正常请求不处理
 	if (!response.ok) return;
@@ -292,10 +314,11 @@ export function onResponse(context: HttpContext, config: HttpRuntime) {
 export function onRequestError(context: HttpContext, config: HttpRuntime) {
 	debug(false, 'HTTP Request Error', context, config);
 
-	if (!config.private) return;
+	// 非专有接口不处理
+	const httpError = createFetchError(context) as HttpError;
+	if (!config.private) throw httpError;
 
 	// 展示错误
-	const httpError = createFetchError(context) as HttpError;
 	const flag = showError(config, httpError);
 
 	// 处理成功的错误，直接抛出异常，跳过后续处理
@@ -312,7 +335,9 @@ export function onRequestError(context: HttpContext, config: HttpRuntime) {
 export async function onResponseError(context: HttpContext, config: HttpRuntime) {
 	debug(false, 'HTTP Response Error', context, config);
 
-	if (!config.private) return;
+	// 非专有接口不处理
+	const httpError = createFetchError(context) as HttpError;
+	if (!config.private) throw httpError;
 
 	/** 请求数据 */
 	const { response, error, options } = context;
@@ -343,7 +368,6 @@ export async function onResponseError(context: HttpContext, config: HttpRuntime)
 	error.name = err.title;
 
 	// 展示错误
-	const httpError = createFetchError(context) as HttpError;
 	const flag = showError(config, httpError);
 
 	// 处理成功的错误，直接抛出异常，跳过后续处理
@@ -371,9 +395,9 @@ const cacheStatus = new Map<string, boolean>();
  * @returns 解析后的响应数据
  */
 export async function HttpCache<T = any, R extends ResponseType = 'json'>(
+	http: HttpClient,
 	request: HttpRequest,
-	options?: HttpCacheOptions<R>,
-	http: $Http = $http
+	options?: HttpCacheOptions<R>
 ): Promise<MappedResponseType<R, T>> {
 	if (!options) options = {};
 
@@ -530,12 +554,12 @@ const cacheRead = async <R extends ResponseType>(
 // ==============================================
 
 /** 常用 Http 请求操作 */
-export async function HttpFast<T = any, R extends ResponseType = 'json'>(
+export async function HttpFast<R extends ResponseType = 'json'>(
+	http: HttpClient,
 	url: string,
 	method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'FORM',
 	params?: Dict,
-	options?: HttpCacheOptions<R>,
-	http: $Http = $http
+	options?: HttpCacheOptions<R>
 ) {
 	if (!options) options = {};
 
@@ -555,7 +579,7 @@ export async function HttpFast<T = any, R extends ResponseType = 'json'>(
 		options.query = params;
 	}
 
-	return HttpCache(url, options, http);
+	return HttpCache(http, url, options);
 }
 
 /**
@@ -564,11 +588,11 @@ export async function HttpFast<T = any, R extends ResponseType = 'json'>(
  * @param method	请求方式，默认 POST
  * @param headers	头部信息
  */
-export async function HttpUpload<T = any, R extends ResponseType = 'json'>(
+export async function HttpUpload<R extends ResponseType = 'json'>(
+	http: HttpClient,
 	files: FormData,
 	request: HttpRequest,
-	options?: HttpOptions<R>,
-	http: $Http = $http
+	options?: HttpOptions<R>
 ) {
 	if (!files || !(files instanceof FormData)) {
 		const error: HttpError = {
@@ -599,11 +623,7 @@ export async function HttpUpload<T = any, R extends ResponseType = 'json'>(
  * @param request	请求
  * @param options	参数
  */
-export async function HttpDownload(
-	request: HttpRequest,
-	options?: HttpOptions,
-	http: $Http = $http
-) {
+export async function HttpDownload(http: HttpClient, request: HttpRequest, options?: HttpOptions) {
 	// 服务端不能操作
 	if (SERVERMODE || !window) return false;
 
@@ -667,7 +687,7 @@ export async function HttpDownload(
 }
 
 /** 标准 API　处理, 不验证是否已经授权, 强制通过授权 */
-export async function HttpApi(api: IApi, options?: HttpOptions, http: $Http = $http) {
+export async function HttpApi(http: HttpClient, api: IApi, options?: HttpOptions) {
 	/** 无效参数 */
 	if (!hasObjectName(api, 'url')) return;
 

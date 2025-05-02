@@ -31,5 +31,5 @@ export const createHttpInstance = createHttp;
 export const http = createHttp();
 export * from './types';
 
-// 全局实例
-$Global.$http = http;
+// // 全局实例
+// $Global.$http = http;

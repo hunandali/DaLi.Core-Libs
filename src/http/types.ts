@@ -30,16 +30,16 @@ import {
 	ResponseMap
 } from 'ofetch';
 
-/** 全局变量 */
-declare global {
-	/**
-	 * 全局 HTTP 实例
-	 * @example
-	 * // 发起 GET 请求
-	 * await $http('/api/data', { method: 'GET' })
-	 */
-	var $http: $Http;
-}
+// /** 全局变量 */
+// declare global {
+// 	/**
+// 	 * 全局 HTTP 实例
+// 	 * @example
+// 	 * // 发起 GET 请求
+// 	 * await HttpClient('/api/data', { method: 'GET' })
+// 	 */
+// 	var $http: HttpClient;
+// }
 
 /** 响应类型扩展，支持所有 ResponseMap 键值及默认的 json 格式 */
 export type ResponseType = keyof ResponseMap | 'json';
@@ -154,7 +154,7 @@ export type HttpFetch = <T = any, R extends ResponseType = 'json'>(
  * 增强版 HTTP 客户端接口
  * @extends $Fetch 基础请求接口
  */
-export interface $Http extends $Fetch {
+export interface HttpClient extends $Fetch {
 	/**
 	 * 发起 HTTP 请求
 	 * @template T 响应数据类型
@@ -218,6 +218,9 @@ export interface $Http extends $Fetch {
 	 * @returns api 执行结果
 	 */
 	api: (api: IApi, options?: HttpOptions) => Promise<void | IApiResult>;
+
+	/** 重置登陆状态 */
+	resetLoginStatus: (status?: number) => void;
 }
 
 /**
@@ -320,8 +323,17 @@ export interface HttpRuntime extends HttpConfig, Dict {
 	 */
 	reLogin?: number;
 
+	/** 最后操作状态 */
+	last?: {
+		id?: string;
+		url: string;
+		method: string;
+		status?: number;
+		time: Date;
+	};
+
 	/** 所在的 http 对象 */
-	http?: $Http;
+	http?: HttpClient;
 }
 
 /**
