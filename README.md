@@ -1,8 +1,13 @@
-# @da.li/core-libs
+# 大沥网络函数库 (@da.li/core-libs)
 
-大沥网络公共函数库，提供了一系列常用的工具函数和组件。
+[![NPM version](https://img.shields.io/npm/v/@da.li/core-libs.svg?style=flat)](https://npmjs.org/package/@da.li/core-libs)
+[![NPM downloads](https://img.shields.io/npm/dm/@da.li/core-libs.svg?style=flat)](https://npmjs.org/package/@da.li/core-libs)
+
+大沥网络函数库是大沥网络提供的一个公共 TypeScript 函数库，封装了基础操作、缓存、加密、文件处理、HTTP 请求等常用功能模块，旨在提高开发效率。
 
 ## 安装
+
+你可以使用 npm 或 yarn 来安装 `@da.li/core-libs`：
 
 ```bash
 npm install @da.li/core-libs

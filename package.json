@@ -2,14 +2,14 @@
 	"name": "@da.li/core-libs",
 	"title": "大沥网络函数库",
 	"version": "1.25.502",
-	"description": "大沥网络公共函数库，提供了一系列常用的工具函数和组件。",
+	"description": "大沥网络函数库是大沥网络提供的一个公共 TypeScript 函数库，封装了基础操作、缓存、加密、文件处理、HTTP 请求等常用功能模块，旨在提高开发效率。",
 	"license": "MIT",
 	"company": "Hunan DaLi Network Technology Co., Ltd.",
 	"author": "木炭(WOODCOAL) <i@woodcoal.cn>",
 	"homepage": "http://www.hunandali.com/",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/woodcoal/DaLi.Core-Libs.git"
+		"url": "https://github.com/hunandali/DaLi.Core-Libs.git"
 	},
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
@@ -40,7 +40,7 @@
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.14",
-		"@types/node": "^22.14.1",
+		"@types/node": "^22.15.11",
 		"jest": "^29.7.0",
 		"ts-jest": "^29.3.2",
 		"tsc": "^2.0.4",
