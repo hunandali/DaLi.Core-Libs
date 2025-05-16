@@ -34,6 +34,9 @@ export const LOGO =
 /** 是否调试模式 */
 export const DEBUG = process.env.NODE_ENV !== 'production';
 
+/** 是否测试环境 */
+export const TEST = process.env.NODE_ENV === 'test';
+
 /** 是否服务器端运行 */
 export const SERVERMODE = typeof window === 'undefined';
 

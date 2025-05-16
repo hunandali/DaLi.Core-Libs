@@ -108,6 +108,9 @@ export interface HttpCacheOptions<R extends ResponseType = ResponseType, T = any
 
 	/** 是否缓存异常 */
 	cacheError?: boolean;
+
+	/** 是否缓存异常 undefined,null 将自动创建，空字符串将关闭缓存 */
+	cacheKey?: string | ((request: HttpRequest, options?: HttpCacheOptions<R, T>) => string);
 }
 
 export interface ResolvedHttpOptions<R extends ResponseType = ResponseType, T = any>

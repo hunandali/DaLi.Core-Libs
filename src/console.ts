@@ -22,7 +22,7 @@ import chalk from 'chalk';
 import type { ChalkInstance } from 'chalk';
 
 /** 常用操作库 */
-import { SERVERMODE, DEBUG } from '../config';
+import { SERVERMODE, DEBUG, TEST } from '../config';
 import {
 	$Global,
 	errorTrace,
@@ -50,8 +50,8 @@ export class consoleEcho {
 		message: any,
 		...optionalParams: any[]
 	) {
-		// 正式模式仅输出异常
-		if (!DEBUG && mode !== 'error') return;
+		// 正式、测试模式仅输出异常
+		if ((!DEBUG || TEST) && mode !== 'error') return;
 
 		// 格式化文本
 		const stringify = (objColor: ChalkInstance, obj: any) => {

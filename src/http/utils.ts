@@ -123,8 +123,9 @@ export function updateRequest(request: HttpRequest, options: HttpOptions, appenQ
 			if (reg.test(url)) {
 				// 替换地址参数
 				url = url.replace(reg, value);
-				delete data[key];
-			} else if (isQuery) {
+				// delete data[key];
+			}
+			if (isQuery) {
 				// 加入请求参数
 				queryData[key] = value;
 			} else if (isEncode) {

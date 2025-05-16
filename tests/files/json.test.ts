@@ -1,7 +1,7 @@
 // 不适合 node 下测试，仅支持浏览器端测试
 
 import { SERVERMODE } from '../../config';
-import { downloadObject, download } from '../../src/files/json';
+import { objectDownload, jsonDownload } from '../../src/files/json';
 
 describe('json utils', () => {
 	describe('mode', () => {
@@ -12,14 +12,14 @@ describe('json utils', () => {
 
 	if (SERVERMODE) return;
 
-	describe('downloadObject', () => {
+	describe('objectDownload', () => {
 		it('should handle empty object', () => {
-			expect(() => downloadObject({})).not.toThrow();
+			expect(() => objectDownload({})).not.toThrow();
 		});
 
 		it('should handle null/undefined', () => {
-			expect(() => downloadObject(null)).not.toThrow();
-			expect(() => downloadObject(undefined)).not.toThrow();
+			expect(() => objectDownload(null)).not.toThrow();
+			expect(() => objectDownload(undefined)).not.toThrow();
 		});
 
 		it('should handle complex objects', () => {
@@ -29,22 +29,22 @@ describe('json utils', () => {
 				array: [1, 2, 3],
 				nested: { a: 1, b: 2 }
 			};
-			expect(() => downloadObject(data, 'test.json')).not.toThrow();
+			expect(() => objectDownload(data, 'test.json')).not.toThrow();
 		});
 	});
 
 	describe('download', () => {
 		it('should handle empty string', () => {
-			expect(() => download('')).not.toThrow();
+			expect(() => jsonDownload('')).not.toThrow();
 		});
 
 		it('should handle invalid JSON string', () => {
-			expect(() => download('invalid json')).not.toThrow();
+			expect(() => jsonDownload('invalid json')).not.toThrow();
 		});
 
 		it('should handle valid JSON string', () => {
 			const jsonStr = '{"id":1,"name":"Test"}';
-			expect(() => download(jsonStr, 'test.json')).not.toThrow();
+			expect(() => jsonDownload(jsonStr, 'test.json')).not.toThrow();
 		});
 	});
 });

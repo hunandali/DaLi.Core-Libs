@@ -22,7 +22,6 @@
 // #region 参数导入
 // ==============================================
 
-import chalk from 'chalk';
 import { hasObject, hasObjectName, hasString, isFn, isObject, isString, sleep } from '../base';
 import {
 	getResponseErrorMessage,
@@ -48,9 +47,11 @@ import {
 	ResponseType
 } from './types';
 import { createFetch, createFetchError, CreateFetchOptions, MappedResponseType } from 'ofetch';
-import { DEBUG, SERVERMODE } from '../../config';
+import { DEBUG, SERVERMODE, TEST } from '../../config';
 import { Dict } from '../types';
 import LRU from '../LRU';
+
+import chalk from 'chalk';
 
 // ==============================================
 // #endregion
@@ -76,6 +77,7 @@ export const HTTP_DEBUG = {
 };
 
 function debug(succ: boolean, title: string, context: HttpContext, config?: HttpConfig) {
+	if (TEST) return;
 	if (HTTP_DEBUG.output === false) return;
 	if (HTTP_DEBUG.debugOnly && !DEBUG) return;
 
@@ -207,6 +209,10 @@ export function createHttp(globalOptions?: CreateFetchOptions, globalConfig?: Ht
 /** 请求相关拦截 */
 export async function onRequest(context: HttpContext, config: HttpRuntime) {
 	const { request, options } = context;
+
+	// 如果 Config 中基础配置存在，则使用基础配置，防止 config 中基础参数修改后无法及时更新
+	config.baseURL && options.baseURL !== config.baseURL && (options.baseURL = config.baseURL);
+	config.timeout && config.timeout > 0 && (options.timeout = config.timeout);
 
 	// // 请求方式大写
 	// context.options.method = context.options.method ? context.options.method.toUpperCase() : 'GET';
@@ -401,28 +407,16 @@ export async function HttpCache<T = any, R extends ResponseType = 'json'>(
 ): Promise<MappedResponseType<R, T>> {
 	if (!options) options = {};
 
-	const url = isString(request) ? request : request.url;
-	const method = (options.method || 'GET').toUpperCase();
-
-	/** 所有参数 */
-	const data: Dict = {};
-	hasObject(options.query) && Object.assign(data, options.query);
-	hasObject(options.params) && Object.assign(data, options.params);
-	hasObject(options.body) && Object.assign(data, options.body);
-	hasObject(options.headers) && Object.assign(data, options.headers);
-
 	/** 读取缓存数据 */
 	const { cacheTime, cacheKey, cacheValue, cacheError } = await cacheRead(
-		url,
-		method,
-		data,
+		request,
 		options,
 		http.runtime
 	);
 
 	// 分析缓存数据
-	if (hasObjectName(cacheValue, 'succ')) {
-		con.information('HTTP 缓存命中', url, cacheTime, cacheKey, cacheValue);
+	if (cacheValue && hasObjectName(cacheValue, 'succ')) {
+		con.information('HTTP 缓存命中', request, cacheTime, cacheKey, cacheValue);
 
 		if (cacheValue.succ) {
 			// 缓存成功
@@ -454,14 +448,9 @@ export async function HttpCache<T = any, R extends ResponseType = 'json'>(
 
 	// 存在缓存要求
 	if (cacheTime > 0) {
-		if (succ) {
-			// 操作成功，缓存数据
-			cache.set(cacheKey, { succ, result }, cacheTime);
-		} else if (cacheError) {
-			// 缓存错误，缓存异常(异常最多缓存 30 秒)
-			const time = cacheTime > 30 ? 30 : cacheTime;
-			cache.set(cacheKey, { succ, result }, time);
-		}
+		// 正确直接缓存，错误则需检查状态，但最多不能超过 30s
+		const time = succ ? cacheTime : cacheError && cacheTime > 30 ? 30 : 0;
+		time > 0 && cache.set(cacheKey, { succ, result }, time);
 
 		// 清除状态
 		cacheStatus.delete(cacheKey);
@@ -478,23 +467,27 @@ export async function HttpCache<T = any, R extends ResponseType = 'json'>(
 
 /**
  * 缓存读取
- * @param url 			请求地址
- * @param method 		请求方式
- * @param data 			请求数据
+ * @param request 		请求数据
  * @returns cacheTime 	缓存时间
  * @returns cacheKey 	缓存键
  * @returns cacheValue 	缓存值
  */
 const cacheRead = async <R extends ResponseType>(
-	url: string,
-	method: string,
-	data: Dict,
+	request: HttpRequest,
 	options: HttpCacheOptions<R>,
 	config: HttpConfig
 ) => {
-	// 初始化缓存配置
-	let cacheKey = '';
-	let cacheValue = {} as CacheValue;
+	// 禁止缓存返回
+	const nothing = () => {
+		options.cacheTime = false;
+		options.cacheError = false;
+
+		return { cacheTime, cacheKey: '', cacheValue: undefined, cacheError: false };
+	};
+
+	// --------------------
+	// 检查缓存时间
+	// --------------------
 	let cacheTime = options.cacheTime === false ? -1 : options.cacheTime || 0;
 
 	if (cacheTime === 0) {
@@ -506,29 +499,51 @@ const cacheRead = async <R extends ResponseType>(
 	}
 
 	// 关闭缓存
-	if (cacheTime < 1) {
-		options.cacheTime = false;
-		options.cacheError = false;
+	if (cacheTime < 1) return nothing();
 
-		return { cacheTime, cacheKey, cacheValue, cacheError: false };
+	// --------------------
+	// 检查缓存键
+	// --------------------
+	let cacheKey = isString(options.cacheKey)
+		? options.cacheKey
+		: isFn(options.cacheKey)
+		? options.cacheKey(request, options)
+		: undefined;
+
+	// 缓存键为空字符串关闭缓存
+	if (cacheKey === '') return nothing();
+
+	// 为定义手动创建缓存键
+	if (!cacheKey) {
+		const url = isString(request) ? request : request.url;
+		const method = (options.method || 'GET').toUpperCase();
+
+		/** 所有参数 */
+		const data: Dict = {};
+		hasObject(options.query) && Object.assign(data, options.query);
+		hasObject(options.params) && Object.assign(data, options.params);
+		hasObject(options.body) && Object.assign(data, options.body);
+		hasObject(options.headers) && Object.assign(data, options.headers);
+
+		// 生成缓存键
+		cacheKey = JSON.stringify({
+			url,
+			method,
+			data
+		});
 	}
 
-	// 生成缓存键
-	cacheKey = JSON.stringify({
-		url,
-		method,
-		data
-	});
-
+	// --------------------
 	// 缓存数据
-	cacheValue = cache.get(cacheKey);
+	// --------------------
+	let cacheValue = cache.get(cacheKey) as CacheValue;
 
 	// 获取到缓存，直接返回
 	if (cacheValue) return { cacheTime, cacheKey, cacheValue, cacheError: options.cacheError };
 
-	// ----------------------------
+	// --------------------
 	// 未获取到检查缓存状态
-	// ----------------------------
+	// --------------------
 
 	// 等待 10 次，重试检查缓存数据
 	for (let i = 0; i < 10; i++) {
@@ -664,8 +679,6 @@ export async function HttpDownload(http: HttpClient, request: HttpRequest, optio
 			succ = true;
 		})
 		.catch((res: any) => {
-			console.error(res);
-
 			showError(
 				http.runtime,
 				{
@@ -689,10 +702,7 @@ export async function HttpDownload(http: HttpClient, request: HttpRequest, optio
 /** 标准 API　处理, 不验证是否已经授权, 强制通过授权 */
 export async function HttpApi(http: HttpClient, api: IApi, options?: HttpOptions) {
 	/** 无效参数 */
-	if (!hasObjectName(api, 'url')) return;
-
-	// 无效请求
-	if (!isString(api.url)) return;
+	if (!hasObjectName(api, 'url') || !isString(api.url)) throw new Error('无效的 API 配置');
 
 	// 是否 GET / DELETE 模式
 	api.method = api.method || 'GET';

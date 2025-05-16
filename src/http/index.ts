@@ -18,7 +18,6 @@
 ' ------------------------------------------------------------
 */
 
-import { $Global } from '../base';
 import { createHttp } from './hook';
 
 // 调试配置

@@ -1,2 +1,2 @@
 cls
-yarn test
+yarn test %1
