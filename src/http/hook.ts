@@ -257,9 +257,6 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
 
 	// 更新超时默认值
 	if (!options.timeout) options.timeout = config.timeout;
-
-	// 更新请求参数
-	context.request = data.request;
 }
 
 /**
@@ -296,14 +293,12 @@ export function onResponse(context: HttpContext, config: HttpRuntime) {
 	if (message && response.ok) {
 		// 服务器反馈异常信息
 		con.information('服务器反馈异常信息', response.url, options.method);
-		showError(
-			config,
-			{
-				name: '温馨提示',
-				message
-			},
-			'modal'
-		);
+
+		showError(config, {
+			name: '温馨提示',
+			message,
+			alert: 'modal'
+		});
 	}
 
 	// 处理返回数据
@@ -321,14 +316,14 @@ export function onRequestError(context: HttpContext, config: HttpRuntime) {
 	debug(false, 'HTTP Request Error', context, config);
 
 	// 非专有接口不处理
-	const httpError = createFetchError(context) as HttpError;
+	const httpError: HttpError = { ...createFetchError(context), alert: context.options.alert };
 	if (!config.private) throw httpError;
 
 	// 展示错误
-	const flag = showError(config, httpError);
+	showError(config, httpError);
 
-	// 处理成功的错误，直接抛出异常，跳过后续处理
-	if (flag) throw httpError;
+	// 直接抛出异常，跳过后续处理
+	throw httpError;
 }
 
 /**
@@ -359,22 +354,37 @@ export async function onResponseError(context: HttpContext, config: HttpRuntime)
 
 	// 错误代码处理
 	const map = config.privateMap || defaultMap;
+	const mapData = hasObjectName(_data, map.data) ? _data[map.data] : '';
+	const mapCode = hasObjectName(_data, map.code) ? _data[map.code] : status;
+	const mapMessage = hasObjectName(_data, map.message) ? _data[map.message] : statusText;
+	const url = response.url;
 
-	// 处理反馈消息数据，如果存在则弹出信息
-	let message = hasObjectName(_data, map.message) ? _data[map.message] : '';
-	if (!message) message = hasObjectName(_data, map.data) ? _data[map.data] : '';
-	if (!message) message = statusText;
+	// 如果 mapData(Response._data.data) 中存在对象，则表示是专有错误接口数据，需要直接返回处理
+	// // 如果返回结果为对象，表示结果需要二次加工，如：错误表单列表
+	if (hasObject(mapData))
+		throw {
+			..._data,
+			code: mapCode,
+			url,
+			alert: context.options.alert,
+			data: mapData,
+			message: mapMessage
+		};
 
-	var err = getResponseErrorMessage(status, message);
-	const error = context.error || createFetchError(context);
-	error.message = err.message;
-	error.name = err.title;
+	// 错误处理
+	if (!context.error) context.error = createFetchError(context);
+	var errInfo = getResponseErrorMessage(status, mapMessage);
+
+	const error = context.error as HttpError;
+	error.message = errInfo.message;
+	error.name = errInfo.title;
+	error.alert = context.options.alert;
 
 	// 展示错误
-	const flag = showError(config, error);
+	showError(config, error);
 
-	// 处理成功的错误，直接抛出异常，跳过后续处理
-	if (flag) throw error;
+	// 直接抛出异常，跳过后续处理
+	throw error;
 }
 
 // ==============================================
@@ -613,11 +623,13 @@ export async function HttpUpload<R extends ResponseType = 'json'>(
 			status: 400,
 			statusCode: 400,
 			name: 'UploadError',
-			message: '无效上传参数！'
+			message: '无效上传参数！',
+			alert: 'toast'
 		};
 
 		// 提示错误
-		showError(http.runtime, error, 'toast');
+		showError(http.runtime, error);
+
 		throw error;
 	}
 
@@ -659,36 +671,30 @@ export async function HttpDownload(http: HttpClient, request: HttpRequest, optio
 			window.URL.revokeObjectURL(file);
 
 			// 提示下载完成
-			showError(
-				http.runtime,
-				{
-					request,
-					options,
-					status: 200,
-					statusCode: 200,
-					name: '文件下载',
-					message: '文件下载完成',
-					data: res
-				},
-				'toast'
-			);
+			showError(http.runtime, {
+				request,
+				options,
+				status: 200,
+				statusCode: 200,
+				name: '文件下载',
+				message: '文件下载完成',
+				data: res,
+				alert: 'toast'
+			});
 
 			succ = true;
 		})
 		.catch((res: any) => {
-			showError(
-				http.runtime,
-				{
-					request,
-					options,
-					status: 400,
-					statusCode: 400,
-					name: '文件下载',
-					message: '文件下载失败，请检查',
-					data: res
-				},
-				'toast'
-			);
+			showError(http.runtime, {
+				request,
+				options,
+				status: 400,
+				statusCode: 400,
+				name: '文件下载',
+				message: '文件下载失败，请检查',
+				data: res,
+				alert: 'toast'
+			});
 
 			succ = false;
 		});

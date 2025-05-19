@@ -4015,14 +4015,12 @@ function updateRequest(context, appenQuery = false) {
       context.request = new Request(url, request);
     }
   }
-  return { url, request, options };
+  return { url, request: context.request, options };
 }
-function showError(config, error, alert) {
+function showError(config, error) {
   if (!config || !error || error.alerted) return false;
-  if (isNil(error.alert)) error.alert = alert;
-  const isShow = isFn(config.alert) ? config.alert(error, config) : false;
-  error.alerted = isShow;
-  return isShow;
+  if (error.alert && isFn(config.alert)) error.alerted = config.alert(error, config);
+  return !!error.alerted;
 }
 function updateId(item) {
   var _a;
@@ -4202,7 +4200,6 @@ async function onRequest(context, config) {
     }
   }
   if (!options.timeout) options.timeout = config.timeout;
-  context.request = data.request;
 }
 function onResponse(context, config) {
   debug(true, "HTTP Response", context, config);
@@ -4223,24 +4220,21 @@ function onResponse(context, config) {
   const message = hasObjectName(response._data, map.message) ? response._data[map.message] : "";
   if (message && response.ok) {
     con.information("\u670D\u52A1\u5668\u53CD\u9988\u5F02\u5E38\u4FE1\u606F", response.url, options.method);
-    showError(
-      config,
-      {
-        name: "\u6E29\u99A8\u63D0\u793A",
-        message
-      },
-      "modal"
-    );
+    showError(config, {
+      name: "\u6E29\u99A8\u63D0\u793A",
+      message,
+      alert: "modal"
+    });
   }
   if (hasObjectName(response._data, map.data)) response._data = response._data[map.data];
   if (options.convert) response._data = updateId(response._data);
 }
 function onRequestError(context, config) {
   debug(false, "HTTP Request Error", context, config);
-  const httpError = (0, import_ofetch.createFetchError)(context);
+  const httpError = { ...(0, import_ofetch.createFetchError)(context), alert: context.options.alert };
   if (!config.private) throw httpError;
-  const flag = showError(config, httpError);
-  if (flag) throw httpError;
+  showError(config, httpError);
+  throw httpError;
 }
 async function onResponseError(context, config) {
   debug(false, "HTTP Response Error", context, config);
@@ -4253,15 +4247,27 @@ async function onResponseError(context, config) {
     if (!res) return res;
   }
   const map = config.privateMap || defaultMap;
-  let message = hasObjectName(_data, map.message) ? _data[map.message] : "";
-  if (!message) message = hasObjectName(_data, map.data) ? _data[map.data] : "";
-  if (!message) message = statusText;
-  var err = getResponseErrorMessage(status, message);
-  const error = context.error || (0, import_ofetch.createFetchError)(context);
-  error.message = err.message;
-  error.name = err.title;
-  const flag = showError(config, error);
-  if (flag) throw error;
+  const mapData = hasObjectName(_data, map.data) ? _data[map.data] : "";
+  const mapCode = hasObjectName(_data, map.code) ? _data[map.code] : status;
+  const mapMessage = hasObjectName(_data, map.message) ? _data[map.message] : statusText;
+  const url = response.url;
+  if (hasObject(mapData))
+    throw {
+      ..._data,
+      code: mapCode,
+      url,
+      alert: context.options.alert,
+      data: mapData,
+      message: mapMessage
+    };
+  if (!context.error) context.error = (0, import_ofetch.createFetchError)(context);
+  var errInfo = getResponseErrorMessage(status, mapMessage);
+  const error = context.error;
+  error.message = errInfo.message;
+  error.name = errInfo.title;
+  error.alert = context.options.alert;
+  showError(config, error);
+  throw error;
 }
 var cache2 = new LRU(30);
 var cacheStatus = /* @__PURE__ */ new Map();
@@ -4366,9 +4372,10 @@ async function HttpUpload(http2, files, request, options) {
       status: 400,
       statusCode: 400,
       name: "UploadError",
-      message: "\u65E0\u6548\u4E0A\u4F20\u53C2\u6570\uFF01"
+      message: "\u65E0\u6548\u4E0A\u4F20\u53C2\u6570\uFF01",
+      alert: "toast"
     };
-    showError(http2.runtime, error, "toast");
+    showError(http2.runtime, error);
     throw error;
   }
   if (!options) options = {};
@@ -4388,34 +4395,28 @@ async function HttpDownload(http2, request, options) {
     document.body.appendChild(dom);
     dom.click();
     window.URL.revokeObjectURL(file);
-    showError(
-      http2.runtime,
-      {
-        request,
-        options,
-        status: 200,
-        statusCode: 200,
-        name: "\u6587\u4EF6\u4E0B\u8F7D",
-        message: "\u6587\u4EF6\u4E0B\u8F7D\u5B8C\u6210",
-        data: res
-      },
-      "toast"
-    );
+    showError(http2.runtime, {
+      request,
+      options,
+      status: 200,
+      statusCode: 200,
+      name: "\u6587\u4EF6\u4E0B\u8F7D",
+      message: "\u6587\u4EF6\u4E0B\u8F7D\u5B8C\u6210",
+      data: res,
+      alert: "toast"
+    });
     succ = true;
   }).catch((res) => {
-    showError(
-      http2.runtime,
-      {
-        request,
-        options,
-        status: 400,
-        statusCode: 400,
-        name: "\u6587\u4EF6\u4E0B\u8F7D",
-        message: "\u6587\u4EF6\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5",
-        data: res
-      },
-      "toast"
-    );
+    showError(http2.runtime, {
+      request,
+      options,
+      status: 400,
+      statusCode: 400,
+      name: "\u6587\u4EF6\u4E0B\u8F7D",
+      message: "\u6587\u4EF6\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5",
+      data: res,
+      alert: "toast"
+    });
     succ = false;
   });
   return succ;

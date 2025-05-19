@@ -182,23 +182,18 @@ export function updateRequest(context: HttpContext, appenQuery = false) {
 	}
 
 	// 返回处理后的数据
-	return { url, request, options };
+	return { url, request: context.request, options };
 }
 
 /** 显示错误信息 */
-export function showError(config: HttpConfig, error: HttpError, alert?: AlertNotifyMode): boolean {
+export function showError(config: HttpConfig, error: HttpError): boolean {
 	if (!config || !error || error.alerted) return false;
 
-	// 弹窗模式
-	if (isNil(error.alert)) error.alert = alert;
+	// 存在弹窗函数，且需要弹窗
+	if (error.alert && isFn(config.alert)) error.alerted = config.alert(error, config);
 
-	// 监视是否弹窗提示
-	const isShow = isFn(config.alert) ? config.alert(error, config) : false;
-
-	// 回写展示状态
-	error.alerted = isShow;
-
-	return isShow;
+	// 返回执行状态
+	return !!error.alerted;
 }
 
 /**
