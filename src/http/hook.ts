@@ -115,9 +115,9 @@ function debug(succ: boolean, title: string, context: HttpContext, config?: Http
 	outputs.push(succ ? chalk.bgGreen(title) : chalk.bgRed(title));
 
 	// 输出请求信息
-	const { request, response } = context;
+	const { request, response, options } = context;
 	let url = response ? response.url : isObject(request) ? request.url : request;
-	let method = isObject(request) ? request.method : 'GET';
+	let method = options.method || 'GET';
 	outputs.push(color(`[${method}] ${url}`));
 
 	if (HTTP_DEBUG.output !== 'simple') {
@@ -293,7 +293,7 @@ export function onResponse(context: HttpContext, config: HttpRuntime) {
 
 	// 处理反馈消息数据，如果存在则弹出信息
 	const message = hasObjectName(response._data, map.message) ? response._data[map.message] : '';
-	if (message) {
+	if (message && response.ok) {
 		// 服务器反馈异常信息
 		con.information('服务器反馈异常信息', response.url, options.method);
 		showError(
@@ -342,12 +342,11 @@ export async function onResponseError(context: HttpContext, config: HttpRuntime)
 	debug(false, 'HTTP Response Error', context, config);
 
 	// 非专有接口不处理
-	const httpError = createFetchError(context) as HttpError;
-	if (!config.private) throw httpError;
+	if (!config.private) return;
 
 	/** 请求数据 */
-	const { response, error, options } = context;
-	if (!response || !error) return;
+	const { response, options } = context;
+	if (!response) return;
 
 	// 非系统异常，如产生 400,500 等错误
 	const { status, statusText, _data } = response;
@@ -359,25 +358,23 @@ export async function onResponseError(context: HttpContext, config: HttpRuntime)
 	}
 
 	// 错误代码处理
-	let message = statusText;
-	if (config.private) {
-		const map = config.privateMap || defaultMap;
+	const map = config.privateMap || defaultMap;
 
-		// 处理反馈消息数据，如果存在则弹出信息
-		message = hasObjectName(_data, map.message) ? _data[config.map.message] : '';
-
-		if (!message) message = hasObjectName(_data, map.data) ? _data[map.data] : '';
-	}
+	// 处理反馈消息数据，如果存在则弹出信息
+	let message = hasObjectName(_data, map.message) ? _data[map.message] : '';
+	if (!message) message = hasObjectName(_data, map.data) ? _data[map.data] : '';
+	if (!message) message = statusText;
 
 	var err = getResponseErrorMessage(status, message);
+	const error = context.error || createFetchError(context);
 	error.message = err.message;
 	error.name = err.title;
 
 	// 展示错误
-	const flag = showError(config, httpError);
+	const flag = showError(config, error);
 
 	// 处理成功的错误，直接抛出异常，跳过后续处理
-	if (flag) throw httpError;
+	if (flag) throw error;
 }
 
 // ==============================================

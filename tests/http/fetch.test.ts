@@ -19,14 +19,27 @@
 
 import { http as fetch } from '../../src/http';
 
-const BASE_URL = 'http://shanhe.kim/api/';
+const BASE_URL_PUBLIC = 'http://shanhe.kim/api/';
+const BASE_URL_PRIVATE = 'http://127.0.0.1:10000/api/';
 
 describe('HTTP模块测试', () => {
-	beforeEach(() => {
-		fetch.runtime.baseURL = BASE_URL;
+	// 此测试需要本地设计的服务端调试环境，否则测试无效
+	test('Private 请求', async () => {
+		fetch.runtime.baseURL = BASE_URL_PRIVATE;
+		fetch.runtime.private = true;
+		const res = fetch('auth/login', {
+			method: 'POST',
+			body: { name: 'aaa', password: 'bbbb' }
+		});
+
+		expect(res).rejects.toThrow(
+			'[POST] "http://127.0.0.1:10000/api/auth/login": 401 Unauthorized'
+		);
 	});
 
-	test('Fetch 请求', async () => {
+	test('Public 请求', async () => {
+		fetch.runtime.baseURL = BASE_URL_PUBLIC;
+		fetch.runtime.private = false;
 		const res = await fetch('za/tianqi.php', { method: 'GET', params: { city: '成都' } });
 		expect(res).toBeDefined();
 		expect(res.code).toBe(1);
@@ -36,6 +49,8 @@ describe('HTTP模块测试', () => {
 	});
 
 	test('GET 请求', async () => {
+		fetch.runtime.baseURL = BASE_URL_PUBLIC;
+		fetch.runtime.private = false;
 		const res = await fetch.GET('za/tianqi.php', { city: '成都' });
 		expect(res).toBeDefined();
 		expect(res.code).toBe(1);
