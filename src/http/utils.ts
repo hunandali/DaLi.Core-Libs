@@ -86,7 +86,9 @@ export function getToken<C extends HttpContext = HttpContext>(
  * @param options		请求参数
  * @param appenQuery	是否追加 query 参数
  */
-export function updateRequest(request: HttpRequest, options: HttpOptions, appenQuery = false) {
+export function updateRequest(context: HttpContext, appenQuery = false) {
+	const { request, options } = context;
+
 	// 分析请求地址
 	const sourceUrl = isString(request) ? request : request?.url;
 	const baseUrl = options.baseURL;
@@ -171,7 +173,13 @@ export function updateRequest(request: HttpRequest, options: HttpOptions, appenQ
 	}
 
 	// 地址存在变化，需要调整请求信息
-	if (sourceUrl !== url) request = isString(request) ? url : new Request(url, request);
+	if (sourceUrl !== url) {
+		if (isString(request)) {
+			context.request = url;
+		} else {
+			context.request = new Request(url, request);
+		}
+	}
 
 	// 返回处理后的数据
 	return { url, request, options };

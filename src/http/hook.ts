@@ -221,7 +221,7 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
 	if (!options.headers) options.headers = new Headers();
 
 	// 更新请求
-	const data = updateRequest(request, options);
+	const data = updateRequest(context);
 
 	// 更新最后状态
 	config.last = {

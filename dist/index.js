@@ -1,195 +1,20 @@
-"use strict";
-var __create = Object.create;
 var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name2 in all)
     __defProp(target, name2, { get: all[name2], enumerable: true });
 };
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// src/index.ts
-var index_exports = {};
-__export(index_exports, {
-  $Global: () => $Global,
-  Base: () => base_exports,
-  CACHE_TIME_MAX: () => CACHE_TIME_MAX,
-  Cookies: () => cookies_default,
-  DEBOUNCE_WINDOW_RESIZE: () => DEBOUNCE_WINDOW_RESIZE,
-  DEBUG: () => DEBUG,
-  DESCRIPTION: () => description,
-  DecimalLength: () => DecimalLength,
-  FormValidate: () => FormValidate,
-  HOMEPAGE: () => homepage,
-  HTTP_DEBUG: () => HTTP_DEBUG,
-  LOGO: () => LOGO,
-  LRU: () => LRU,
-  MD5: () => MD52,
-  NAME: () => name,
-  QR: () => QR,
-  QRCreate: () => QRCreate,
-  QRErrorCorrectLevel: () => QRErrorCorrectLevel,
-  QRObject: () => QRObject,
-  SERVERMODE: () => SERVERMODE,
-  TITLE: () => title,
-  Tasks: () => Tasks,
-  VERSION: () => version,
-  arrayEmpty: () => empty2,
-  arrayRemove: () => remove2,
-  base64Decode: () => base64Decode,
-  base64Encode: () => base64Encode,
-  cache: () => cache_default,
-  cleanDuplicate: () => cleanDuplicate,
-  clear: () => clear,
-  clone: () => clone,
-  compare: () => compare,
-  consoleEcho: () => consoleEcho,
-  counting: () => counting,
-  createHttpInstance: () => createHttpInstance,
-  createTasks: () => createTasks,
-  date: () => date,
-  dateFormat: () => dateFormat,
-  dateLong: () => dateLong,
-  debounce: () => debounce,
-  deleteCookie: () => deleteCookie,
-  each: () => each,
-  eachSync: () => eachSync,
-  empty: () => empty,
-  errorTrace: () => errorTrace,
-  eventBus: () => eventBus,
-  every: () => every,
-  excelJson: () => exportJson,
-  excelTable: () => exportTable,
-  execute: () => execute,
-  fingerprint: () => fingerprint,
-  fnId: () => fnId,
-  formValidate: () => formValidate_default,
-  get: () => get,
-  getCookie: () => getCookie,
-  globalId: () => globalId,
-  group: () => group,
-  has: () => has,
-  hasArray: () => hasArray,
-  hasObject: () => hasObject,
-  hasObjectName: () => hasObjectName,
-  hasString: () => hasString,
-  hash: () => hash,
-  htmlClear: () => htmlClear,
-  htmlEncode: () => htmlEncode,
-  htmlSafe: () => htmlSafe,
-  http: () => http,
-  inRange: () => inRange,
-  isArray: () => isArray,
-  isAsync: () => isAsync,
-  isBoolean: () => isBoolean,
-  isCar: () => isCar,
-  isChinese: () => isChinese,
-  isDate: () => isDate,
-  isEmail: () => isEmail,
-  isEmpty: () => isEmpty,
-  isEnglish: () => isEnglish,
-  isEqual: () => isEqual,
-  isFloat: () => isFloat,
-  isFn: () => isFn,
-  isFullUrl: () => isFullUrl,
-  isGuid: () => isGuid,
-  isHttp: () => isHttp,
-  isIP: () => isIP,
-  isInt: () => isInt,
-  isJSON: () => isJSON,
-  isMatch: () => isMatch,
-  isMobile: () => isMobile,
-  isNaN: () => isNaN2,
-  isName: () => isName,
-  isNil: () => isNil,
-  isNumber: () => isNumber,
-  isObject: () => isObject,
-  isPhone: () => isPhone,
-  isPrimitive: () => isPrimitive,
-  isRegExp: () => isRegExp,
-  isString: () => isString,
-  isSymbol: () => isSymbol,
-  isUrl: () => isUrl,
-  jsonDownload: () => jsonDownload,
-  list: () => list,
-  list2tree: () => list2tree,
-  listConvert: () => listConvert,
-  listParents: () => listParents,
-  listTop: () => listTop,
-  math: () => math,
-  merge: () => merge,
-  modulesUpdate: () => modulesUpdate,
-  modulesUpdateSync: () => modulesUpdateSync,
-  notEmpty: () => notEmpty,
-  number: () => number,
-  objectDownload: () => objectDownload,
-  range: () => range,
-  reduce: () => reduce,
-  remoteFileToBase64: () => remoteFileToBase64,
-  remove: () => remove,
-  rnd: () => rnd,
-  select: () => select,
-  set: () => set,
-  setCookie: () => setCookie,
-  sleep: () => sleep,
-  some: () => some,
-  sort: () => sort,
-  string2Value: () => string2Value,
-  stringClear: () => stringClear,
-  stringCut: () => stringCut,
-  stringIncludes: () => stringIncludes,
-  template: () => template,
-  throttle: () => throttle,
-  toArray: () => toArray,
-  toDate: () => toDate,
-  toDeepObject: () => toDeepObject,
-  toFloat: () => toFloat,
-  toHtml: () => toHtml,
-  toInt: () => toInt,
-  toJSON: () => toJSON,
-  toObject: () => toObject,
-  toSingleObject: () => toSingleObject,
-  treeConvert: () => treeConvert,
-  treeExecute: () => treeExecute,
-  treeFind: () => treeFind,
-  treeFindAll: () => treeFindAll,
-  treeParents: () => treeParents,
-  trimEx: () => trimEx,
-  typeName: () => typeName,
-  waterMark: () => waterMark_default,
-  xor: () => xor
-});
-module.exports = __toCommonJS(index_exports);
 
 // package.json
 var name = "@da.li/core-libs";
 var title = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93";
-var version = "1.25.502";
+var version = "1.25.519";
 var description = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93\u662F\u5927\u6CA5\u7F51\u7EDC\u63D0\u4F9B\u7684\u4E00\u4E2A\u516C\u5171 TypeScript \u51FD\u6570\u5E93\uFF0C\u5C01\u88C5\u4E86\u57FA\u7840\u64CD\u4F5C\u3001\u7F13\u5B58\u3001\u52A0\u5BC6\u3001\u6587\u4EF6\u5904\u7406\u3001HTTP \u8BF7\u6C42\u7B49\u5E38\u7528\u529F\u80FD\u6A21\u5757\uFF0C\u65E8\u5728\u63D0\u9AD8\u5F00\u53D1\u6548\u7387\u3002";
 var homepage = "http://www.hunandali.com/";
 
 // config.ts
 var LOGO = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAyNCAxMDI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMjQiIGhlaWdodD0iMTAyNCIgc3R5bGU9ImJhY2tncm91bmQ6ICNGRkZGRkYiPjxwYXRoIGQ9Ik03ODguNzUwMDggMzkwLjcwMzM2TDcwOS41ODg0OCA0NC43NjY3MmwtOC4wNzU1MiA0Ljg4OTYtNTY0LjYzMzYgMzQxLjkxODcyIDMyMi42NzM5MiA1ODYuMzM0NzIgMjI1LjUzODU2LTI0Ny4zMzU2OGgyNC44MDM4NGwtMjYyLjcwNzIgMjkzLjQyNDY0TDcyLjM3ODg4IDM3NC44MDk2IDcyMS41NjkyOCAwbDg1LjgxODg4IDM5MC43MDMzNmgtMTguNjM2OHogbS02MjYuODU5NTIgNy4zNjUxMkw3MDQuNjU2NjQgNjMuMTc1NjhsNzYuMjIxNDQgMzI3LjUyNzY4aC0yMi4wMDcwNEw2OTEuMjU4ODggMTEzLjExNDg4IDIyNS43MzE4NCA0MTQuNjEzNzZsMjUyLjYyMDggNDkzLjA3Nzc2IDE2Ni4yODk5Mi0xNzcuMTE3NDRoMjkuODcwMDhjLTg2LjQ0NjA4IDk0LjA3NDg4LTE4My41ODUyOCAxOTkuNzgyNC0yMDkuODg4IDIyOC40MDgzMkwxNjEuODkwNTYgMzk4LjA2ODQ4eiIgZmlsbD0iIzAwNUVBNyI+PC9wYXRoPjxwYXRoIGQ9Ik01NDYuOTUwNCA2OTMuNjcwNGwtNjguOTg2ODgtMjI0LjEwNDk2IDYuMjM2MTYgMC4xMzA1NiA0MzYuMDUxMiA5LjExMzYgOS4wNjYyNCA0NDIuMTEwNzItMjEwLjc2NDgtNjcuMDIyMDgtMTQuMTk1MiA4LjE5NTg0IDI0Ny4yNjI3MiA4MS4xMTM2VjQ0Ny45MDRINDU2LjMxODcybDc5Ljk2OTI4IDI1MS45MjE5MiAxMC42NjI0LTYuMTU2OHogbTM2MS4xMzQwOC0yMDIuODg1MTJjLTc3LjE4MDE2LTIuMjU1MzYtNDIxLjIxNzI4LTEyLjMxNjE2LTQyMS4yMTcyOC0xMi4zMTYxNmw2NC41OTEzNiAyMTIuNTk3NzYgMTIuNTkxMzYtNy4yNzE2OC01My4wMTYzMi0xODEuMTc2MzIgMzY1Ljk4NTI4IDE4LjcyNzY4IDE4LjM0MzY4IDM2NS42MDY0LTE1My42Njc4NC00Ni40MTY2NC0xNy4wOTE4NCA5Ljg2ODggMTk1LjU1ODQgNjEuMzU4MDhzLTkuOTUyLTM0Ni44NDE2LTEyLjA3NjgtNDIwLjk3NzkyeiIgZmlsbD0iI0YwODMyMSI+PC9wYXRoPjwvc3ZnPg==";
 var DEBUG = process.env.NODE_ENV !== "production";
+var TEST = process.env.NODE_ENV === "test";
 var SERVERMODE = typeof window === "undefined";
 var DEBOUNCE_WINDOW_RESIZE = 300;
 var CACHE_TIME_MAX = SERVERMODE ? 5 : 30;
@@ -469,7 +294,7 @@ var isFloat = (value) => {
 };
 
 // src/base/string.ts
-var import_isomorphic_dompurify = __toESM(require("isomorphic-dompurify"));
+import DOMPurify from "isomorphic-dompurify";
 var template = (str, data, regex = /\{(.+?)\}/g) => {
   return Array.from(str.matchAll(regex)).reduce((acc, match) => {
     const key = trimEx(match[1]);
@@ -524,7 +349,7 @@ function htmlClear(str) {
   return str.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ").replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/<[^>]+>/g, "").replace(/(^\s*)|(\s*$)/g, "");
 }
 function htmlSafe(dirty, config) {
-  return import_isomorphic_dompurify.default.sanitize(dirty, config || { USE_PROFILES: { html: true } });
+  return DOMPurify.sanitize(dirty, config || { USE_PROFILES: { html: true } });
 }
 function htmlEncode(str) {
   if (!hasString(str)) return "";
@@ -1269,8 +1094,8 @@ function modulesUpdate(modules, options = { fullPath: false, incIndex: false }, 
 }
 
 // src/base/utils.ts
-var import_dayjs = __toESM(require("dayjs"));
-var import_fingerprintjs = __toESM(require("@fingerprintjs/fingerprintjs"));
+import dayjs from "dayjs";
+import fingerprintJs from "@fingerprintjs/fingerprintjs";
 function hash(obj) {
   if (isEmpty(obj)) return -1;
   if (!isString(obj)) obj = JSON.stringify(obj);
@@ -1286,20 +1111,20 @@ function hash(obj) {
 function rnd() {
   return Number(Math.random().toString().substring(3) + Date.now()).toString(36).slice(0, 11);
 }
-var date = (date2) => !date2 || date2 === "now" ? (0, import_dayjs.default)() : date2 === "yesterday" ? (0, import_dayjs.default)().subtract(1, "day") : date2 === "tomorrow" ? (0, import_dayjs.default)().add(1, "day") : (0, import_dayjs.default)(date2);
+var date = (date2) => !date2 || date2 === "now" ? dayjs() : date2 === "yesterday" ? dayjs().subtract(1, "day") : date2 === "tomorrow" ? dayjs().add(1, "day") : dayjs(date2);
 var dateFormat = (date2, format = "YYYY-MM-DD") => {
   if (isEmpty(date2)) return "";
   if (isString(date2)) date2 = date2.toLowerCase();
-  const day = !date2 || date2 === "now" ? (0, import_dayjs.default)() : date2 === "yesterday" ? (0, import_dayjs.default)().subtract(1, "day") : date2 === "tomorrow" ? (0, import_dayjs.default)().add(1, "day") : (0, import_dayjs.default)(date2);
+  const day = !date2 || date2 === "now" ? dayjs() : date2 === "yesterday" ? dayjs().subtract(1, "day") : date2 === "tomorrow" ? dayjs().add(1, "day") : dayjs(date2);
   if (!day.isValid()) return "\u2716";
   if (day.isBefore("2000-01-01", "day")) return "\u2796";
   if (format !== "desc") return day.format(format);
   return dateLong(day, null, false, true);
 };
 var dateLong = (start, end, isEn = false, incSuffix = false) => {
-  const dayStart = (0, import_dayjs.default)(start);
+  const dayStart = dayjs(start);
   if (!dayStart.isValid()) return "\u2716";
-  const dayEnd = end ? (0, import_dayjs.default)(end) : (0, import_dayjs.default)();
+  const dayEnd = end ? dayjs(end) : dayjs();
   if (!dayEnd.isValid()) return "\u2716";
   let long = dayEnd.unix() - dayStart.unix();
   const isAfter = long < 0;
@@ -1426,7 +1251,7 @@ function globalId(prefix) {
 }
 async function fingerprint() {
   if (SERVERMODE) return { id: "server", score: 1 };
-  const fpJs = await import_fingerprintjs.default.load().then((fg) => fg.get());
+  const fpJs = await fingerprintJs.load().then((fg) => fg.get());
   return { id: fpJs.visitorId, score: fpJs.confidence.score };
 }
 
@@ -1730,12 +1555,12 @@ var cache_server_default = class {
 };
 
 // src/cache/cache.client.ts
-var import_localforage = __toESM(require("localforage"));
+import localforage from "localforage";
 var DEFAULT_TIME2 = CACHE_TIME_MAX * 86400;
 var cache_client_default = class {
   constructor() {
     /** 缓存对象 */
-    this.instance = import_localforage.default;
+    this.instance = localforage;
     /** 正在检查缓存 */
     this.checkStatus = false;
   }
@@ -3925,11 +3750,8 @@ async function remoteFileToBase64(url, onlyImage = true) {
   });
 }
 
-// src/http/hook.ts
-var import_chalk = __toESM(require("chalk"));
-
 // src/http/utils.ts
-var import_ufo = require("ufo");
+import { withBase, withQuery } from "ufo";
 var payloadMethods = new Set(Object.freeze(["PATCH", "POST", "PUT", "DELETE"]));
 function isPayloadMethod(method = "GET") {
   return payloadMethods.has(method.toUpperCase());
@@ -3954,10 +3776,11 @@ function getToken(context, tokenContent = "") {
     return tokenContent;
   }
 }
-function updateRequest(request, options, appenQuery = false) {
+function updateRequest(context, appenQuery = false) {
+  const { request, options } = context;
   const sourceUrl = isString(request) ? request : request == null ? void 0 : request.url;
   const baseUrl = options.baseURL;
-  let url = baseUrl ? (0, import_ufo.withBase)(sourceUrl, baseUrl) : sourceUrl;
+  let url = baseUrl ? withBase(sourceUrl, baseUrl) : sourceUrl;
   url = url.replace(/%7B/gi, "{").replace(/%7D/gi, "}");
   const queryData = {};
   const encode = hasArray(options.encode) ? options.encode.map((x) => x.toLowerCase()) : [];
@@ -3975,8 +3798,8 @@ function updateRequest(request, options, appenQuery = false) {
       const reg = new RegExp(`{${key}}`, "gi");
       if (reg.test(url)) {
         url = url.replace(reg, value);
-        delete data[key];
-      } else if (isQuery) {
+      }
+      if (isQuery) {
         queryData[key] = value;
       } else if (isEncode) {
         data[key] = value;
@@ -4003,12 +3826,18 @@ function updateRequest(request, options, appenQuery = false) {
   }
   if (hasObject(queryData)) {
     if (appenQuery) {
-      url = (0, import_ufo.withQuery)(url, queryData);
+      url = withQuery(url, queryData);
     } else {
       options.query = queryData;
     }
   }
-  if (sourceUrl !== url) request = isString(request) ? url : new Request(url, request);
+  if (sourceUrl !== url) {
+    if (isString(request)) {
+      context.request = url;
+    } else {
+      context.request = new Request(url, request);
+    }
+  }
   return { url, request, options };
 }
 function showError(config, error, alert) {
@@ -4063,7 +3892,8 @@ function getResponseErrorMessage(code, message) {
 }
 
 // src/http/hook.ts
-var import_ofetch = require("ofetch");
+import { createFetch, createFetchError } from "ofetch";
+import chalk from "chalk";
 var HTTP_DEBUG = {
   /**
    * 输出模式：是否开启调试信息输出
@@ -4078,32 +3908,33 @@ var HTTP_DEBUG = {
   show: true
 };
 function debug(succ, title2, context, config) {
+  if (TEST) return;
   if (HTTP_DEBUG.output === false) return;
   if (HTTP_DEBUG.debugOnly && !DEBUG) return;
-  const space = import_chalk.default.reset(" ".repeat(4));
+  const space = chalk.reset(" ".repeat(4));
   const outputs = [];
   if (HTTP_DEBUG.show) {
     HTTP_DEBUG.show = false;
-    outputs.push(import_chalk.default.bgYellow("#".repeat(72)));
+    outputs.push(chalk.bgYellow("#".repeat(72)));
     outputs.push("");
-    outputs.push(space + `${import_chalk.default.bgRedBright("\u8C03\u8BD5\u6A21\u5F0F")}`);
+    outputs.push(space + `${chalk.bgRedBright("\u8C03\u8BD5\u6A21\u5F0F")}`);
     outputs.push("");
     outputs.push(
-      space + import_chalk.default.redBright("\u60A8\u5DF2\u7ECF\u5F00\u542F\u4E86 HTTP \u8BF7\u6C42\u7684\u8C03\u8BD5\u6A21\u5F0F\uFF0C\u5C06\u8F93\u51FA HTTP \u8BF7\u6C42\u7684\u76F8\u5173\u4FE1\u606F\u3002")
+      space + chalk.redBright("\u60A8\u5DF2\u7ECF\u5F00\u542F\u4E86 HTTP \u8BF7\u6C42\u7684\u8C03\u8BD5\u6A21\u5F0F\uFF0C\u5C06\u8F93\u51FA HTTP \u8BF7\u6C42\u7684\u76F8\u5173\u4FE1\u606F\u3002")
     );
     outputs.push(
-      space + import_chalk.default.redBright("\u5F53\u524D\u6A21\u5F0F\uFF1A") + import_chalk.default.bgGreen.white(` ${HTTP_DEBUG.output} `)
+      space + chalk.redBright("\u5F53\u524D\u6A21\u5F0F\uFF1A") + chalk.bgGreen.white(` ${HTTP_DEBUG.output} `)
     );
     outputs.push(
-      space + import_chalk.default.redBright("\u60A8\u53EF\u4EE5\u901A\u8FC7\u4FEE\u6539 ") + import_chalk.default.bgMagentaBright.white(" HTTP_DEBUG.output ") + import_chalk.default.redBright(" \u53C2\u6570\u6765\u8C03\u6574\u8C03\u8BD5\u4FE1\u606F\u8F93\u51FA\u7684\u60C5\u51B5\u3002")
+      space + chalk.redBright("\u60A8\u53EF\u4EE5\u901A\u8FC7\u4FEE\u6539 ") + chalk.bgMagentaBright.white(" HTTP_DEBUG.output ") + chalk.redBright(" \u53C2\u6570\u6765\u8C03\u6574\u8C03\u8BD5\u4FE1\u606F\u8F93\u51FA\u7684\u60C5\u51B5\u3002")
     );
     outputs.push("");
-    outputs.push(import_chalk.default.bgYellow("#".repeat(72)));
+    outputs.push(chalk.bgYellow("#".repeat(72)));
     outputs.push("");
   }
-  const color = succ ? import_chalk.default.greenBright : import_chalk.default.redBright;
-  const bgColor = succ ? import_chalk.default.bgGreen : import_chalk.default.bgRed;
-  outputs.push(succ ? import_chalk.default.bgGreen(title2) : import_chalk.default.bgRed(title2));
+  const color = succ ? chalk.greenBright : chalk.redBright;
+  const bgColor = succ ? chalk.bgGreen : chalk.bgRed;
+  outputs.push(succ ? chalk.bgGreen(title2) : chalk.bgRed(title2));
   const { request, response } = context;
   let url = response ? response.url : isObject(request) ? request.url : request;
   let method = isObject(request) ? request.method : "GET";
@@ -4150,7 +3981,7 @@ function createHttp(globalOptions, globalConfig) {
       ...globalOptions == null ? void 0 : globalOptions.defaults
     }
   };
-  const http2 = (0, import_ofetch.createFetch)(options);
+  const http2 = createFetch(options);
   http2.runtime = runtime;
   http2.cache = (request, options2) => HttpCache(http2, request, options2);
   http2.GET = (url, params, options2) => HttpFast(http2, url, "GET", params, options2);
@@ -4168,8 +3999,10 @@ function createHttp(globalOptions, globalConfig) {
 }
 async function onRequest(context, config) {
   const { request, options } = context;
+  config.baseURL && options.baseURL !== config.baseURL && (options.baseURL = config.baseURL);
+  config.timeout && config.timeout > 0 && (options.timeout = config.timeout);
   if (!options.headers) options.headers = new Headers();
-  const data = updateRequest(request, options);
+  const data = updateRequest(context);
   config.last = {
     url: isString(request) ? request : request.url,
     method: options.method || "GET",
@@ -4227,14 +4060,14 @@ function onResponse(context, config) {
 }
 function onRequestError(context, config) {
   debug(false, "HTTP Request Error", context, config);
-  const httpError = (0, import_ofetch.createFetchError)(context);
+  const httpError = createFetchError(context);
   if (!config.private) throw httpError;
   const flag = showError(config, httpError);
   if (flag) throw httpError;
 }
 async function onResponseError(context, config) {
   debug(false, "HTTP Response Error", context, config);
-  const httpError = (0, import_ofetch.createFetchError)(context);
+  const httpError = createFetchError(context);
   if (!config.private) throw httpError;
   const { response, error, options } = context;
   if (!response || !error) return;
@@ -4259,22 +4092,13 @@ var cache2 = new LRU(30);
 var cacheStatus = /* @__PURE__ */ new Map();
 async function HttpCache(http2, request, options) {
   if (!options) options = {};
-  const url = isString(request) ? request : request.url;
-  const method = (options.method || "GET").toUpperCase();
-  const data = {};
-  hasObject(options.query) && Object.assign(data, options.query);
-  hasObject(options.params) && Object.assign(data, options.params);
-  hasObject(options.body) && Object.assign(data, options.body);
-  hasObject(options.headers) && Object.assign(data, options.headers);
   const { cacheTime, cacheKey, cacheValue, cacheError } = await cacheRead(
-    url,
-    method,
-    data,
+    request,
     options,
     http2.runtime
   );
-  if (hasObjectName(cacheValue, "succ")) {
-    con.information("HTTP \u7F13\u5B58\u547D\u4E2D", url, cacheTime, cacheKey, cacheValue);
+  if (cacheValue && hasObjectName(cacheValue, "succ")) {
+    con.information("HTTP \u7F13\u5B58\u547D\u4E2D", request, cacheTime, cacheKey, cacheValue);
     if (cacheValue.succ) {
       return cacheValue.result;
     } else if (cacheError) {
@@ -4293,12 +4117,8 @@ async function HttpCache(http2, request, options) {
     result = res;
   });
   if (cacheTime > 0) {
-    if (succ) {
-      cache2.set(cacheKey, { succ, result }, cacheTime);
-    } else if (cacheError) {
-      const time = cacheTime > 30 ? 30 : cacheTime;
-      cache2.set(cacheKey, { succ, result }, time);
-    }
+    const time = succ ? cacheTime : cacheError && cacheTime > 30 ? 30 : 0;
+    time > 0 && cache2.set(cacheKey, { succ, result }, time);
     cacheStatus.delete(cacheKey);
   }
   if (succ) {
@@ -4307,26 +4127,36 @@ async function HttpCache(http2, request, options) {
     throw result;
   }
 }
-var cacheRead = async (url, method, data, options, config) => {
+var cacheRead = async (request, options, config) => {
   var _a, _b;
-  let cacheKey = "";
-  let cacheValue = {};
+  const nothing = () => {
+    options.cacheTime = false;
+    options.cacheError = false;
+    return { cacheTime, cacheKey: "", cacheValue: void 0, cacheError: false };
+  };
   let cacheTime = options.cacheTime === false ? -1 : options.cacheTime || 0;
   if (cacheTime === 0) {
     const isQuery = isPayloadMethod(options.method || "GET");
     cacheTime = (isQuery ? (_a = config.cacheTime) == null ? void 0 : _a.GET : (_b = config.cacheTime) == null ? void 0 : _b.POST) || 0;
   }
-  if (cacheTime < 1) {
-    options.cacheTime = false;
-    options.cacheError = false;
-    return { cacheTime, cacheKey, cacheValue, cacheError: false };
+  if (cacheTime < 1) return nothing();
+  let cacheKey = isString(options.cacheKey) ? options.cacheKey : isFn(options.cacheKey) ? options.cacheKey(request, options) : void 0;
+  if (cacheKey === "") return nothing();
+  if (!cacheKey) {
+    const url = isString(request) ? request : request.url;
+    const method = (options.method || "GET").toUpperCase();
+    const data = {};
+    hasObject(options.query) && Object.assign(data, options.query);
+    hasObject(options.params) && Object.assign(data, options.params);
+    hasObject(options.body) && Object.assign(data, options.body);
+    hasObject(options.headers) && Object.assign(data, options.headers);
+    cacheKey = JSON.stringify({
+      url,
+      method,
+      data
+    });
   }
-  cacheKey = JSON.stringify({
-    url,
-    method,
-    data
-  });
-  cacheValue = cache2.get(cacheKey);
+  let cacheValue = cache2.get(cacheKey);
   if (cacheValue) return { cacheTime, cacheKey, cacheValue, cacheError: options.cacheError };
   for (let i = 0; i < 10; i++) {
     await sleep(100);
@@ -4398,7 +4228,6 @@ async function HttpDownload(http2, request, options) {
     );
     succ = true;
   }).catch((res) => {
-    console.error(res);
     showError(
       http2.runtime,
       {
@@ -4417,8 +4246,7 @@ async function HttpDownload(http2, request, options) {
   return succ;
 }
 async function HttpApi(http2, api, options) {
-  if (!hasObjectName(api, "url")) return;
-  if (!isString(api.url)) return;
+  if (!hasObjectName(api, "url") || !isString(api.url)) throw new Error("\u65E0\u6548\u7684 API \u914D\u7F6E");
   api.method = api.method || "GET";
   api.method = api.method.toUpperCase();
   !hasObject(options) && (options = {});
@@ -4488,26 +4316,26 @@ var createHttpInstance = createHttp;
 var http = createHttp();
 
 // src/console.ts
-var import_chalk2 = __toESM(require("chalk"));
-var import_ufo2 = require("ufo");
+import chalk2 from "chalk";
+import { parseFilename } from "ufo";
 var consoleEcho = class {
   /** 信息输出 */
   _echo(icon, bgColor, color, mode, message, ...optionalParams) {
-    if (!DEBUG && mode !== "error") return;
+    if ((!DEBUG || TEST) && mode !== "error") return;
     const stringify = (objColor, obj) => {
       obj = emptyString(obj);
       const str = isObject(obj) ? JSON.stringify(obj, null, "	") : obj;
       return objColor(` ${str} `);
     };
     const emptyString = (obj) => {
-      if (typeof obj === "undefined") return import_chalk2.default.bgGray.cyanBright(" Undefined ");
-      if (obj === null) return import_chalk2.default.bgGray.cyanBright(" Null ");
-      if (obj === "") return import_chalk2.default.bgGray.yellowBright(" EmptyString ");
-      if (obj === true) return import_chalk2.default.bgGray.greenBright(" True ");
-      if (obj === false) return import_chalk2.default.bgGray.redBright(" False ");
+      if (typeof obj === "undefined") return chalk2.bgGray.cyanBright(" Undefined ");
+      if (obj === null) return chalk2.bgGray.cyanBright(" Null ");
+      if (obj === "") return chalk2.bgGray.yellowBright(" EmptyString ");
+      if (obj === true) return chalk2.bgGray.greenBright(" True ");
+      if (obj === false) return chalk2.bgGray.redBright(" False ");
       return obj;
     };
-    let source = import_chalk2.default.reset.white(errorTrace(1, 1, ["$Global.echo", "consoleEcho."]));
+    let source = chalk2.reset.white(errorTrace(1, 1, ["$Global.echo", "consoleEcho."]));
     if (hasString(message) && hasArray(optionalParams)) {
       for (let i = 0; i < optionalParams.length; i++) {
         if (!hasObject(optionalParams[i])) continue;
@@ -4516,9 +4344,9 @@ var consoleEcho = class {
       }
     }
     if (message) {
-      message = stringify(bgColor.bold, message) + "\n" + import_chalk2.default.reset.white(source);
+      message = stringify(bgColor.bold, message) + "\n" + chalk2.reset.white(source);
     } else {
-      message = import_chalk2.default.reset(color(source));
+      message = chalk2.reset(color(source));
     }
     icon && (message = icon + " " + message);
     const len = optionalParams.length;
@@ -4541,7 +4369,7 @@ var consoleEcho = class {
   }
   /** 信息输出 */
   echo(color, message, ...optionalParams) {
-    this._echo("", import_chalk2.default.reset, color, "default", message, void 0, ...optionalParams);
+    this._echo("", chalk2.reset, color, "default", message, void 0, ...optionalParams);
   }
   /** 普通打印输出 */
   log(message, ...optionalParams) {
@@ -4555,8 +4383,8 @@ var consoleEcho = class {
   information(message, ...optionalParams) {
     this._echo(
       message === "INFO" ? "\u2139" : "",
-      import_chalk2.default.bgBlue.whiteBright,
-      import_chalk2.default.blueBright,
+      chalk2.bgBlue.whiteBright,
+      chalk2.blueBright,
       "default",
       message,
       ...optionalParams
@@ -4570,8 +4398,8 @@ var consoleEcho = class {
   error(message, ...optionalParams) {
     this._echo(
       message === "ERROR" ? "\u26D4" : "",
-      import_chalk2.default.bgRedBright.yellowBright,
-      import_chalk2.default.redBright,
+      chalk2.bgRedBright.yellowBright,
+      chalk2.redBright,
       message === "ERROR" ? "error" : "default",
       message,
       ...optionalParams
@@ -4585,8 +4413,8 @@ var consoleEcho = class {
   warning(message, ...optionalParams) {
     this._echo(
       message === "WARN" ? "\u26A0" : "",
-      import_chalk2.default.bgYellowBright.redBright,
-      import_chalk2.default.yellowBright,
+      chalk2.bgYellowBright.redBright,
+      chalk2.yellowBright,
       message === "WARN" ? "warn" : "default",
       message,
       ...optionalParams
@@ -4600,8 +4428,8 @@ var consoleEcho = class {
   success(message, ...optionalParams) {
     this._echo(
       message === "SUCC" ? "\u2705" : "",
-      import_chalk2.default.bgGreen.whiteBright,
-      import_chalk2.default.green,
+      chalk2.bgGreen.whiteBright,
+      chalk2.green,
       "default",
       message,
       ...optionalParams
@@ -4618,23 +4446,23 @@ var consoleEcho = class {
     const enabled = optionalParams[optionalParams.length - 1];
     if (enabled === "~") return;
     let title2 = "";
-    let id = import_chalk2.default.bgGray.yellowBright(` ${globalId()} `);
+    let id = chalk2.bgGray.yellowBright(` ${globalId()} `);
     if (isString(optionalParams[0]) && optionalParams[0]) {
       title2 = optionalParams[0];
       optionalParams = optionalParams.splice(1);
     }
     if (!SERVERMODE) {
-      let source = import_chalk2.default.reset.white(errorTrace(1, 1, ["$Global.echo", "consoleEcho."]));
+      let source = chalk2.reset.white(errorTrace(1, 1, ["$Global.echo", "consoleEcho."]));
       const infos = source == null ? void 0 : source.split(" (");
       if (hasArray(infos)) {
         !title2 && infos[0] && (title2 = infos[0].indexOf("[37m") > -1 ? ((_a = infos[0]) == null ? void 0 : _a.split("[37m")[1]) || "" : infos[0]);
-        infos[1] && (id += import_chalk2.default.bgBlack.whiteBright(
-          " " + ((_b = (0, import_ufo2.parseFilename)(infos[1], { strict: true })) == null ? void 0 : _b.split(":")[0])
+        infos[1] && (id += chalk2.bgBlack.whiteBright(
+          " " + ((_b = parseFilename(infos[1], { strict: true })) == null ? void 0 : _b.split(":")[0])
         ));
       }
     }
-    title2 && (title2 = import_chalk2.default.bgMagenta.whiteBright(` ${title2}`));
-    this._echo(id, import_chalk2.default.reset, import_chalk2.default.white, "debug", title2, ...optionalParams);
+    title2 && (title2 = chalk2.bgMagenta.whiteBright(` ${title2}`));
+    this._echo(id, chalk2.reset, chalk2.white, "debug", title2, ...optionalParams);
   }
 };
 if (!$Global.con) {
@@ -4727,7 +4555,7 @@ if (!$Global.$on) {
 }
 
 // src/formValidate.ts
-var import_dayjs2 = __toESM(require("dayjs"));
+import dayjs2 from "dayjs";
 var FormValidate = class {
   /** 规则合并，并转换成数组规则列表 */
   concat(...args) {
@@ -4852,16 +4680,16 @@ var FormValidate = class {
           return rule.message || "\u6B64\u503C\u957F\u5EA6\u5FC5\u987B\u5C0F\u4E8E\u7B49\u4E8E " + max;
       }
     }
-    const now = (0, import_dayjs2.default)(value);
+    const now = dayjs2(value);
     if (rule.minDate) {
       if (!now.isValid()) return rule.message || "\u65E0\u6548\u65E5\u671F\u6570\u636E";
-      const min = (0, import_dayjs2.default)(rule.minDate);
+      const min = dayjs2(rule.minDate);
       if (min.isValid() && now.isBefore(min, "day"))
         return rule.message || "\u65F6\u95F4\u5FC5\u987B\u665A\u4E8E\u6216\u8005\u7B49\u4E8E " + min.format("YYYY\u5E74MM\u6708DD\u65E5");
     }
     if (rule.maxDate) {
       if (!now.isValid()) return rule.message || "\u65E0\u6548\u65E5\u671F\u6570\u636E";
-      const max = (0, import_dayjs2.default)(rule.maxDate);
+      const max = dayjs2(rule.maxDate);
       if (max.isValid() && now.isAfter(max, "day"))
         return rule.message || "\u65F6\u95F4\u5FC5\u987B\u65E9\u4E8E\u6216\u8005\u7B49\u4E8E " + max.format("YYYY\u5E74MM\u6708DD\u65E5");
     }
@@ -4933,11 +4761,11 @@ var FormValidate = class {
       if (!isNaN(max)) ret.push("\u957F\u5EA6\u5FC5\u987B\u5C0F\u4E8E\u7B49\u4E8E" + max);
     }
     if (rule.minDate) {
-      const min = (0, import_dayjs2.default)(rule.minDate);
+      const min = dayjs2(rule.minDate);
       if (min.isValid()) ret.push("\u65F6\u95F4\u5FC5\u987B\u665A\u4E8E\u6216\u8005\u7B49\u4E8E " + min.format("YYYY\u5E74MM\u6708DD\u65E5"));
     }
     if (rule.maxDate) {
-      const max = (0, import_dayjs2.default)(rule.maxDate);
+      const max = dayjs2(rule.maxDate);
       if (max.isValid()) ret.push("\u65F6\u95F4\u5FC5\u987B\u65E9\u4E8E\u6216\u8005\u7B49\u4E8E " + max.format("YYYY\u5E74MM\u6708DD\u65E5"));
     }
     return ret.length > 0 ? ret.join("\uFF1B") : "";
@@ -5048,36 +4876,36 @@ var waterMark_default = (background, interval = 5) => {
   validate();
   setInterval(validate, interval * 1e3);
 };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
+export {
   $Global,
-  Base,
+  base_exports as Base,
   CACHE_TIME_MAX,
-  Cookies,
+  cookies_default as Cookies,
   DEBOUNCE_WINDOW_RESIZE,
   DEBUG,
-  DESCRIPTION,
+  description as DESCRIPTION,
   DecimalLength,
   FormValidate,
-  HOMEPAGE,
+  homepage as HOMEPAGE,
   HTTP_DEBUG,
   LOGO,
   LRU,
-  MD5,
-  NAME,
+  MD52 as MD5,
+  name as NAME,
   QR,
   QRCreate,
   QRErrorCorrectLevel,
   QRObject,
   SERVERMODE,
-  TITLE,
+  TEST,
+  title as TITLE,
   Tasks,
-  VERSION,
-  arrayEmpty,
-  arrayRemove,
+  version as VERSION,
+  empty2 as arrayEmpty,
+  remove2 as arrayRemove,
   base64Decode,
   base64Encode,
-  cache,
+  cache_default as cache,
   cleanDuplicate,
   clear,
   clone,
@@ -5097,12 +4925,12 @@ var waterMark_default = (background, interval = 5) => {
   errorTrace,
   eventBus,
   every,
-  excelJson,
-  excelTable,
+  exportJson as excelJson,
+  exportTable as excelTable,
   execute,
   fingerprint,
   fnId,
-  formValidate,
+  formValidate_default as formValidate,
   get,
   getCookie,
   globalId,
@@ -5138,7 +4966,7 @@ var waterMark_default = (background, interval = 5) => {
   isJSON,
   isMatch,
   isMobile,
-  isNaN,
+  isNaN2 as isNaN,
   isName,
   isNil,
   isNumber,
@@ -5195,6 +5023,6 @@ var waterMark_default = (background, interval = 5) => {
   treeParents,
   trimEx,
   typeName,
-  waterMark,
+  waterMark_default as waterMark,
   xor
-});
+};
