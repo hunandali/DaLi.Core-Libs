@@ -115,7 +115,7 @@ function debug(succ: boolean, title: string, context: HttpContext, config?: Http
 	outputs.push(succ ? chalk.bgGreen(title) : chalk.bgRed(title));
 
 	// 输出请求信息
-	const { request, response, options } = context;
+	const { request, response, options, error } = context;
 	let url = response ? response.url : isObject(request) ? request.url : request;
 	let method = options.method || 'GET';
 	outputs.push(color(`[${method}] ${url}`));
@@ -132,7 +132,11 @@ function debug(succ: boolean, title: string, context: HttpContext, config?: Http
 
 	outputs.push('');
 	outputs.push(bgColor('[输出]'));
-	outputs.push(response);
+	outputs.push(response || '无任何输出结果');
+
+	outputs.push('');
+	outputs.push(bgColor('[错误]'));
+	outputs.push(error || '无任何错误信息');
 
 	// 输出
 	outputs.push('');
