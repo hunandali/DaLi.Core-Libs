@@ -164,6 +164,7 @@ export function createHttp(globalOptions?: CreateFetchOptions, globalConfig?: Ht
 	const runtime: HttpRuntime = {
 		private: false,
 		privateMap: defaultMap,
+		globalErrorAlert: 'toast',
 		...globalConfig,
 		reLogin: 0
 	};
@@ -320,7 +321,10 @@ export function onRequestError(context: HttpContext, config: HttpRuntime) {
 	debug(false, 'HTTP Request Error', context, config);
 
 	// 非专有接口不处理
-	const httpError: HttpError = { ...createFetchError(context), alert: context.options.alert };
+	const httpError: HttpError = {
+		...createFetchError(context),
+		alert: context.options.alert || config.globalErrorAlert
+	};
 	if (!config.private) throw httpError;
 
 	// 展示错误
@@ -382,7 +386,7 @@ export async function onResponseError(context: HttpContext, config: HttpRuntime)
 	const error = context.error as HttpError;
 	error.message = errInfo.message;
 	error.name = errInfo.title;
-	error.alert = context.options.alert;
+	error.alert = context.options.alert || (!status && config.globalErrorAlert); // 无状态码时，使用全局错误提醒
 
 	// 展示错误
 	showError(config, error);

@@ -19,19 +19,11 @@
 */
 
 import { SERVERMODE } from '../../config';
-import { hasArray, hasObject, hasObjectName, hasString, isFn, isNil, isString } from '../base';
+import { hasArray, hasObject, hasObjectName, hasString, isFn, isString } from '../base';
 import { base64Encode } from '../encrypt';
 import type { Dict } from '../types';
 
-import type {
-	AlertNotifyMode,
-	HttpConfig,
-	HttpContext,
-	HttpError,
-	HttpOptions,
-	HttpRequest,
-	TokenContent
-} from './types';
+import type { HttpConfig, HttpContext, HttpError, HttpOptions, TokenContent } from './types';
 import { withBase, withQuery } from 'ufo';
 
 /** 可以携带 body 的响应数据类型 */

@@ -5,7 +5,7 @@ import { ChalkInstance } from 'chalk';
 
 var name = "@da.li/core-libs";
 var title = "大沥网络函数库";
-var version = "1.25.521";
+var version = "1.25.723";
 var description = "大沥网络函数库是大沥网络提供的一个公共 TypeScript 函数库，封装了基础操作、缓存、加密、文件处理、HTTP 请求等常用功能模块，旨在提高开发效率。";
 var homepage = "http://www.hunandali.com/";
 
@@ -120,6 +120,18 @@ declare const isNil: (value: any) => value is null | undefined;
  * 一个 NaN 原始值是唯一一个不等于自身的值。
  */
 declare const isNaN: (value: any) => boolean;
+/**
+ * 综合判断一个目标是否为 Vue 组件（涵盖实例和配置对象）。
+ *
+ * 这个函数会按顺序进行以下检查：
+ * 1. 检查目标是否为一个有效的对象。
+ * 2. 检查目标是否为一个 Vue 2 或 Vue 3 的组件实例（通过内部标志 `_isVue` 或 `__isVue`）。
+ * 3. 如果不是实例，则通过启发式方法检查它是否像一个组件的配置对象（检查 `setup`, `render`, `template` 属性）。
+ *
+ * @param input - 需要被检查的目标。
+ * @returns 如果判断为 Vue 组件，则返回 true，否则返回 false。
+ */
+declare const isVueComponent: (input: any) => boolean;
 /** 判断是否不为空，非空对象，非空数组，非空字符串，非空函数，非空 Symbol */
 declare const notEmpty: (value: any) => boolean;
 /** 判断是否 Object 对象且对象存在内容 */
@@ -658,8 +670,7 @@ declare function throttle<T>(func: (this: T, ...args: any[]) => any, wait?: numb
 /**
  * 全局唯一标识
  *
- * @param {String} prefix 前缀
- * @return {Number}
+ * @param prefix 前缀
  */
 declare function globalId(prefix?: string): string;
 /**
@@ -741,6 +752,7 @@ declare const index_isRegExp: typeof isRegExp;
 declare const index_isString: typeof isString;
 declare const index_isSymbol: typeof isSymbol;
 declare const index_isUrl: typeof isUrl;
+declare const index_isVueComponent: typeof isVueComponent;
 declare const index_list: typeof list;
 declare const index_list2tree: typeof list2tree;
 declare const index_listConvert: typeof listConvert;
@@ -783,7 +795,7 @@ declare const index_treeParents: typeof treeParents;
 declare const index_trimEx: typeof trimEx;
 declare const index_typeName: typeof typeName;
 declare namespace index {
-  export { index_$Global as $Global, index_DecimalLength as DecimalLength, empty as arrayEmpty, remove as arrayRemove, index_cleanDuplicate as cleanDuplicate, index_clear as clear, index_clone as clone, index_compare as compare, index_counting as counting, index_date as date, index_dateFormat as dateFormat, index_dateLong as dateLong, index_debounce as debounce, index_each as each, index_eachSync as eachSync, empty$1 as empty, index_errorTrace as errorTrace, index_every as every, index_execute as execute, index_fingerprint as fingerprint, index_fnId as fnId, index_get as get, index_globalId as globalId, index_group as group, index_has as has, index_hasArray as hasArray, index_hasObject as hasObject, index_hasObjectName as hasObjectName, index_hasString as hasString, index_hash as hash, index_htmlClear as htmlClear, index_htmlEncode as htmlEncode, index_htmlSafe as htmlSafe, index_inRange as inRange, index_isArray as isArray, index_isAsync as isAsync, index_isBoolean as isBoolean, index_isCar as isCar, index_isChinese as isChinese, index_isDate as isDate, index_isEmail as isEmail, index_isEmpty as isEmpty, index_isEnglish as isEnglish, index_isEqual as isEqual, index_isFloat as isFloat, index_isFn as isFn, index_isFullUrl as isFullUrl, index_isGuid as isGuid, index_isHttp as isHttp, index_isIP as isIP, index_isInt as isInt, index_isJSON as isJSON, index_isMatch as isMatch, index_isMobile as isMobile, index_isNaN as isNaN, index_isName as isName, index_isNil as isNil, index_isNumber as isNumber, index_isObject as isObject, index_isPhone as isPhone, index_isPrimitive as isPrimitive, index_isRegExp as isRegExp, index_isString as isString, index_isSymbol as isSymbol, index_isUrl as isUrl, index_list as list, index_list2tree as list2tree, index_listConvert as listConvert, index_listParents as listParents, index_listTop as listTop, index_math as math, index_merge as merge, index_modulesUpdate as modulesUpdate, index_modulesUpdateSync as modulesUpdateSync, index_notEmpty as notEmpty, index_number as number, index_range as range, index_reduce as reduce, remove$1 as remove, index_rnd as rnd, index_select as select, index_set as set, index_sleep as sleep, index_some as some, index_sort as sort, index_string2Value as string2Value, index_stringClear as stringClear, index_stringCut as stringCut, index_stringIncludes as stringIncludes, index_template as template, index_throttle as throttle, index_toArray as toArray, index_toDate as toDate, index_toDeepObject as toDeepObject, index_toFloat as toFloat, index_toHtml as toHtml, index_toInt as toInt, index_toJSON as toJSON, index_toObject as toObject, index_toSingleObject as toSingleObject, index_treeConvert as treeConvert, index_treeExecute as treeExecute, index_treeFind as treeFind, index_treeFindAll as treeFindAll, index_treeParents as treeParents, index_trimEx as trimEx, index_typeName as typeName };
+  export { index_$Global as $Global, index_DecimalLength as DecimalLength, empty as arrayEmpty, remove as arrayRemove, index_cleanDuplicate as cleanDuplicate, index_clear as clear, index_clone as clone, index_compare as compare, index_counting as counting, index_date as date, index_dateFormat as dateFormat, index_dateLong as dateLong, index_debounce as debounce, index_each as each, index_eachSync as eachSync, empty$1 as empty, index_errorTrace as errorTrace, index_every as every, index_execute as execute, index_fingerprint as fingerprint, index_fnId as fnId, index_get as get, index_globalId as globalId, index_group as group, index_has as has, index_hasArray as hasArray, index_hasObject as hasObject, index_hasObjectName as hasObjectName, index_hasString as hasString, index_hash as hash, index_htmlClear as htmlClear, index_htmlEncode as htmlEncode, index_htmlSafe as htmlSafe, index_inRange as inRange, index_isArray as isArray, index_isAsync as isAsync, index_isBoolean as isBoolean, index_isCar as isCar, index_isChinese as isChinese, index_isDate as isDate, index_isEmail as isEmail, index_isEmpty as isEmpty, index_isEnglish as isEnglish, index_isEqual as isEqual, index_isFloat as isFloat, index_isFn as isFn, index_isFullUrl as isFullUrl, index_isGuid as isGuid, index_isHttp as isHttp, index_isIP as isIP, index_isInt as isInt, index_isJSON as isJSON, index_isMatch as isMatch, index_isMobile as isMobile, index_isNaN as isNaN, index_isName as isName, index_isNil as isNil, index_isNumber as isNumber, index_isObject as isObject, index_isPhone as isPhone, index_isPrimitive as isPrimitive, index_isRegExp as isRegExp, index_isString as isString, index_isSymbol as isSymbol, index_isUrl as isUrl, index_isVueComponent as isVueComponent, index_list as list, index_list2tree as list2tree, index_listConvert as listConvert, index_listParents as listParents, index_listTop as listTop, index_math as math, index_merge as merge, index_modulesUpdate as modulesUpdate, index_modulesUpdateSync as modulesUpdateSync, index_notEmpty as notEmpty, index_number as number, index_range as range, index_reduce as reduce, remove$1 as remove, index_rnd as rnd, index_select as select, index_set as set, index_sleep as sleep, index_some as some, index_sort as sort, index_string2Value as string2Value, index_stringClear as stringClear, index_stringCut as stringCut, index_stringIncludes as stringIncludes, index_template as template, index_throttle as throttle, index_toArray as toArray, index_toDate as toDate, index_toDeepObject as toDeepObject, index_toFloat as toFloat, index_toHtml as toHtml, index_toInt as toInt, index_toJSON as toJSON, index_toObject as toObject, index_toSingleObject as toSingleObject, index_treeConvert as treeConvert, index_treeExecute as treeExecute, index_treeFind as treeFind, index_treeFindAll as treeFindAll, index_treeParents as treeParents, index_trimEx as trimEx, index_typeName as typeName };
 }
 
 /** 定时任务 */
@@ -1843,6 +1855,8 @@ interface HttpConfig {
      * @param error 错误信息
      */
     alert?: (error: HttpError, config: HttpRuntime) => boolean;
+    /** 全局无返回状态的错误，是否强制提醒 */
+    globalErrorAlert?: AlertNotifyMode;
 }
 /** http 运行参数 */
 interface HttpRuntime extends HttpConfig, Dict {
@@ -1873,7 +1887,7 @@ interface HttpRuntime extends HttpConfig, Dict {
  * modal / true 弹窗提示
  * 其他 notify
  */
-type AlertNotifyMode = 'modal' | 'toast' | boolean | undefined;
+type AlertNotifyMode = 'modal' | 'toast' | 'notify' | boolean | undefined;
 /**
  * 缓存值
  * @template T 缓存数据类型
@@ -2219,4 +2233,4 @@ declare class LRU {
 
 declare const _default: (background: string | (() => string), interval?: number) => void;
 
-export { $Global, type Action, type AlertNotifyMode, type AsyncAction, type AsyncFunc, index as Base, CACHE_TIME_MAX, type CacheValue, type CanvasContext, _default$1 as Cookies, type CookiesOptions, DEBOUNCE_WINDOW_RESIZE, DEBUG, description as DESCRIPTION, DecimalLength, type Dict, type DrawModule, FormValidate, type Func, homepage as HOMEPAGE, HTTP_DEBUG, type HttpCacheOptions, type HttpClient, type HttpConfig, type HttpContext, type HttpError, type HttpFetch, type HttpOptions, type HttpRequest, type HttpResponse, type HttpResponseMap, type HttpRuntime, type IApi, type IApiBase, type IApiResult, type IList, type IListMap, type IQR, type IRule, type IRules, type ITask, type ITasks, type ITree, type ITreeMap, LOGO, LRU, MD5, type MaybePromise, name as NAME, type NVs, type Nullable, QR, QRCode, type QRCodeOptions, QRCreate, QRErrorCorrectLevel, type QRModule, QRObject, type QRPlugin, type ResolvedHttpOptions, type ResponseType, SERVERMODE, TEST, title as TITLE, Tasks, type TokenContent, version as VERSION, empty as arrayEmpty, remove as arrayRemove, base64Decode, base64Encode, cache, cleanDuplicate, clear, clone, compare, consoleEcho, counting, createHttpInstance, createTasks, date, dateFormat, dateLong, debounce, deleteCookie, each, eachSync, empty$1 as empty, errorTrace, eventBus, every, exportJson as excelJson, exportTable as excelTable, execute, fingerprint, fnId, _default$2 as formValidate, get, getCookie, globalId, group, has, hasArray, hasObject, hasObjectName, hasString, hash, htmlClear, htmlEncode, htmlSafe, http, inRange, isArray, isAsync, isBoolean, isCar, isChinese, isDate, isEmail, isEmpty, isEnglish, isEqual, isFloat, isFn, isFullUrl, isGuid, isHttp, isIP, isInt, isJSON, isMatch, isMobile, isNaN, isName, isNil, isNumber, isObject, isPhone, isPrimitive, isRegExp, isString, isSymbol, isUrl, jsonDownload, list, list2tree, listConvert, listParents, listTop, math, merge, modulesUpdate, modulesUpdateSync, notEmpty, number, objectDownload, range, reduce, remoteFileToBase64, remove$1 as remove, rnd, select, set, setCookie, sleep, some, sort, string2Value, stringClear, stringCut, stringIncludes, template, throttle, toArray, toDate, toDeepObject, toFloat, toHtml, toInt, toJSON, toObject, toSingleObject, treeConvert, treeExecute, treeFind, treeFindAll, treeParents, trimEx, typeName, _default as waterMark, xor };
+export { $Global, type Action, type AlertNotifyMode, type AsyncAction, type AsyncFunc, index as Base, CACHE_TIME_MAX, type CacheValue, type CanvasContext, _default$1 as Cookies, type CookiesOptions, DEBOUNCE_WINDOW_RESIZE, DEBUG, description as DESCRIPTION, DecimalLength, type Dict, type DrawModule, FormValidate, type Func, homepage as HOMEPAGE, HTTP_DEBUG, type HttpCacheOptions, type HttpClient, type HttpConfig, type HttpContext, type HttpError, type HttpFetch, type HttpOptions, type HttpRequest, type HttpResponse, type HttpResponseMap, type HttpRuntime, type IApi, type IApiBase, type IApiResult, type IList, type IListMap, type IQR, type IRule, type IRules, type ITask, type ITasks, type ITree, type ITreeMap, LOGO, LRU, MD5, type MaybePromise, name as NAME, type NVs, type Nullable, QR, QRCode, type QRCodeOptions, QRCreate, QRErrorCorrectLevel, type QRModule, QRObject, type QRPlugin, type ResolvedHttpOptions, type ResponseType, SERVERMODE, TEST, title as TITLE, Tasks, type TokenContent, version as VERSION, empty as arrayEmpty, remove as arrayRemove, base64Decode, base64Encode, cache, cleanDuplicate, clear, clone, compare, consoleEcho, counting, createHttpInstance, createTasks, date, dateFormat, dateLong, debounce, deleteCookie, each, eachSync, empty$1 as empty, errorTrace, eventBus, every, exportJson as excelJson, exportTable as excelTable, execute, fingerprint, fnId, _default$2 as formValidate, get, getCookie, globalId, group, has, hasArray, hasObject, hasObjectName, hasString, hash, htmlClear, htmlEncode, htmlSafe, http, inRange, isArray, isAsync, isBoolean, isCar, isChinese, isDate, isEmail, isEmpty, isEnglish, isEqual, isFloat, isFn, isFullUrl, isGuid, isHttp, isIP, isInt, isJSON, isMatch, isMobile, isNaN, isName, isNil, isNumber, isObject, isPhone, isPrimitive, isRegExp, isString, isSymbol, isUrl, isVueComponent, jsonDownload, list, list2tree, listConvert, listParents, listTop, math, merge, modulesUpdate, modulesUpdateSync, notEmpty, number, objectDownload, range, reduce, remoteFileToBase64, remove$1 as remove, rnd, select, set, setCookie, sleep, some, sort, string2Value, stringClear, stringCut, stringIncludes, template, throttle, toArray, toDate, toDeepObject, toFloat, toHtml, toInt, toJSON, toObject, toSingleObject, treeConvert, treeExecute, treeFind, treeFindAll, treeParents, trimEx, typeName, _default as waterMark, xor };

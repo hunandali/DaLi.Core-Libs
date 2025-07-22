@@ -17,5 +17,3 @@ DEL "yarn.lock"
 DEL "package-lock.json"
 DEL "pnpm-lock.yaml"
 call yarn
-
-call npm run dev

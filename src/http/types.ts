@@ -312,6 +312,9 @@ export interface HttpConfig {
 	 * @param error 错误信息
 	 */
 	alert?: (error: HttpError, config: HttpRuntime) => boolean;
+
+	/** 全局无返回状态的错误，是否强制提醒 */
+	globalErrorAlert?: AlertNotifyMode;
 }
 
 /** http 运行参数 */
@@ -346,7 +349,7 @@ export interface HttpRuntime extends HttpConfig, Dict {
  * modal / true 弹窗提示
  * 其他 notify
  */
-export type AlertNotifyMode = 'modal' | 'toast' | boolean | undefined;
+export type AlertNotifyMode = 'modal' | 'toast' | 'notify' | boolean | undefined;
 
 /**
  * 缓存值

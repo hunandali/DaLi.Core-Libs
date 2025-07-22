@@ -130,6 +130,7 @@ __export(index_exports, {
   isString: () => isString,
   isSymbol: () => isSymbol,
   isUrl: () => isUrl,
+  isVueComponent: () => isVueComponent,
   jsonDownload: () => jsonDownload,
   list: () => list,
   list2tree: () => list2tree,
@@ -184,7 +185,7 @@ module.exports = __toCommonJS(index_exports);
 // package.json
 var name = "@da.li/core-libs";
 var title = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93";
-var version = "1.25.521";
+var version = "1.25.723";
 var description = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93\u662F\u5927\u6CA5\u7F51\u7EDC\u63D0\u4F9B\u7684\u4E00\u4E2A\u516C\u5171 TypeScript \u51FD\u6570\u5E93\uFF0C\u5C01\u88C5\u4E86\u57FA\u7840\u64CD\u4F5C\u3001\u7F13\u5B58\u3001\u52A0\u5BC6\u3001\u6587\u4EF6\u5904\u7406\u3001HTTP \u8BF7\u6C42\u7B49\u5E38\u7528\u529F\u80FD\u6A21\u5757\uFF0C\u65E8\u5728\u63D0\u9AD8\u5F00\u53D1\u6548\u7387\u3002";
 var homepage = "http://www.hunandali.com/";
 
@@ -264,6 +265,7 @@ __export(base_exports, {
   isString: () => isString,
   isSymbol: () => isSymbol,
   isUrl: () => isUrl,
+  isVueComponent: () => isVueComponent,
   list: () => list,
   list2tree: () => list2tree,
   listConvert: () => listConvert,
@@ -368,6 +370,17 @@ var isBoolean = (value) => value === true || value === false || typeof value ===
 var isRegExp = (value) => !!value && value instanceof RegExp;
 var isNil = (value) => value === null || value === void 0;
 var isNaN2 = (value) => !isNumber(value);
+var isVueComponent = (input) => {
+  if (!hasObject(input)) return false;
+  const target = input;
+  if (target._isVue === true || target.__isVue === true) {
+    return true;
+  }
+  if (isFn(target.setup) || isFn(target.render)) {
+    return true;
+  }
+  return false;
+};
 var notEmpty = (value) => !isEmpty(value);
 var hasObject = (value) => isObject(value) && Object.keys(value).length > 0;
 var hasObjectName = (value, name2) => !!name2 && hasObject(value) && value.hasOwnProperty(name2);
@@ -4110,7 +4123,7 @@ function debug(succ, title2, context, config) {
   const color = succ ? import_chalk.default.greenBright : import_chalk.default.redBright;
   const bgColor = succ ? import_chalk.default.bgGreen : import_chalk.default.bgRed;
   outputs.push(succ ? import_chalk.default.bgGreen(title2) : import_chalk.default.bgRed(title2));
-  const { request, response, options } = context;
+  const { request, response, options, error } = context;
   let url = response ? response.url : isObject(request) ? request.url : request;
   let method = options.method || "GET";
   outputs.push(color(`[${method}] ${url}`));
@@ -4124,7 +4137,10 @@ function debug(succ, title2, context, config) {
   }
   outputs.push("");
   outputs.push(bgColor("[\u8F93\u51FA]"));
-  outputs.push(response);
+  outputs.push(response || "\u65E0\u4EFB\u4F55\u8F93\u51FA\u7ED3\u679C");
+  outputs.push("");
+  outputs.push(bgColor("[\u9519\u8BEF]"));
+  outputs.push(error || "\u65E0\u4EFB\u4F55\u9519\u8BEF\u4FE1\u606F");
   outputs.push("");
   outputs.forEach((item) => {
     console.log(item);
@@ -4140,6 +4156,7 @@ function createHttp(globalOptions, globalConfig) {
   const runtime = {
     private: false,
     privateMap: defaultMap,
+    globalErrorAlert: "toast",
     ...globalConfig,
     reLogin: 0
   };
@@ -4231,7 +4248,10 @@ function onResponse(context, config) {
 }
 function onRequestError(context, config) {
   debug(false, "HTTP Request Error", context, config);
-  const httpError = { ...(0, import_ofetch.createFetchError)(context), alert: context.options.alert };
+  const httpError = {
+    ...(0, import_ofetch.createFetchError)(context),
+    alert: context.options.alert || config.globalErrorAlert
+  };
   if (!config.private) throw httpError;
   showError(config, httpError);
   throw httpError;
@@ -4265,7 +4285,7 @@ async function onResponseError(context, config) {
   const error = context.error;
   error.message = errInfo.message;
   error.name = errInfo.title;
-  error.alert = context.options.alert;
+  error.alert = context.options.alert || !status && config.globalErrorAlert;
   showError(config, error);
   throw error;
 }
@@ -5154,6 +5174,7 @@ var waterMark_default = (background, interval = 5) => {
   isString,
   isSymbol,
   isUrl,
+  isVueComponent,
   jsonDownload,
   list,
   list2tree,
