@@ -19,6 +19,8 @@
 ' ------------------------------------------------------------
 */
 
+import { Dict } from '../types';
+
 /** 分析数据的类型名称 */
 export function typeName(value: any): string {
 	let type = (typeof value).toString();
@@ -143,6 +145,44 @@ export const isNil = (value: any): value is null | undefined =>
  * 一个 NaN 原始值是唯一一个不等于自身的值。
  */
 export const isNaN = (value: any): boolean => !isNumber(value);
+
+/**
+ * 综合判断一个目标是否为 Vue 组件（涵盖实例和配置对象）。
+ *
+ * 这个函数会按顺序进行以下检查：
+ * 1. 检查目标是否为一个有效的对象。
+ * 2. 检查目标是否为一个 Vue 2 或 Vue 3 的组件实例（通过内部标志 `_isVue` 或 `__isVue`）。
+ * 3. 如果不是实例，则通过启发式方法检查它是否像一个组件的配置对象（检查 `setup`, `render`, `template` 属性）。
+ *
+ * @param input - 需要被检查的目标。
+ * @returns 如果判断为 Vue 组件，则返回 true，否则返回 false。
+ */
+export const isVueComponent = (input: any) => {
+	// 第一关：基础类型过滤。如果目标是 null、undefined 或不是对象，直接淘汰。
+	if (!hasObject(input)) return false;
+
+	const target = input as Dict;
+
+	// 第二关：实例检查（最可靠）。这是辨别“活”组件的火眼金睛。
+	// `_isVue` 是 Vue 2 组件实例的“身份证”。
+	// `__isVue` 是 Vue 3 组件实例的“身份证”。
+	// 只要有任何一个，就说明它是根正苗红的组件实例。
+	if (target._isVue === true || target.__isVue === true) {
+		return true;
+	}
+
+	// 第三关：配置对象检查（启发式猜测）。如果它不是一个实例，那它会不会是“设计蓝图”？
+	// 一个对象只要具备了渲染的能力，我们就有理由相信它是一个组件的配置。
+	// - `setup` 函数是 Composition API 的核心。
+	// - `render` 函数是渲染的核心。
+	// - `template` 字符串是组件的模板。<== 这点暂时不考虑，出错情况比较大
+	if (isFn(target.setup) || isFn(target.render)) {
+		return true;
+	}
+
+	// 历经三关考验都未通过，那它大概率就不是 Vue 组件了。
+	return false;
+};
 
 /** 判断是否不为空，非空对象，非空数组，非空字符串，非空函数，非空 Symbol */
 export const notEmpty = (value: any): boolean => !isEmpty(value);

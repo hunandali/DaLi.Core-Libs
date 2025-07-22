@@ -346,8 +346,7 @@ let _globalId = 0;
 /**
  * 全局唯一标识
  *
- * @param {String} prefix 前缀
- * @return {Number}
+ * @param prefix 前缀
  */
 export function globalId(prefix?: string) {
 	return prefix ? [prefix, ++_globalId].join('-') : (++_globalId).toString();

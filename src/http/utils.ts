@@ -18,6 +18,7 @@
 ' ------------------------------------------------------------
 */
 
+import { SERVERMODE } from '../../config';
 import { hasArray, hasObject, hasObjectName, hasString, isFn, isNil, isString } from '../base';
 import { base64Encode } from '../encrypt';
 import type { Dict } from '../types';
@@ -264,3 +265,22 @@ export function getResponseErrorMessage(code: number, message: string) {
 
 	return { title, message };
 }
+
+/**
+ * 直接打开链接
+ * 通过创建临时DOM元素的方式打开URL链接
+ * @param url 需要打开的URL地址
+ * @param target 打开目标，默认为'_blank'（新标签页）
+ */
+export const openUrl = (url: string, target?: string) => {
+	if (!url || SERVERMODE) return;
+
+	// 创建一个临时的 <a> 元素
+	const link = document.createElement('a');
+	link.href = url;
+	link.target = target || '_blank'; // 在新标签页中打开
+	link.rel = 'noopener noreferrer'; // 安全属性，防止新页面访问 window.opener
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+};

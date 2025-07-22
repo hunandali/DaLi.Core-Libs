@@ -38,6 +38,7 @@ export {
 	isRegExp,
 	isString,
 	isSymbol,
+	isVueComponent,
 	notEmpty,
 	typeName
 } from './type';

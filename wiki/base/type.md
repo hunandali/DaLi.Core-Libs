@@ -156,6 +156,14 @@ function isNil(value: any): value is null | undefined;
 function isNaN(value: any): boolean;
 ```
 
+### isVueComponent
+
+判断是否 Vue 组件。
+
+```typescript
+function isVueComponent(value: any): boolean;
+```
+
 ### notEmpty
 
 判断是否不为空（非空对象、非空数组、非空字符串、非空函数、非空 Symbol）。
