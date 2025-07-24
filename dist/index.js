@@ -7,7 +7,7 @@ var __export = (target, all) => {
 // package.json
 var name = "@da.li/core-libs";
 var title = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93";
-var version = "1.25.723";
+var version = "1.25.725";
 var description = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93\u662F\u5927\u6CA5\u7F51\u7EDC\u63D0\u4F9B\u7684\u4E00\u4E2A\u516C\u5171 TypeScript \u51FD\u6570\u5E93\uFF0C\u5C01\u88C5\u4E86\u57FA\u7840\u64CD\u4F5C\u3001\u7F13\u5B58\u3001\u52A0\u5BC6\u3001\u6587\u4EF6\u5904\u7406\u3001HTTP \u8BF7\u6C42\u7B49\u5E38\u7528\u529F\u80FD\u6A21\u5757\uFF0C\u65E8\u5728\u63D0\u9AD8\u5F00\u53D1\u6548\u7387\u3002";
 var homepage = "http://www.hunandali.com/";
 
@@ -4894,6 +4894,94 @@ var waterMark_default = (background, interval = 5) => {
   validate();
   setInterval(validate, interval * 1e3);
 };
+
+// src/theme.ts
+import dayjs3 from "dayjs";
+function UIThemeQuery(options) {
+  if (!SERVERMODE) {
+    if (typeof window !== "undefined") {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+      if (prefersDark.matches) return "dark";
+      const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
+      if (prefersLight.matches) return "light";
+    }
+    const root = document.documentElement;
+    if (root.classList.contains("dark")) return "dark";
+    if (root.classList.contains("light")) return "light";
+    const theme = root.dataset.theme;
+    if (theme) return theme;
+  }
+  const hour = (/* @__PURE__ */ new Date()).getHours();
+  const start = (options == null ? void 0 : options.start) || 6;
+  const end = (options == null ? void 0 : options.end) || 18;
+  return hour > start && hour <= end ? "light" : "dark";
+}
+function UIThemeSet(theme) {
+  if (SERVERMODE) return;
+  const root = document.documentElement;
+  root.classList.contains("dark") && root.classList.remove("dark");
+  root.classList.contains("light") && root.classList.remove("light");
+  root.classList.add(theme);
+  root.dataset.theme = theme;
+}
+var createImportantStyle = (days) => {
+  if (!days || SERVERMODE) return;
+  if (isString(days)) days = days.split(",");
+  if (hasArray(days)) {
+    const list2 = {};
+    days.forEach((day2) => {
+      day2 = day2.trim();
+      day2 && (list2[day2] = "");
+    });
+    days = list2;
+  }
+  if (!hasObject(days)) return;
+  const day = Object.keys(days).find((day2) => {
+    if (day2.length < 8) day2 = `${(/* @__PURE__ */ new Date()).getFullYear()}-${day2}`;
+    return dayjs3().isSame(day2, "day");
+  });
+  if (!day) return;
+  let info = days[day];
+  let background = "";
+  if (isString(info) && info !== "") {
+    if (info.startsWith("*")) {
+      info = info.slice(1);
+      document.body.style.webkitFilter = "grayscale(100%)";
+      document.body.style.filter = "grayscale(100%)";
+    }
+    const img = (text, size2, top2) => {
+      return `%3Ctext x='0' y='${top2}%25' font-size='${size2}' text-anchor='left' transform='rotate(-25)' opacity='0.06' font-weight='500' dominant-baseline='middle'%3E${text}%3C/text%3E`;
+    };
+    const texts = `${info},${dateFormat("", "YYYY-MM-DD")}`.replace(/[\;\:；：，]/g, ",").split(",").filter((text) => !!text);
+    let size = 32;
+    let top = 48;
+    for (let index = 0; index < texts.length; index++) {
+      const text = texts[index];
+      if (!text) continue;
+      background += img(text, size, top);
+      index < 1 && (top += 5);
+      size = 18;
+      top += 8;
+    }
+    background = `url("data:image/svg+xml,%3Csvg width='375' height='360' xmlns='http://www.w3.org/2000/svg'%3E${background}%3C/svg%3E")`;
+  }
+  let el = document.body.querySelector(".dl-global-style");
+  if (!el) {
+    el = document.createElement("div");
+    el.classList.add("dl-global-style");
+    document.body.appendChild(el);
+  }
+  el.style.pointerEvents = "none";
+  el.style.position = "fixed";
+  el.style.zIndex = "999999999999999999";
+  el.style.left = "0";
+  el.style.top = "0";
+  el.style.width = "100vw";
+  el.style.height = "100vh";
+  el.style.backgroundRepeat = "repeat";
+  el.style.backgroundPosition = "center top";
+  el.style.backgroundImage = background;
+};
 export {
   $Global,
   base_exports as Base,
@@ -4918,6 +5006,8 @@ export {
   TEST,
   title as TITLE,
   Tasks,
+  UIThemeQuery,
+  UIThemeSet,
   version as VERSION,
   empty2 as arrayEmpty,
   remove2 as arrayRemove,
@@ -4931,6 +5021,7 @@ export {
   consoleEcho,
   counting,
   createHttpInstance,
+  createImportantStyle,
   createTasks,
   date,
   dateFormat,

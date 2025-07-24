@@ -5,7 +5,7 @@ import { ChalkInstance } from 'chalk';
 
 var name = "@da.li/core-libs";
 var title = "大沥网络函数库";
-var version = "1.25.723";
+var version = "1.25.725";
 var description = "大沥网络函数库是大沥网络提供的一个公共 TypeScript 函数库，封装了基础操作、缓存、加密、文件处理、HTTP 请求等常用功能模块，旨在提高开发效率。";
 var homepage = "http://www.hunandali.com/";
 
@@ -2233,4 +2233,23 @@ declare class LRU {
 
 declare const _default: (background: string | (() => string), interval?: number) => void;
 
-export { $Global, type Action, type AlertNotifyMode, type AsyncAction, type AsyncFunc, index as Base, CACHE_TIME_MAX, type CacheValue, type CanvasContext, _default$1 as Cookies, type CookiesOptions, DEBOUNCE_WINDOW_RESIZE, DEBUG, description as DESCRIPTION, DecimalLength, type Dict, type DrawModule, FormValidate, type Func, homepage as HOMEPAGE, HTTP_DEBUG, type HttpCacheOptions, type HttpClient, type HttpConfig, type HttpContext, type HttpError, type HttpFetch, type HttpOptions, type HttpRequest, type HttpResponse, type HttpResponseMap, type HttpRuntime, type IApi, type IApiBase, type IApiResult, type IList, type IListMap, type IQR, type IRule, type IRules, type ITask, type ITasks, type ITree, type ITreeMap, LOGO, LRU, MD5, type MaybePromise, name as NAME, type NVs, type Nullable, QR, QRCode, type QRCodeOptions, QRCreate, QRErrorCorrectLevel, type QRModule, QRObject, type QRPlugin, type ResolvedHttpOptions, type ResponseType, SERVERMODE, TEST, title as TITLE, Tasks, type TokenContent, version as VERSION, empty as arrayEmpty, remove as arrayRemove, base64Decode, base64Encode, cache, cleanDuplicate, clear, clone, compare, consoleEcho, counting, createHttpInstance, createTasks, date, dateFormat, dateLong, debounce, deleteCookie, each, eachSync, empty$1 as empty, errorTrace, eventBus, every, exportJson as excelJson, exportTable as excelTable, execute, fingerprint, fnId, _default$2 as formValidate, get, getCookie, globalId, group, has, hasArray, hasObject, hasObjectName, hasString, hash, htmlClear, htmlEncode, htmlSafe, http, inRange, isArray, isAsync, isBoolean, isCar, isChinese, isDate, isEmail, isEmpty, isEnglish, isEqual, isFloat, isFn, isFullUrl, isGuid, isHttp, isIP, isInt, isJSON, isMatch, isMobile, isNaN, isName, isNil, isNumber, isObject, isPhone, isPrimitive, isRegExp, isString, isSymbol, isUrl, isVueComponent, jsonDownload, list, list2tree, listConvert, listParents, listTop, math, merge, modulesUpdate, modulesUpdateSync, notEmpty, number, objectDownload, range, reduce, remoteFileToBase64, remove$1 as remove, rnd, select, set, setCookie, sleep, some, sort, string2Value, stringClear, stringCut, stringIncludes, template, throttle, toArray, toDate, toDeepObject, toFloat, toHtml, toInt, toJSON, toObject, toSingleObject, treeConvert, treeExecute, treeFind, treeFindAll, treeParents, trimEx, typeName, _default as waterMark, xor };
+/** 获取浏览器自动样式 */
+declare function UIThemeQuery(options?: {
+    /** 自动切换开始时间 */
+    start: number;
+    /** 自动切换结束时间 */
+    end: number;
+}): string;
+/**
+ * 设置浏览器样式
+ * 从 html 根节点调整样式
+ * @param theme 主题
+ */
+declare function UIThemeSet(theme: 'light' | 'dark'): void;
+/**
+ * 重要日期样式变灰
+ * @param days 日期，日期组，{日期：水印文本}。如果日期为长日期比较当天，短日期每年比较。如果水印文本以 * 开头，页面变灰。
+ */
+declare const createImportantStyle: (days: string | string[] | NVs) => void;
+
+export { $Global, type Action, type AlertNotifyMode, type AsyncAction, type AsyncFunc, index as Base, CACHE_TIME_MAX, type CacheValue, type CanvasContext, _default$1 as Cookies, type CookiesOptions, DEBOUNCE_WINDOW_RESIZE, DEBUG, description as DESCRIPTION, DecimalLength, type Dict, type DrawModule, FormValidate, type Func, homepage as HOMEPAGE, HTTP_DEBUG, type HttpCacheOptions, type HttpClient, type HttpConfig, type HttpContext, type HttpError, type HttpFetch, type HttpOptions, type HttpRequest, type HttpResponse, type HttpResponseMap, type HttpRuntime, type IApi, type IApiBase, type IApiResult, type IList, type IListMap, type IQR, type IRule, type IRules, type ITask, type ITasks, type ITree, type ITreeMap, LOGO, LRU, MD5, type MaybePromise, name as NAME, type NVs, type Nullable, QR, QRCode, type QRCodeOptions, QRCreate, QRErrorCorrectLevel, type QRModule, QRObject, type QRPlugin, type ResolvedHttpOptions, type ResponseType, SERVERMODE, TEST, title as TITLE, Tasks, type TokenContent, UIThemeQuery, UIThemeSet, version as VERSION, empty as arrayEmpty, remove as arrayRemove, base64Decode, base64Encode, cache, cleanDuplicate, clear, clone, compare, consoleEcho, counting, createHttpInstance, createImportantStyle, createTasks, date, dateFormat, dateLong, debounce, deleteCookie, each, eachSync, empty$1 as empty, errorTrace, eventBus, every, exportJson as excelJson, exportTable as excelTable, execute, fingerprint, fnId, _default$2 as formValidate, get, getCookie, globalId, group, has, hasArray, hasObject, hasObjectName, hasString, hash, htmlClear, htmlEncode, htmlSafe, http, inRange, isArray, isAsync, isBoolean, isCar, isChinese, isDate, isEmail, isEmpty, isEnglish, isEqual, isFloat, isFn, isFullUrl, isGuid, isHttp, isIP, isInt, isJSON, isMatch, isMobile, isNaN, isName, isNil, isNumber, isObject, isPhone, isPrimitive, isRegExp, isString, isSymbol, isUrl, isVueComponent, jsonDownload, list, list2tree, listConvert, listParents, listTop, math, merge, modulesUpdate, modulesUpdateSync, notEmpty, number, objectDownload, range, reduce, remoteFileToBase64, remove$1 as remove, rnd, select, set, setCookie, sleep, some, sort, string2Value, stringClear, stringCut, stringIncludes, template, throttle, toArray, toDate, toDeepObject, toFloat, toHtml, toInt, toJSON, toObject, toSingleObject, treeConvert, treeExecute, treeFind, treeFindAll, treeParents, trimEx, typeName, _default as waterMark, xor };

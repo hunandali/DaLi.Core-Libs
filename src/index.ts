@@ -42,3 +42,5 @@ export * from './cookies';
 export { default as LRU } from './LRU';
 export { default as formValidate } from './formValidate';
 export { default as waterMark } from './waterMark';
+
+export * from './theme';
