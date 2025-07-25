@@ -20,15 +20,19 @@
 
 import dayjs from 'dayjs';
 import { SERVERMODE } from '../config';
-import { dateFormat, hasArray, hasObject, isString } from './base';
+import { dateFormat, hasArray, hasObject, isArray, isString } from './base';
 import { NVs } from './types';
 
 /** 获取浏览器自动样式 */
 export function UIThemeQuery(options?: {
-	/** 自动切换开始时间 */
+	/** 深色与浅色模式自动切换开始时间 */
 	start: number;
-	/** 自动切换结束时间 */
+
+	/** 深色与浅色模式自动切换结束时间 */
 	end: number;
+
+	/** 默认支持的主题，不论是否设置都包含 'dark' 和 'light'，主要用于从 class 中获取样式类型 */
+	defaultThemes?: string[];
 }) {
 	// 客户端
 	if (!SERVERMODE) {
@@ -41,14 +45,24 @@ export function UIThemeQuery(options?: {
 			if (prefersLight.matches) return 'light';
 		}
 
-		// 从页面顶级样式获取(unocss theme 插件 <html class="dark" />)
-		const root = document.documentElement;
-		if (root.classList.contains('dark')) return 'dark';
-		if (root.classList.contains('light')) return 'light';
+		let defaultThemes = options?.defaultThemes || [];
+		!hasArray(defaultThemes) && (defaultThemes = []);
+		!defaultThemes.includes('dark') && defaultThemes.push('dark');
+		!defaultThemes.includes('light') && defaultThemes.push('light');
 
-		// 从页面顶级 data-theme 中获取（bootstrap 方式 <html data-theme="dark" />）
-		const theme = root.dataset.theme;
-		if (theme) return theme;
+		// 从指定元素中获取样式数据
+		function getTheme(el: HTMLElement) {
+			// 从元素 data-theme 中获取（bootstrap 方式 <html data-theme="dark" />）
+			const theme = el.dataset.theme;
+			if (theme) return theme;
+
+			// 从元素样式获取(unocss theme 插件 <html class="dark" />)
+			const classList = el.classList;
+			return defaultThemes.find((item) => classList.contains(item));
+		}
+
+		const theme = getTheme(document.documentElement) || getTheme(document.body);
+		if (!theme) return theme;
 	}
 
 	// 服务端渲染或者无法自动获取到样式时使用时间判断
@@ -62,19 +76,21 @@ export function UIThemeQuery(options?: {
  * 设置浏览器样式
  * 从 html 根节点调整样式
  * @param theme 主题
+ * @param el 样式元素，默认 html 根节点
  */
-export function UIThemeSet(theme: 'light' | 'dark') {
+export function UIThemeSet(theme: 'light' | 'dark' | string, el?: HTMLElement) {
 	if (SERVERMODE) return;
+
+	theme = theme || 'light';
+	el = el || document.documentElement;
 
 	// 客户端，设置顶级样式
 	// 从页面顶级样式 (unocss theme 插件 <html class="dark" />)
 	// 从页面顶级 data-theme 中设置（bootstrap 方式 <html data-theme="dark" />）
-	const root = document.documentElement;
-	root.classList.contains('dark') && root.classList.remove('dark');
-	root.classList.contains('light') && root.classList.remove('light');
-	root.classList.add(theme);
+	el.classList.contains(theme) && el.classList.remove(theme);
+	el.classList.add(theme);
 
-	root.dataset.theme = theme;
+	el.dataset.theme = theme;
 }
 
 /**

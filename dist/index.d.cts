@@ -2235,17 +2235,20 @@ declare const _default: (background: string | (() => string), interval?: number)
 
 /** 获取浏览器自动样式 */
 declare function UIThemeQuery(options?: {
-    /** 自动切换开始时间 */
+    /** 深色与浅色模式自动切换开始时间 */
     start: number;
-    /** 自动切换结束时间 */
+    /** 深色与浅色模式自动切换结束时间 */
     end: number;
-}): string;
+    /** 默认支持的主题，不论是否设置都包含 'dark' 和 'light'，主要用于从 class 中获取样式类型 */
+    defaultThemes?: string[];
+}): string | undefined;
 /**
  * 设置浏览器样式
  * 从 html 根节点调整样式
  * @param theme 主题
+ * @param el 样式元素，默认 html 根节点
  */
-declare function UIThemeSet(theme: 'light' | 'dark'): void;
+declare function UIThemeSet(theme: 'light' | 'dark' | string, el?: HTMLElement): void;
 /**
  * 重要日期样式变灰
  * @param days 日期，日期组，{日期：水印文本}。如果日期为长日期比较当天，短日期每年比较。如果水印文本以 * 开头，页面变灰。

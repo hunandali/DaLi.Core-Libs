@@ -5080,30 +5080,38 @@ var waterMark_default = (background, interval = 5) => {
 var import_dayjs3 = __toESM(require("dayjs"), 1);
 function UIThemeQuery(options) {
   if (!SERVERMODE) {
+    let getTheme2 = function(el) {
+      const theme2 = el.dataset.theme;
+      if (theme2) return theme2;
+      const classList = el.classList;
+      return defaultThemes.find((item) => classList.contains(item));
+    };
+    var getTheme = getTheme2;
     if (typeof window !== "undefined") {
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
       if (prefersDark.matches) return "dark";
       const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
       if (prefersLight.matches) return "light";
     }
-    const root = document.documentElement;
-    if (root.classList.contains("dark")) return "dark";
-    if (root.classList.contains("light")) return "light";
-    const theme = root.dataset.theme;
-    if (theme) return theme;
+    let defaultThemes = (options == null ? void 0 : options.defaultThemes) || [];
+    !hasArray(defaultThemes) && (defaultThemes = []);
+    !defaultThemes.includes("dark") && defaultThemes.push("dark");
+    !defaultThemes.includes("light") && defaultThemes.push("light");
+    const theme = getTheme2(document.documentElement) || getTheme2(document.body);
+    if (!theme) return theme;
   }
   const hour = (/* @__PURE__ */ new Date()).getHours();
   const start = (options == null ? void 0 : options.start) || 6;
   const end = (options == null ? void 0 : options.end) || 18;
   return hour > start && hour <= end ? "light" : "dark";
 }
-function UIThemeSet(theme) {
+function UIThemeSet(theme, el) {
   if (SERVERMODE) return;
-  const root = document.documentElement;
-  root.classList.contains("dark") && root.classList.remove("dark");
-  root.classList.contains("light") && root.classList.remove("light");
-  root.classList.add(theme);
-  root.dataset.theme = theme;
+  theme = theme || "light";
+  el = el || document.documentElement;
+  el.classList.contains(theme) && el.classList.remove(theme);
+  el.classList.add(theme);
+  el.dataset.theme = theme;
 }
 var createImportantStyle = (days) => {
   if (!days || SERVERMODE) return;
