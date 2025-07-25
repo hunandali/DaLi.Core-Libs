@@ -7,7 +7,7 @@ var __export = (target, all) => {
 // package.json
 var name = "@da.li/core-libs";
 var title = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93";
-var version = "1.25.725";
+var version = "1.25.726";
 var description = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93\u662F\u5927\u6CA5\u7F51\u7EDC\u63D0\u4F9B\u7684\u4E00\u4E2A\u516C\u5171 TypeScript \u51FD\u6570\u5E93\uFF0C\u5C01\u88C5\u4E86\u57FA\u7840\u64CD\u4F5C\u3001\u7F13\u5B58\u3001\u52A0\u5BC6\u3001\u6587\u4EF6\u5904\u7406\u3001HTTP \u8BF7\u6C42\u7B49\u5E38\u7528\u529F\u80FD\u6A21\u5757\uFF0C\u65E8\u5728\u63D0\u9AD8\u5F00\u53D1\u6548\u7387\u3002";
 var homepage = "http://www.hunandali.com/";
 
@@ -4990,6 +4990,47 @@ var createImportantStyle = (days) => {
   el.style.backgroundPosition = "center top";
   el.style.backgroundImage = background;
 };
+
+// src/page.ts
+var screenType = (options) => {
+  if (SERVERMODE) return "server";
+  options = { desktop: (options == null ? void 0 : options.desktop) || 1024, mobile: (options == null ? void 0 : options.mobile) || 640 };
+  if (window.innerWidth >= options.desktop) return "desktop";
+  if (window.innerWidth <= options.mobile) return "mobile";
+  return "tablet";
+};
+var isFullscreen = () => {
+  if (SERVERMODE) return false;
+  return (
+    // @ts-ignore
+    document.webkitIsFullScreen || // @ts-ignore
+    document.mozFullScreen || // @ts-ignore
+    document.msFullscreenElement || // @ts-ignore
+    document.fullscreenElement || window.innerHeight === window.screen.height && window.innerWidth === window.screen.width
+  );
+};
+var _elementAction = (element, elementFunctionName) => {
+  try {
+    const fun = element[elementFunctionName];
+    if (isFn(fun)) {
+      fun();
+      return true;
+    }
+  } catch (e2) {
+  }
+  return false;
+};
+var fullscreenLaunch = (element) => {
+  if (SERVERMODE) return false;
+  let ele = isString(element) ? document.querySelector(element) : element;
+  ele = ele || document.querySelector("#app") || document.body;
+  if (!ele) return;
+  return _elementAction(ele, "requestFullscreen") || _elementAction(ele, "webkitRequestFullScreen") || _elementAction(ele, "msRequestFullscreen") || _elementAction(ele, "mozRequestFullScreen") || _elementAction(ele, "oRequestFullscreen");
+};
+var fullscreenExit = () => {
+  if (SERVERMODE) return false;
+  return _elementAction(document, "exitFullscreen") || _elementAction(document, "webkitExitFullscreen") || _elementAction(document, "msExitFullscreen") || _elementAction(document, "mozCancelFullScreen") || _elementAction(document, "oCancelFullScreen");
+};
 export {
   $Global,
   base_exports as Base,
@@ -5048,6 +5089,8 @@ export {
   fingerprint,
   fnId,
   formValidate_default as formValidate,
+  fullscreenExit,
+  fullscreenLaunch,
   get,
   getCookie,
   globalId,
@@ -5076,6 +5119,7 @@ export {
   isFloat,
   isFn,
   isFullUrl,
+  isFullscreen,
   isGuid,
   isHttp,
   isIP,
@@ -5113,6 +5157,7 @@ export {
   remoteFileToBase64,
   remove,
   rnd,
+  screenType,
   select,
   set,
   setCookie,

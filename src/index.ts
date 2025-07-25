@@ -44,3 +44,4 @@ export { default as formValidate } from './formValidate';
 export { default as waterMark } from './waterMark';
 
 export * from './theme';
+export * from './page';
