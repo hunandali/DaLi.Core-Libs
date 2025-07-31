@@ -5,7 +5,7 @@ import { ChalkInstance } from 'chalk';
 
 var name = "@da.li/core-libs";
 var title = "大沥网络函数库";
-var version = "1.25.726";
+var version = "1.25.731";
 var description = "大沥网络函数库是大沥网络提供的一个公共 TypeScript 函数库，封装了基础操作、缓存、加密、文件处理、HTTP 请求等常用功能模块，旨在提高开发效率。";
 var homepage = "http://www.hunandali.com/";
 
@@ -821,6 +821,14 @@ interface ITask {
     /** 执行结果 */
     result?: any;
 }
+/**
+ * 任务运行模式
+ * true: 客户端，服务端都可开启定时任务
+ * false: 客户端，服务端都不开启定时任务
+ * client: 仅客户端开启定时任务
+ * server: 仅服务端开启定时任务
+ */
+type TaskModeEnum = boolean | 'client' | 'server';
 /** 后台任务类 */
 declare class Tasks {
     /** 任务列表 */
@@ -855,12 +863,13 @@ type ITasks = Tasks;
  * 通过模块创建任务
  * @param modules 模块数据集合，使用 import.meta.glob 获取
  * @param interval 轮询周期（单位：秒）
+ * @param mode 任务运行模式（true: 客户端，服务端都可开启定时任务，false: 客户端，服务端都不开启定时任务，client: 仅客户端开启定时任务，server: 仅服务端开启定时任务）
  * @returns 任务集合
  * @example
  * createTasks(import.meta.glob('./tasks/*.ts', { eager: true }))
  * createTasks([import.meta.glob('./tasks/*.ts', { eager: true }),import.meta.glob('./tasks/*.js', { eager: true })])
  */
-declare const createTasks: (modules: Dict | Dict[], interval?: number) => Tasks | undefined;
+declare const createTasks: (modules: Dict | Dict[], interval?: number, mode?: TaskModeEnum) => Tasks | undefined;
 
 /*
 ' ------------------------------------------------------------
@@ -2267,8 +2276,8 @@ declare const screenType: (options?: {
 /** 判断是否全屏 */
 declare const isFullscreen: () => any;
 /** 进入全屏 */
-declare const fullscreenLaunch: (element: Element | string) => boolean | undefined;
+declare const fullscreenLaunch: (element: Element | string) => boolean;
 /** 退出全屏 */
 declare const fullscreenExit: () => boolean;
 
-export { $Global, type Action, type AlertNotifyMode, type AsyncAction, type AsyncFunc, index as Base, CACHE_TIME_MAX, type CacheValue, type CanvasContext, _default$1 as Cookies, type CookiesOptions, DEBOUNCE_WINDOW_RESIZE, DEBUG, description as DESCRIPTION, DecimalLength, type Dict, type DrawModule, FormValidate, type Func, homepage as HOMEPAGE, HTTP_DEBUG, type HttpCacheOptions, type HttpClient, type HttpConfig, type HttpContext, type HttpError, type HttpFetch, type HttpOptions, type HttpRequest, type HttpResponse, type HttpResponseMap, type HttpRuntime, type IApi, type IApiBase, type IApiResult, type IList, type IListMap, type IQR, type IRule, type IRules, type ITask, type ITasks, type ITree, type ITreeMap, LOGO, LRU, MD5, type MaybePromise, name as NAME, type NVs, type Nullable, QR, QRCode, type QRCodeOptions, QRCreate, QRErrorCorrectLevel, type QRModule, QRObject, type QRPlugin, type ResolvedHttpOptions, type ResponseType, SERVERMODE, TEST, title as TITLE, Tasks, type TokenContent, UIThemeQuery, UIThemeSet, version as VERSION, empty as arrayEmpty, remove as arrayRemove, base64Decode, base64Encode, cache, cleanDuplicate, clear, clone, compare, consoleEcho, counting, createHttpInstance, createImportantStyle, createTasks, date, dateFormat, dateLong, debounce, deleteCookie, each, eachSync, empty$1 as empty, errorTrace, eventBus, every, exportJson as excelJson, exportTable as excelTable, execute, fingerprint, fnId, _default$2 as formValidate, fullscreenExit, fullscreenLaunch, get, getCookie, globalId, group, has, hasArray, hasObject, hasObjectName, hasString, hash, htmlClear, htmlEncode, htmlSafe, http, inRange, isArray, isAsync, isBoolean, isCar, isChinese, isDate, isEmail, isEmpty, isEnglish, isEqual, isFloat, isFn, isFullUrl, isFullscreen, isGuid, isHttp, isIP, isInt, isJSON, isMatch, isMobile, isNaN, isName, isNil, isNumber, isObject, isPhone, isPrimitive, isRegExp, isString, isSymbol, isUrl, isVueComponent, jsonDownload, list, list2tree, listConvert, listParents, listTop, math, merge, modulesUpdate, modulesUpdateSync, notEmpty, number, objectDownload, range, reduce, remoteFileToBase64, remove$1 as remove, rnd, screenType, select, set, setCookie, sleep, some, sort, string2Value, stringClear, stringCut, stringIncludes, template, throttle, toArray, toDate, toDeepObject, toFloat, toHtml, toInt, toJSON, toObject, toSingleObject, treeConvert, treeExecute, treeFind, treeFindAll, treeParents, trimEx, typeName, _default as waterMark, xor };
+export { $Global, type Action, type AlertNotifyMode, type AsyncAction, type AsyncFunc, index as Base, CACHE_TIME_MAX, type CacheValue, type CanvasContext, _default$1 as Cookies, type CookiesOptions, DEBOUNCE_WINDOW_RESIZE, DEBUG, description as DESCRIPTION, DecimalLength, type Dict, type DrawModule, FormValidate, type Func, homepage as HOMEPAGE, HTTP_DEBUG, type HttpCacheOptions, type HttpClient, type HttpConfig, type HttpContext, type HttpError, type HttpFetch, type HttpOptions, type HttpRequest, type HttpResponse, type HttpResponseMap, type HttpRuntime, type IApi, type IApiBase, type IApiResult, type IList, type IListMap, type IQR, type IRule, type IRules, type ITask, type ITasks, type ITree, type ITreeMap, LOGO, LRU, MD5, type MaybePromise, name as NAME, type NVs, type Nullable, QR, QRCode, type QRCodeOptions, QRCreate, QRErrorCorrectLevel, type QRModule, QRObject, type QRPlugin, type ResolvedHttpOptions, type ResponseType, SERVERMODE, TEST, title as TITLE, type TaskModeEnum, Tasks, type TokenContent, UIThemeQuery, UIThemeSet, version as VERSION, empty as arrayEmpty, remove as arrayRemove, base64Decode, base64Encode, cache, cleanDuplicate, clear, clone, compare, consoleEcho, counting, createHttpInstance, createImportantStyle, createTasks, date, dateFormat, dateLong, debounce, deleteCookie, each, eachSync, empty$1 as empty, errorTrace, eventBus, every, exportJson as excelJson, exportTable as excelTable, execute, fingerprint, fnId, _default$2 as formValidate, fullscreenExit, fullscreenLaunch, get, getCookie, globalId, group, has, hasArray, hasObject, hasObjectName, hasString, hash, htmlClear, htmlEncode, htmlSafe, http, inRange, isArray, isAsync, isBoolean, isCar, isChinese, isDate, isEmail, isEmpty, isEnglish, isEqual, isFloat, isFn, isFullUrl, isFullscreen, isGuid, isHttp, isIP, isInt, isJSON, isMatch, isMobile, isNaN, isName, isNil, isNumber, isObject, isPhone, isPrimitive, isRegExp, isString, isSymbol, isUrl, isVueComponent, jsonDownload, list, list2tree, listConvert, listParents, listTop, math, merge, modulesUpdate, modulesUpdateSync, notEmpty, number, objectDownload, range, reduce, remoteFileToBase64, remove$1 as remove, rnd, screenType, select, set, setCookie, sleep, some, sort, string2Value, stringClear, stringCut, stringIncludes, template, throttle, toArray, toDate, toDeepObject, toFloat, toHtml, toInt, toJSON, toObject, toSingleObject, treeConvert, treeExecute, treeFind, treeFindAll, treeParents, trimEx, typeName, _default as waterMark, xor };

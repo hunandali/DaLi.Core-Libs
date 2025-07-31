@@ -72,7 +72,7 @@ export const fullscreenLaunch = (element: Element | string) => {
 
 	let ele = isString(element) ? document.querySelector(element) : element;
 	ele = ele || document.querySelector('#app') || document.body;
-	if (!ele) return;
+	if (!ele) return false;
 
 	return (
 		_elementAction(ele, 'requestFullscreen') ||

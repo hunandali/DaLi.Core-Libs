@@ -18,6 +18,7 @@
 ' ------------------------------------------------------------
 */
 
+import { SERVERMODE } from '../config';
 import { hasArray, hasObject, isFn, modulesUpdate } from './base';
 import { Action, Dict } from './types';
 
@@ -53,6 +54,15 @@ export interface ITask {
 	/** 执行结果 */
 	result?: any;
 }
+
+/**
+ * 任务运行模式
+ * true: 客户端，服务端都可开启定时任务
+ * false: 客户端，服务端都不开启定时任务
+ * client: 仅客户端开启定时任务
+ * server: 仅服务端开启定时任务
+ */
+export type TaskModeEnum = boolean | 'client' | 'server';
 
 /** 后台任务类 */
 export class Tasks {
@@ -154,14 +164,20 @@ export default Tasks;
  * 通过模块创建任务
  * @param modules 模块数据集合，使用 import.meta.glob 获取
  * @param interval 轮询周期（单位：秒）
+ * @param mode 任务运行模式（true: 客户端，服务端都可开启定时任务，false: 客户端，服务端都不开启定时任务，client: 仅客户端开启定时任务，server: 仅服务端开启定时任务）
  * @returns 任务集合
  * @example
  * createTasks(import.meta.glob('./tasks/*.ts', { eager: true }))
  * createTasks([import.meta.glob('./tasks/*.ts', { eager: true }),import.meta.glob('./tasks/*.js', { eager: true })])
  */
-export const createTasks = (modules: Dict | Dict[], interval = 30) => {
+export const createTasks = (modules: Dict | Dict[], interval = 30, mode: TaskModeEnum = true) => {
+	// 非运行模式也移除
+	if (!mode) return;
+	if (SERVERMODE && mode === 'client') return;
+	if (!SERVERMODE && mode === 'server') return;
+
 	// 无任务移除
-	if (!hasObject(modules)) return;
+	if (!hasObject(modules) && !hasArray(modules)) return;
 
 	const packages = modulesUpdate(modules);
 	if (!hasObject(packages)) return;

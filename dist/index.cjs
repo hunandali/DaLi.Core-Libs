@@ -192,7 +192,7 @@ module.exports = __toCommonJS(index_exports);
 // package.json
 var name = "@da.li/core-libs";
 var title = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93";
-var version = "1.25.726";
+var version = "1.25.731";
 var description = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93\u662F\u5927\u6CA5\u7F51\u7EDC\u63D0\u4F9B\u7684\u4E00\u4E2A\u516C\u5171 TypeScript \u51FD\u6570\u5E93\uFF0C\u5C01\u88C5\u4E86\u57FA\u7840\u64CD\u4F5C\u3001\u7F13\u5B58\u3001\u52A0\u5BC6\u3001\u6587\u4EF6\u5904\u7406\u3001HTTP \u8BF7\u6C42\u7B49\u5E38\u7528\u529F\u80FD\u6A21\u5757\uFF0C\u65E8\u5728\u63D0\u9AD8\u5F00\u53D1\u6548\u7387\u3002";
 var homepage = "http://www.hunandali.com/";
 
@@ -1510,8 +1510,11 @@ var Tasks = class {
     }, this.interval * 1e3);
   }
 };
-var createTasks = (modules, interval = 30) => {
-  if (!hasObject(modules)) return;
+var createTasks = (modules, interval = 30, mode = true) => {
+  if (!mode) return;
+  if (SERVERMODE && mode === "client") return;
+  if (!SERVERMODE && mode === "server") return;
+  if (!hasObject(modules) && !hasArray(modules)) return;
   const packages = modulesUpdate(modules);
   if (!hasObject(packages)) return;
   const tasks = [];
@@ -5209,7 +5212,7 @@ var fullscreenLaunch = (element) => {
   if (SERVERMODE) return false;
   let ele = isString(element) ? document.querySelector(element) : element;
   ele = ele || document.querySelector("#app") || document.body;
-  if (!ele) return;
+  if (!ele) return false;
   return _elementAction(ele, "requestFullscreen") || _elementAction(ele, "webkitRequestFullScreen") || _elementAction(ele, "msRequestFullscreen") || _elementAction(ele, "mozRequestFullScreen") || _elementAction(ele, "oRequestFullscreen");
 };
 var fullscreenExit = () => {
