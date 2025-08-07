@@ -20,7 +20,15 @@
 
 import dayjs from 'dayjs';
 import { SERVERMODE } from '../config';
-import { dateFormat, hasArray, hasObject, isArray, isString } from './base';
+import {
+	cleanDuplicate,
+	dateFormat,
+	hasArray,
+	hasObject,
+	isArray,
+	isObject,
+	isString
+} from './base';
 import { NVs } from './types';
 
 /** 获取浏览器自动样式 */
@@ -188,4 +196,36 @@ export const createImportantStyle = (days: string | string[] | NVs) => {
 	el.style.backgroundRepeat = 'repeat';
 	el.style.backgroundPosition = 'center top';
 	el.style.backgroundImage = background;
+};
+
+/** 样式类名类型 */
+export type ClassName = string | boolean | undefined | string[] | Record<string, boolean>;
+
+/** 合并样式中的类名，自动移除重复类名、空值 */
+export const mergeClass = (...classNames: ClassName[]) => {
+	let result: string[] = [];
+
+	for (const className of classNames) {
+		if (isString(className)) {
+			result.push(className);
+		} else if (isArray(className)) {
+			result.push(...className);
+		} else if (isObject(className)) {
+			for (const key in className) {
+				if (className[key]) result.push(key);
+			}
+		}
+	}
+
+	if (result.length < 1) return result;
+
+	// 转成文本后转数组，过滤重复内容
+	result = result
+		.join('|')
+		.replace(/\s+/g, '|')
+		.trim()
+		.split('|')
+		.filter((x) => !!x);
+
+	return cleanDuplicate(result);
 };

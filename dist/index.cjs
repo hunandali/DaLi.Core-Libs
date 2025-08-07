@@ -145,6 +145,7 @@ __export(index_exports, {
   listTop: () => listTop,
   math: () => math,
   merge: () => merge,
+  mergeClass: () => mergeClass,
   modulesUpdate: () => modulesUpdate,
   modulesUpdateSync: () => modulesUpdateSync,
   notEmpty: () => notEmpty,
@@ -192,7 +193,7 @@ module.exports = __toCommonJS(index_exports);
 // package.json
 var name = "@da.li/core-libs";
 var title = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93";
-var version = "1.25.731";
+var version = "1.25.807";
 var description = "\u5927\u6CA5\u7F51\u7EDC\u51FD\u6570\u5E93\u662F\u5927\u6CA5\u7F51\u7EDC\u63D0\u4F9B\u7684\u4E00\u4E2A\u516C\u5171 TypeScript \u51FD\u6570\u5E93\uFF0C\u5C01\u88C5\u4E86\u57FA\u7840\u64CD\u4F5C\u3001\u7F13\u5B58\u3001\u52A0\u5BC6\u3001\u6587\u4EF6\u5904\u7406\u3001HTTP \u8BF7\u6C42\u7B49\u5E38\u7528\u529F\u80FD\u6A21\u5757\uFF0C\u65E8\u5728\u63D0\u9AD8\u5F00\u53D1\u6548\u7387\u3002";
 var homepage = "http://www.hunandali.com/";
 
@@ -5178,6 +5179,23 @@ var createImportantStyle = (days) => {
   el.style.backgroundPosition = "center top";
   el.style.backgroundImage = background;
 };
+var mergeClass = (...classNames) => {
+  let result = [];
+  for (const className of classNames) {
+    if (isString(className)) {
+      result.push(className);
+    } else if (isArray(className)) {
+      result.push(...className);
+    } else if (isObject(className)) {
+      for (const key in className) {
+        if (className[key]) result.push(key);
+      }
+    }
+  }
+  if (result.length < 1) return result;
+  result = result.join("|").replace(/\s+/g, "|").trim().split("|").filter((x) => !!x);
+  return cleanDuplicate(result);
+};
 
 // src/page.ts
 var screenType = (options) => {
@@ -5336,6 +5354,7 @@ var fullscreenExit = () => {
   listTop,
   math,
   merge,
+  mergeClass,
   modulesUpdate,
   modulesUpdateSync,
   notEmpty,
