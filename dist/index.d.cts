@@ -5,7 +5,7 @@ import { ChalkInstance } from 'chalk';
 
 var name = "@da.li/core-libs";
 var title = "大沥网络函数库";
-var version = "1.25.807";
+var version = "1.25.809";
 var description = "大沥网络函数库是大沥网络提供的一个公共 TypeScript 函数库，封装了基础操作、缓存、加密、文件处理、HTTP 请求等常用功能模块，旨在提高开发效率。";
 var homepage = "http://www.hunandali.com/";
 
@@ -2256,8 +2256,9 @@ declare function UIThemeQuery(options?: {
  * 从 html 根节点调整样式
  * @param theme 主题
  * @param el 样式元素，默认 html 根节点
+ * @param defaultClass 节点默认样式类名
  */
-declare function UIThemeSet(theme: 'light' | 'dark' | string, el?: HTMLElement): void;
+declare function UIThemeSet(theme: 'light' | 'dark' | string, el?: HTMLElement, defaultClass?: string): void;
 /**
  * 重要日期样式变灰
  * @param days 日期，日期组，{日期：水印文本}。如果日期为长日期比较当天，短日期每年比较。如果水印文本以 * 开头，页面变灰。

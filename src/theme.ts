@@ -85,19 +85,25 @@ export function UIThemeQuery(options?: {
  * 从 html 根节点调整样式
  * @param theme 主题
  * @param el 样式元素，默认 html 根节点
+ * @param defaultClass 节点默认样式类名
  */
-export function UIThemeSet(theme: 'light' | 'dark' | string, el?: HTMLElement) {
+export function UIThemeSet(
+	theme: 'light' | 'dark' | string,
+	el?: HTMLElement,
+	defaultClass?: string
+) {
 	if (SERVERMODE) return;
 
 	theme = theme || 'light';
 	el = el || document.documentElement;
 
 	// 客户端，设置顶级样式
+
 	// 从页面顶级样式 (unocss theme 插件 <html class="dark" />)
-	// 从页面顶级 data-theme 中设置（bootstrap 方式 <html data-theme="dark" />）
-	el.classList.contains(theme) && el.classList.remove(theme);
+	defaultClass && (el.className = defaultClass);
 	el.classList.add(theme);
 
+	// 从页面顶级 data-theme 中设置（bootstrap 方式 <html data-theme="dark" />）
 	el.dataset.theme = theme;
 }
 
