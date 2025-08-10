@@ -469,7 +469,8 @@ export function treeConvert<T, V extends ITree<T> & { __tree?: boolean }>(
 export function list2tree<T, S extends IList<T>, V extends S & ITree<T>>(
 	list: S[],
 	parent: T,
-	predicate?: (value: S, index: number, array: S[]) => boolean,
+	predicate?: (parent: T, value: S, index: number, array: S[]) => boolean,
+
 	updateItem?: (
 		item: S & {
 			children?: V[];
@@ -480,10 +481,12 @@ export function list2tree<T, S extends IList<T>, V extends S & ITree<T>>(
 	if (!hasArray(list)) return [];
 
 	/** 值不能与父级相等，否则将出现死循环 */
-	if (!isFn(predicate)) predicate = (item) => item.parent === parent && item.value !== parent;
+	const filterFn = isFn(predicate)
+		? (item: S, index: number, array: S[]) => predicate(parent, item, index, array)
+		: (item: S) => item.parent === parent && item.value !== parent;
 
 	return list
-		.filter(predicate)
+		.filter(filterFn)
 		.map((item) => {
 			let restult = {
 				...item,
@@ -493,5 +496,5 @@ export function list2tree<T, S extends IList<T>, V extends S & ITree<T>>(
 
 			return (isFn(updateItem) ? updateItem(restult) : restult) as V;
 		})
-		.filter((item) => !!item);
+		.filter((item) => hasObject(item));
 }
