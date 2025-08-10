@@ -5,7 +5,7 @@ import { ChalkInstance } from 'chalk';
 
 var name = "@da.li/core-libs";
 var title = "大沥网络函数库";
-var version = "1.25.809";
+var version = "1.25.810";
 var description = "大沥网络函数库是大沥网络提供的一个公共 TypeScript 函数库，封装了基础操作、缓存、加密、文件处理、HTTP 请求等常用功能模块，旨在提高开发效率。";
 var homepage = "http://www.hunandali.com/";
 
@@ -555,7 +555,9 @@ declare function listTop<V, T extends IList<V>>(data: T[], value: V, map?: ITree
  * @param skipConvert 	是否忽略转换，如果之前已经转换过仍然进行转换
  * @returns 			转换后的标准列表数据
  */
-declare function listConvert<T>(obj: Dict, map?: IListMap, ext?: (obj: Dict, map?: IListMap) => IList<T>, skipConvert?: boolean): IList<T> | undefined;
+declare function listConvert<T, V extends IList<T> & {
+    __list?: boolean;
+}>(obj: Dict, map?: IListMap, ext?: (obj: V, map?: IListMap) => V, skipConvert?: boolean): IList<T> | undefined;
 /**
  * 将对象数据转换成标准的树形数据
  * @param obj 			原始对象
@@ -564,14 +566,21 @@ declare function listConvert<T>(obj: Dict, map?: IListMap, ext?: (obj: Dict, map
  * @param skipConvert 	是否忽略转换，如果之前已经转换过仍然进行转换
  * @returns 			转换后的标准树形数据
  */
-declare function treeConvert<T>(obj: Dict, map?: ITreeMap, ext?: (obj: Dict, map?: IListMap) => ITree<T>, skipConvert?: boolean): ITree<T> | undefined;
+declare function treeConvert<T, V extends ITree<T> & {
+    __tree?: boolean;
+}>(obj: Dict, map?: ITreeMap, ext?: (obj: V, map?: IListMap) => V, skipConvert?: boolean): ITree<T> | undefined;
 /**
  * 树形列表数据转换成标准树形数据，需要数据中上级字段数据完整
- * @param list		要处理的列表
- * @param parent	默认顶级节点
+ * @param list			要处理的列表
+ * @param parent		默认顶级节点
+ * @param predicate		筛选条件
+ * @param updateItem	更新节点数据
  * @returns			转换后的标准树形数据
  */
-declare function list2tree<T>(list: ITree<T>[], parent: T): ITree<T>[];
+declare function list2tree<T, S extends IList<T>, V extends S & ITree<T>>(list: S[], parent: T, predicate?: (value: S, index: number, array: S[]) => boolean, updateItem?: (item: S & {
+    children?: V[];
+    parent: T;
+}) => V): V[];
 
 /** 模块加载属性 */
 type moduleOptions = {

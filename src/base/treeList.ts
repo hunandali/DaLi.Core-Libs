@@ -353,14 +353,14 @@ export function listTop<V, T extends IList<V>>(
  * @param skipConvert 	是否忽略转换，如果之前已经转换过仍然进行转换
  * @returns 			转换后的标准列表数据
  */
-export function listConvert<T>(
+export function listConvert<T, V extends IList<T> & { __list?: boolean }>(
 	obj: Dict,
 	map?: IListMap,
-	ext?: (obj: Dict, map?: IListMap) => IList<T>,
+	ext?: (obj: V, map?: IListMap) => V,
 	skipConvert: boolean = false
 ): IList<T> | undefined {
 	if (!isObject(obj)) return;
-	if (!skipConvert && obj.__list === true) return obj as IList<T>;
+	if (!skipConvert && obj.__list === true) return obj as V;
 
 	(!map || !isObject(map)) && (map = {});
 	const _value = map.value || 'value';
@@ -371,7 +371,7 @@ export function listConvert<T>(
 	/** 如果禁用字段为 enabled 则禁用字段需要取反 */
 	const isRev = isEmpty(map.rev) ? /enable/gi.test(_disabled) : map.rev;
 
-	let ret = { ...obj } as IList<T>;
+	let ret = { ...obj } as V;
 	ret.label = (obj[_label] ?? obj['label'] ?? obj['text'])?.toString();
 	ret.value = obj[_value] ?? obj['value'];
 	ret.icon = obj[_icon];
@@ -387,7 +387,7 @@ export function listConvert<T>(
 	isFn(ext) && (ret = ext(ret, map));
 
 	/** 附加转换标记 */
-	!skipConvert && (ret.__list = true);
+	!skipConvert && hasObject(ret) && (ret.__list = true);
 
 	return ret;
 }
@@ -400,14 +400,14 @@ export function listConvert<T>(
  * @param skipConvert 	是否忽略转换，如果之前已经转换过仍然进行转换
  * @returns 			转换后的标准树形数据
  */
-export function treeConvert<T>(
+export function treeConvert<T, V extends ITree<T> & { __tree?: boolean }>(
 	obj: Dict,
 	map?: ITreeMap,
-	ext?: (obj: Dict, map?: IListMap) => ITree<T>,
+	ext?: (obj: V, map?: IListMap) => V,
 	skipConvert: boolean = false
 ): ITree<T> | undefined {
 	if (!isObject(obj)) return;
-	if (!skipConvert && obj.__tree === true) return obj as ITree<T>;
+	if (!skipConvert && obj.__tree === true) return obj as V;
 
 	(!map || !isObject(map)) && (map = {});
 	const _value = map.value || 'value';
@@ -420,7 +420,7 @@ export function treeConvert<T>(
 	/** 如果禁用字段为 enabled 则禁用字段需要取反 */
 	const isRev = isEmpty(map.rev) ? /enable/gi.test(_disabled) : map.rev;
 
-	let ret = { ...obj } as ITree<T>;
+	let ret = { ...obj } as V;
 	ret.label = (obj[_label] ?? obj['label'] ?? obj['text'])?.toString();
 	ret.value = obj[_value] ?? obj['value'];
 	ret.icon = obj[_icon];
@@ -442,14 +442,14 @@ export function treeConvert<T>(
 		hasArray(ret.children) &&
 			(ret.children = ret
 				.children!.map((item) => {
-					const child = treeConvert(item, map, ext, skipConvert);
+					const child = treeConvert<T, V>(item, map, ext, skipConvert);
 
 					// 赋值上级
 					child && (child.parent = ret.value);
 
 					return child;
 				})
-				.filter((item) => !!item) as any);
+				.filter((item) => !!item));
 
 		/** 附加转换标记 */
 		!skipConvert && (ret.__tree = true);
@@ -460,14 +460,38 @@ export function treeConvert<T>(
 
 /**
  * 树形列表数据转换成标准树形数据，需要数据中上级字段数据完整
- * @param list		要处理的列表
- * @param parent	默认顶级节点
+ * @param list			要处理的列表
+ * @param parent		默认顶级节点
+ * @param predicate		筛选条件
+ * @param updateItem	更新节点数据
  * @returns			转换后的标准树形数据
  */
-export function list2tree<T>(list: ITree<T>[], parent: T): ITree<T>[] {
+export function list2tree<T, S extends IList<T>, V extends S & ITree<T>>(
+	list: S[],
+	parent: T,
+	predicate?: (value: S, index: number, array: S[]) => boolean,
+	updateItem?: (
+		item: S & {
+			children?: V[];
+			parent: T;
+		}
+	) => V
+): V[] {
 	if (!hasArray(list)) return [];
 
-	return list /** 值不能与父级相等，否则将出现死循环 */
-		.filter((item) => item.parent === parent && item.value !== parent)
-		.map((item) => ({ ...item, children: list2tree(list, item.value) }));
+	/** 值不能与父级相等，否则将出现死循环 */
+	if (!isFn(predicate)) predicate = (item) => item.parent === parent && item.value !== parent;
+
+	return list
+		.filter(predicate)
+		.map((item) => {
+			let restult = {
+				...item,
+				children: list2tree<T, S, V>(list, item.value, predicate, updateItem),
+				parent
+			};
+
+			return (isFn(updateItem) ? updateItem(restult) : restult) as V;
+		})
+		.filter((item) => !!item);
 }
