@@ -2,7 +2,7 @@
 	"type": "module",
 	"name": "@da.li/core-libs",
 	"title": "大沥网络函数库",
-	"version": "1.25.810",
+	"version": "1.25.813",
 	"description": "大沥网络函数库是大沥网络提供的一个公共 TypeScript 函数库，封装了基础操作、缓存、加密、文件处理、HTTP 请求等常用功能模块，旨在提高开发效率。",
 	"license": "MIT",
 	"company": "Hunan DaLi Network Technology Co., Ltd.",
@@ -12,14 +12,51 @@
 		"type": "git",
 		"url": "https://github.com/hunandali/DaLi.Core-Libs.git"
 	},
-	"main": "dist/index.js",
-	"module": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		},
+		"./global": {
+			"types": "./dist/global.d.ts",
+			"import": "./dist/global.js",
+			"require": "./dist/global.cjs"
+		},
+		"./base": {
+			"types": "./dist/base.d.ts",
+			"import": "./dist/base.js",
+			"require": "./dist/base.cjs"
+		},
+		"./limit": {
+			"types": "./dist/limit.d.ts",
+			"import": "./dist/limit.js",
+			"require": "./dist/limit.cjs"
+		},
+		"./cache": {
+			"types": "./dist/cache.d.ts",
+			"import": "./dist/cache.js",
+			"require": "./dist/cache.cjs"
+		},
+		"./console": {
+			"types": "./dist/console.d.ts",
+			"import": "./dist/console.js",
+			"require": "./dist/console.cjs"
+		},
+		"./eventBus": {
+			"types": "./dist/eventBus.d.ts",
+			"import": "./dist/eventBus.js",
+			"require": "./dist/eventBus.cjs"
+		}
+	},
 	"files": [
 		"dist"
 	],
 	"scripts": {
-		"build": "tsup src/index.ts --format esm,cjs --dts",
+		"build": "tsc --noEmit && tsup",
 		"test": "jest",
 		"chk": "tsc --noEmit"
 	},
@@ -32,7 +69,7 @@
 	],
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^4.6.2",
-		"chalk": "^5.4.1",
+		"chalk": "^5.5.0",
 		"dayjs": "^1.11.13",
 		"isomorphic-dompurify": "^2.26.0",
 		"localforage": "^1.10.0",
@@ -43,12 +80,12 @@
 		"@babel/core": "^7.28.0",
 		"@babel/preset-env": "^7.28.0",
 		"@types/jest": "^30.0.0",
-		"@types/node": "^24.0.15",
+		"@types/node": "^24.2.1",
 		"babel-jest": "^30.0.5",
 		"jest": "^30.0.5",
-		"ts-jest": "^29.4.0",
+		"ts-jest": "^29.4.1",
 		"tsc": "^2.0.4",
 		"tsup": "^8.5.0",
-		"typescript": "^5.8.3"
+		"typescript": "5.9.2"
 	}
 }

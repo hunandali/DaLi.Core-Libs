@@ -20,15 +20,7 @@
 
 import dayjs from 'dayjs';
 import { SERVERMODE } from '../config';
-import {
-	cleanDuplicate,
-	dateFormat,
-	hasArray,
-	hasObject,
-	isArray,
-	isObject,
-	isString
-} from './base';
+import { cleanDuplicate, hasArray, hasObject, isArray, isObject, isString } from './base';
 import { NVs } from './types';
 
 /** 获取浏览器自动样式 */
@@ -162,7 +154,7 @@ export const createImportantStyle = (days: string | string[] | NVs) => {
 			return `%3Ctext x='0' y='${top}%25' font-size='${size}' text-anchor='left' transform='rotate(-25)' opacity='0.06' font-weight='500' dominant-baseline='middle'%3E${text}%3C/text%3E`;
 		};
 
-		const texts = `${info},${dateFormat('', 'YYYY-MM-DD')}`
+		const texts = `${info},${new Date().toLocaleDateString('en-CA')}`
 			.replace(/[\;\:；：，]/g, ',')
 			.split(',')
 			.filter((text) => !!text);

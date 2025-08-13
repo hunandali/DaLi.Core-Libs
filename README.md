@@ -42,6 +42,52 @@ yarn add @da.li/core-libs
 -   [LRU 缓存 (LRU)](./wiki/LRU.md)
 -   [水印 (waterMark)](./wiki/waterMark.md)
 
+## 注意事项
+
+### 全局对象
+
+`$console`，`$cache`，`$on, $off, $emit` 等全局对象已经从默认导入中移除，如需加载就使用请自行导入。
+
+1. 按需导入：
+
+```typescript
+// $con 控制台输出
+import '@da.li/core-libs/console';
+
+// $cache 缓存
+import '@da.li/core-libs/cache';
+
+// $on, $off, $emit 事件总线
+import '@da.li/core-libs/eventBus';
+```
+
+2. 一次性全部导入：
+
+```typescript
+import '@da.li/core-libs/global';
+```
+
+### 导入调整
+
+为了避免全局对象的污染，我们将全局对象的导入方式调整为按需导入。
+
+```typescript
+// 全局基础导入，不含第三发库，不含初始启动的全局对象
+// 仅常用的基础函数，不含：缓存、定时任务、http 请求
+import { xxx } from '@da.li/core-libs/base';
+
+// 全局基础导入，不含第三发库，不含初始启动的全局对象
+// 相比 base 模块，包含：缓存、定时任务、http 请求
+import { xxx } from '@da.li/core-libs/limit';
+
+// 默认导入方式，含第三发库，不含初始启动的全局对象
+// 相比 limit 模块，包含了第三发库的引用，如：dayjs
+import { xxx } from '@da.li/core-libs';
+
+// 全量导入方式，包含所有功能模块，含初始启动的全局对象
+import { xxx } from '@da.li/core-libs/global';
+```
+
 ## 许可证
 
 MIT License © 2024 湖南大沥网络科技有限公司

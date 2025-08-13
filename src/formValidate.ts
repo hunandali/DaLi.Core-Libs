@@ -446,4 +446,10 @@ export class FormValidate {
 	}
 }
 
-export default new FormValidate();
+let formValidate: FormValidate;
+
+/** 创建表单验证 */
+export const createFormValidate = () => {
+	if (!formValidate) formValidate = new FormValidate();
+	return formValidate;
+};

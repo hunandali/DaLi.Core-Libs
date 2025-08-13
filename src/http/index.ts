@@ -18,17 +18,23 @@
 ' ------------------------------------------------------------
 */
 
-import { createHttp } from './hook';
+import { createHttp as createHttpInstance } from './hook';
+import { HttpClient } from './types';
 
 // 调试配置
 export { HTTP_DEBUG } from './hook';
 
-// 创建自定义实例
-export const createHttpInstance = createHttp;
-
 // 全局实例
-export const http = createHttp();
 export * from './types';
 
+let http: HttpClient;
+
+// 创建自定义实例
+export const createHttp = () => {
+	if (!http) http = createHttpInstance();
+	return http;
+};
+
 // // 全局实例
+// export const http = createHttp();
 // $Global.$http = http;

@@ -37,7 +37,7 @@ import type { Dict } from '../types';
 ///////////////////////////////////////////////////////////////////
 
 /** 清除对象中指定条件的值，默认 null 或者 undefined */
-export const empty = <RemovedKeys extends string, T>(
+export const objEmpty = <RemovedKeys extends string, T>(
 	obj: T,
 	filter: (value: any) => boolean = (x) => isNil(x)
 ): Omit<T, RemovedKeys> => {
@@ -59,7 +59,7 @@ export const empty = <RemovedKeys extends string, T>(
  * @param filter	空值过滤条件，默认空内容与空文本
  * @param deep 		是否递归处理
  */
-export const clear = <RemovedKeys extends string, T>(
+export const objClear = <RemovedKeys extends string, T>(
 	obj: T,
 	filter: (value: any) => boolean = (x) => isNil(x) || x.toString().trim() === '',
 	deep = false
@@ -74,7 +74,7 @@ export const clear = <RemovedKeys extends string, T>(
 
 		// 对象递归
 		if (isObject(obj[key]) && deep) {
-			const value = clear(obj[key], filter);
+			const value = objClear(obj[key], filter);
 
 			// @ts-ignore
 			hasObject(value) && (acc[key] = value);
@@ -84,7 +84,7 @@ export const clear = <RemovedKeys extends string, T>(
 		//  数组递归
 		if (isArray(obj[key]) && deep) {
 			const value = (obj[key] as any[])
-				.map((item) => clear(item))
+				.map((item) => objClear(item))
 				.filter((item) => !filter(item));
 
 			// @ts-ignore

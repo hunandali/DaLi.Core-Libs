@@ -33,10 +33,8 @@ declare global {
 	var $cache: ICache;
 }
 
-const cache: ICache = new (SERVERMODE ? cacheServer : cacheClient)();
-
-/** 导出缓存对象 */
-export default cache;
-
-/** 全局位创建则获取 */
-if (!$Global.$cache) $Global.$cache = cache;
+/** 创建缓存 */
+export const createCache = () => {
+	if (!$Global.$cache) $Global.$cache = new (SERVERMODE ? cacheServer : cacheClient)();
+	return $Global.$cache;
+};

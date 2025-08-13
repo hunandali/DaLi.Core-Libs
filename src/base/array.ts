@@ -206,7 +206,7 @@ export const select = <T, K>(
 };
 
 /** 从列表中删除所有空项目，默认 null 或者 undefined */
-export const empty = <T>(
+export const arrEmpty = <T>(
 	list: readonly T[],
 	filter: (value: any) => boolean = (x) => isNil(x)
 ): T[] => {
@@ -220,7 +220,7 @@ export const empty = <T>(
  * @param position 	要移除项目的位置。默认：false。true/left 仅从头开始第一条；right 仅从尾开始第一条；false 全部都移除
  * @returns 		返回处理后的数组
  */
-export const remove = <T>(
+export const arrRemove = <T>(
 	array: T[],
 	predicate: T | ((value: T, index: number, obj: T[]) => unknown),
 	position: boolean | 'left' | 'right' = false

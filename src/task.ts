@@ -157,9 +157,6 @@ export class Tasks {
 /** 后台任务集合类型 */
 export type ITasks = Tasks;
 
-/** 后台任务 */
-export default Tasks;
-
 /**
  * 通过模块创建任务
  * @param modules 模块数据集合，使用 import.meta.glob 获取

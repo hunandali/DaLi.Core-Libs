@@ -19,136 +19,30 @@
 */
 
 /** 常用类型判断 */
-export {
-	hasArray,
-	hasObject,
-	hasObjectName,
-	hasString,
-	isArray,
-	isAsync,
-	isBoolean,
-	isDate,
-	isEmpty,
-	isFn,
-	isNaN,
-	isNil,
-	isNumber,
-	isObject,
-	isPrimitive,
-	isRegExp,
-	isString,
-	isSymbol,
-	isVueComponent,
-	notEmpty,
-	typeName
-} from './type';
+export * from './type';
 
 /** 常用值判断 */
-export {
-	isCar,
-	isChinese,
-	isEmail,
-	isEnglish,
-	isEqual,
-	isFloat,
-	isFullUrl,
-	isGuid,
-	isHttp,
-	isIP,
-	isInt,
-	isJSON,
-	isMatch,
-	isMobile,
-	isName,
-	isPhone,
-	isUrl
-} from './value';
+export * from './value';
 
 /** 字符串相关操作 */
-export {
-	htmlClear,
-	htmlEncode,
-	htmlSafe,
-	string2Value,
-	stringClear,
-	stringCut,
-	template,
-	trimEx,
-	stringIncludes
-} from './string';
+export * from './string';
 
 /** 数组及对象相关操作 */
-export {
-	clear,
-	clone,
-	each,
-	eachSync,
-	empty,
-	every,
-	get,
-	has,
-	math,
-	merge,
-	reduce,
-	remove,
-	set,
-	some,
-	toArray,
-	toDeepObject,
-	toHtml,
-	toJSON,
-	toSingleObject
-} from './object';
+export * from './object';
 
 /** 数组操作 */
-export {
-	empty as arrayEmpty,
-	remove as arrayRemove,
-	cleanDuplicate,
-	compare,
-	counting,
-	group,
-	list,
-	range,
-	select,
-	sort,
-	toObject
-} from './array';
+export * from './array';
 
-export { DecimalLength, inRange, number, toDate, toFloat, toInt } from './number';
+export * from './number';
 
 /** 列表树形数据操作 */
-export {
-	list2tree,
-	listConvert,
-	listParents,
-	listTop,
-	treeConvert,
-	treeExecute,
-	treeFind,
-	treeFindAll,
-	treeParents
-} from './treeList';
+export * from './treeList';
 
 /** 模块加载 */
-export { modulesUpdate, modulesUpdateSync } from './modules';
+export * from './modules';
 
 /** 其他相关操作 */
-export {
-	date,
-	dateFormat,
-	dateLong,
-	debounce,
-	errorTrace,
-	execute,
-	fingerprint,
-	fnId,
-	globalId,
-	hash,
-	rnd,
-	sleep,
-	throttle
-} from './utils';
+export * from './utils';
 
 /** 获取全局顶级对象 */
 export const $Global = (function () {

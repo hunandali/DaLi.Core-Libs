@@ -11,7 +11,8 @@
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
 		"declaration": true,
-		"outDir": "dist",
+		"declarationDir": "./dist",
+		"outDir": "./dist",
 		"types": ["node", "jest"]
 	},
 	"include": ["src/**/*", "src/types.ts"],

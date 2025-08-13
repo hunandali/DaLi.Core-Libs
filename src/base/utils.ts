@@ -23,12 +23,6 @@ import type { Dict, Func, Action } from '../types';
 /** 导入 */
 import { hasArray, isEmpty, isFn, isString } from './type';
 
-/** 时间库 */
-import dayjs from 'dayjs';
-
-/** 指纹 */
-import fingerprintJs from '@fingerprintjs/fingerprintjs';
-
 /** 参数 */
 import { SERVERMODE } from '../../config';
 
@@ -63,111 +57,6 @@ export function rnd(): string {
 		.toString(36)
 		.slice(0, 11);
 }
-
-/**
- * 将任何可以转换成时间的对象，使用 dayjs 包装
- * @param date 	用于包装的时间（字符串支持:now,yesterday,tomorrow)
- */
-export const date = (date?: any) =>
-	!date || date === 'now'
-		? dayjs()
-		: date === 'yesterday'
-		? dayjs().subtract(1, 'day')
-		: date === 'tomorrow'
-		? dayjs().add(1, 'day')
-		: dayjs(date);
-
-/**
- * 将任何可以转换成时间的对象，按条件格式化成字符串
- * 所有早于 2000 年的时间都无效
- * @param date 		用于格式化的时间（字符串支持:now,yesterday,tomorrow)
- * @param format 	格式。支持：YYYY MM DD HH mm ss / desc 间隔描述
- */
-export const dateFormat = (date?: any, format: string = 'YYYY-MM-DD') => {
-	if (isEmpty(date)) return '';
-
-	if (isString(date)) date = date.toLowerCase();
-
-	const day =
-		!date || date === 'now'
-			? dayjs()
-			: date === 'yesterday'
-			? dayjs().subtract(1, 'day')
-			: date === 'tomorrow'
-			? dayjs().add(1, 'day')
-			: dayjs(date);
-
-	if (!day.isValid()) return '✖';
-	if (day.isBefore('2000-01-01', 'day')) return '➖';
-
-	if (format !== 'desc') return day.format(format);
-
-	return dateLong(day, null, false, true);
-};
-
-/**
- * 计算时长
- * @param start 		开始时间
- * @param end 			结束时间
- * @param isEn 			使用英文、中文
- * @param incSuffix 	是否包含前、后
- * @returns
- */
-export const dateLong = (start: any, end?: any, isEn = false, incSuffix = false) => {
-	const dayStart = dayjs(start);
-	if (!dayStart.isValid()) return '✖';
-
-	const dayEnd = end ? dayjs(end) : dayjs();
-	if (!dayEnd.isValid()) return '✖';
-
-	// 秒差值
-	let long = dayEnd.unix() - dayStart.unix();
-	const isAfter = long < 0;
-	long = Math.abs(long);
-	if (long <= 1) return incSuffix ? (isEn ? 'now' : '此刻') : isEn ? '0sec' : '0秒';
-
-	const s = isEn ? 'sec' : '秒';
-	const m = isEn ? 'min' : '分';
-	const h = isEn ? 'hout' : '时';
-	const d = isEn ? 'day' : '天';
-	const suffix = incSuffix ? (isAfter ? (isEn ? 'after' : '后') : isEn ? 'before' : '前') : '';
-
-	// 秒
-	if (long < 60) return `${long}${s}${suffix}`;
-
-	// 分钟
-	long = long / 60;
-	if (long < 60) {
-		const a = Math.floor(long);
-		let ret = `${a}${m}`;
-
-		const b = Math.floor((long - a) * 60);
-		b > 0 && (ret += `${b}${s}`);
-
-		return ret + suffix;
-	}
-
-	// 小时
-	long = long / 60;
-	if (long < 24) {
-		const a = Math.floor(long);
-		let ret = `${a}${h}`;
-
-		const b = Math.floor((long - a) * 60);
-		b > 0 && (ret += `${b}${m}`);
-
-		return ret + suffix;
-	}
-
-	long = long / 24;
-	const a = Math.floor(long);
-	let ret = `${a}${d}`;
-
-	const b = Math.floor((long - a) * 24);
-	b > 0 && (ret += `${b}${h}`);
-
-	return ret + suffix;
-};
 
 /**
  * 函数跟踪，检查指定到当前位置函数的所有信息
@@ -350,21 +239,4 @@ let _globalId = 0;
  */
 export function globalId(prefix?: string) {
 	return prefix ? [prefix, ++_globalId].join('-') : (++_globalId).toString();
-}
-
-/**
- * 获取浏览器指纹
- * 结果将返回两个参数：
- * id：浏览器指纹
- * score：指纹评分；1 最可信，0 最不可信
- * 如果服务端而非浏览器端执行则此函数固定返回 { id: 'server', score: 1 }
- */
-export async function fingerprint() {
-	// 服务端不处理，直接返回
-	if (SERVERMODE) return { id: 'server', score: 1 };
-
-	// 客户端分析
-	const fpJs = await fingerprintJs.load().then((fg) => fg.get());
-
-	return { id: fpJs.visitorId, score: fpJs.confidence.score };
 }
