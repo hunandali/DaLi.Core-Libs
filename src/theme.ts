@@ -92,7 +92,7 @@ export function UIThemeSet(
 	// 客户端，设置顶级样式
 
 	// 从页面顶级样式 (unocss theme 插件 <html class="dark" />)
-	defaultClass && (el.className = defaultClass);
+	el.className = defaultClass || '';
 	el.classList.add(theme);
 
 	// 从页面顶级 data-theme 中设置（bootstrap 方式 <html data-theme="dark" />）
