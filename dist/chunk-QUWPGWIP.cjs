@@ -6,10 +6,10 @@ var _chunkP6IBSJ7Lcjs = require('./chunk-P6IBSJ7L.cjs');
 
 
 
-var _chunkU4TVRTVKcjs = require('./chunk-U4TVRTVK.cjs');
+var _chunkFMCVNC7Qcjs = require('./chunk-FMCVNC7Q.cjs');
 
 // src/cache/cache.server.ts
-var DEFAULT_TIME = _chunkU4TVRTVKcjs.CACHE_TIME_MAX * 86400;
+var DEFAULT_TIME = _chunkFMCVNC7Qcjs.CACHE_TIME_MAX * 86400;
 var DEFAULT_COUNT = 1e4;
 var cache_server_default = class {
   constructor() {
@@ -25,7 +25,7 @@ var cache_server_default = class {
   async get(key, valueFunc, delay = 0) {
     if (!key) return;
     let value = this.instance.get(key);
-    if (_chunkU4TVRTVKcjs.isEmpty.call(void 0, value) && _chunkU4TVRTVKcjs.isFn.call(void 0, valueFunc)) {
+    if (_chunkFMCVNC7Qcjs.isEmpty.call(void 0, value) && _chunkFMCVNC7Qcjs.isFn.call(void 0, valueFunc)) {
       try {
         value = await valueFunc();
         await this.set(key, value, delay);
@@ -68,7 +68,7 @@ var cache_server_default = class {
 
 // src/cache/cache.client.ts
 var _localforage = require('localforage'); var _localforage2 = _interopRequireDefault(_localforage);
-var DEFAULT_TIME2 = _chunkU4TVRTVKcjs.CACHE_TIME_MAX * 86400;
+var DEFAULT_TIME2 = _chunkFMCVNC7Qcjs.CACHE_TIME_MAX * 86400;
 var cache_client_default = class {
   constructor() {
     /** 缓存对象 */
@@ -94,7 +94,7 @@ var cache_client_default = class {
         await this.remove(key);
       }
     }
-    if (_chunkU4TVRTVKcjs.isEmpty.call(void 0, value) && _chunkU4TVRTVKcjs.isFn.call(void 0, valueFunc)) {
+    if (_chunkFMCVNC7Qcjs.isEmpty.call(void 0, value) && _chunkFMCVNC7Qcjs.isFn.call(void 0, valueFunc)) {
       try {
         value = await valueFunc();
         await this.set(key, value, delay);
@@ -147,7 +147,7 @@ var cache_client_default = class {
     if (last > exp) return;
     this.checkStatus = true;
     const keys = await this.instance.keys();
-    if (!_chunkU4TVRTVKcjs.hasArray.call(void 0, keys)) return;
+    if (!_chunkFMCVNC7Qcjs.hasArray.call(void 0, keys)) return;
     await Promise.all(keys.map((key) => this.get(key)));
     await this.instance.setItem(cacheKey, Date.now());
     this.checkStatus = false;

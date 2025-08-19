@@ -6,7 +6,7 @@ import 'chalk';
 
 var name = "@da.li/core-libs";
 var title = "大沥网络函数库";
-var version = "1.25.813";
+var version = "1.25.819";
 var description = "大沥网络函数库是大沥网络提供的一个公共 TypeScript 函数库，封装了基础操作、缓存、加密、文件处理、HTTP 请求等常用功能模块，旨在提高开发效率。";
 var homepage = "http://www.hunandali.com/";
 
@@ -1539,8 +1539,10 @@ declare function UIThemeSet(theme: 'light' | 'dark' | string, el?: HTMLElement, 
  * @param days 日期，日期组，{日期：水印文本}。如果日期为长日期比较当天，短日期每年比较。如果水印文本以 * 开头，页面变灰。
  */
 declare const createImportantStyle: (days: string | string[] | NVs) => void;
+/** 样式类名基础类型 */
+type ClassNameValue = string | boolean | string[] | Record<string, boolean> | undefined | null;
 /** 样式类名类型 */
-type ClassName = string | boolean | undefined | string[] | Record<string, boolean>;
+type ClassName = ClassNameValue | Func<ClassNameValue>;
 /** 合并样式中的类名，自动移除重复类名、空值 */
 declare const mergeClass: (...classNames: ClassName[]) => string[];
 
@@ -1560,4 +1562,4 @@ declare const fullscreenLaunch: (element: Element | string) => boolean;
 /** 退出全屏 */
 declare const fullscreenExit: () => boolean;
 
-export { $Global, Action, CACHE_TIME_MAX, type CanvasContext, type ClassName, _default$1 as Cookies, type CookiesOptions, DEBOUNCE_WINDOW_RESIZE, DEBUG, description as DESCRIPTION, DecimalLength, Dict, type DrawModule, FormValidate, Func, homepage as HOMEPAGE, IList, IListMap, type IQR, type IRule, type IRules, ITree, ITreeMap, LOGO, LRU, MD5, name as NAME, NVs, QR, QRCode, type QRCodeOptions, QRCreate, QRErrorCorrectLevel, type QRModule, QRObject, type QRPlugin, SERVERMODE, TEST, title as TITLE, UIThemeQuery, UIThemeSet, version as VERSION, arrEmpty, arrRemove, base64Decode, base64Encode, cleanDuplicate, clone, compare, counting, createFormValidate, createImportantStyle, debounce, deleteCookie, each, eachSync, errorTrace, every, exportJson as excelJson, exportTable as excelTable, execute, fnId, fullscreenExit, fullscreenLaunch, get, getCookie, globalId, group, has, hasArray, hasObject, hasObjectName, hasString, hash, htmlClear, htmlEncode, inRange, isArray, isAsync, isBoolean, isCar, isChinese, isDate, isEmail, isEmpty, isEnglish, isEqual, isFloat, isFn, isFullUrl, isFullscreen, isFunction, isGuid, isHttp, isIP, isInt, isJSON, isMatch, isMobile, isNaN, isName, isNil, isNumber, isObject, isPhone, isPrimitive, isPromise, isReg, isRegExp, isString, isSymbol, isUrl, isVueComponent, jsonDownload, list, list2tree, listConvert, listParents, listTop, math, merge, mergeClass, type moduleOptions, modulesUpdate, modulesUpdateSync, notEmpty, number, objClear, objEmpty, objectDownload, range, reduce, remoteFileToBase64, remove, rnd, screenType, select, set, setCookie, sleep, some, sort, string2Value, stringClear, stringCut, stringIncludes, template, throttle, toArray, toDate, toDeepObject, toFloat, toHtml, toInt, toJSON, toObject, toSingleObject, treeConvert, treeExecute, treeFind, treeFindAll, treeParents, trimEx, typeName, _default as waterMark, xor };
+export { $Global, Action, CACHE_TIME_MAX, type CanvasContext, type ClassName, type ClassNameValue, _default$1 as Cookies, type CookiesOptions, DEBOUNCE_WINDOW_RESIZE, DEBUG, description as DESCRIPTION, DecimalLength, Dict, type DrawModule, FormValidate, Func, homepage as HOMEPAGE, IList, IListMap, type IQR, type IRule, type IRules, ITree, ITreeMap, LOGO, LRU, MD5, name as NAME, NVs, QR, QRCode, type QRCodeOptions, QRCreate, QRErrorCorrectLevel, type QRModule, QRObject, type QRPlugin, SERVERMODE, TEST, title as TITLE, UIThemeQuery, UIThemeSet, version as VERSION, arrEmpty, arrRemove, base64Decode, base64Encode, cleanDuplicate, clone, compare, counting, createFormValidate, createImportantStyle, debounce, deleteCookie, each, eachSync, errorTrace, every, exportJson as excelJson, exportTable as excelTable, execute, fnId, fullscreenExit, fullscreenLaunch, get, getCookie, globalId, group, has, hasArray, hasObject, hasObjectName, hasString, hash, htmlClear, htmlEncode, inRange, isArray, isAsync, isBoolean, isCar, isChinese, isDate, isEmail, isEmpty, isEnglish, isEqual, isFloat, isFn, isFullUrl, isFullscreen, isFunction, isGuid, isHttp, isIP, isInt, isJSON, isMatch, isMobile, isNaN, isName, isNil, isNumber, isObject, isPhone, isPrimitive, isPromise, isReg, isRegExp, isString, isSymbol, isUrl, isVueComponent, jsonDownload, list, list2tree, listConvert, listParents, listTop, math, merge, mergeClass, type moduleOptions, modulesUpdate, modulesUpdateSync, notEmpty, number, objClear, objEmpty, objectDownload, range, reduce, remoteFileToBase64, remove, rnd, screenType, select, set, setCookie, sleep, some, sort, string2Value, stringClear, stringCut, stringIncludes, template, throttle, toArray, toDate, toDeepObject, toFloat, toHtml, toInt, toJSON, toObject, toSingleObject, treeConvert, treeExecute, treeFind, treeFindAll, treeParents, trimEx, typeName, _default as waterMark, xor };

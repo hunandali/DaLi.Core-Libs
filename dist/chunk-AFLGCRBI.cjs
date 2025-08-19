@@ -2,12 +2,12 @@
 
 
 
-var _chunkU4TVRTVKcjs = require('./chunk-U4TVRTVK.cjs');
+var _chunkFMCVNC7Qcjs = require('./chunk-FMCVNC7Q.cjs');
 
 // src/external/utils.ts
 var _fingerprintjs = require('@fingerprintjs/fingerprintjs'); var _fingerprintjs2 = _interopRequireDefault(_fingerprintjs);
 async function fingerprint() {
-  if (_chunkU4TVRTVKcjs.SERVERMODE) return { id: "server", score: 1 };
+  if (_chunkFMCVNC7Qcjs.SERVERMODE) return { id: "server", score: 1 };
   const fpJs = await _fingerprintjs2.default.load().then((fg) => fg.get());
   return { id: fpJs.visitorId, score: fpJs.confidence.score };
 }
@@ -22,8 +22,8 @@ function htmlSafe(dirty, config) {
 var _dayjs = require('dayjs'); var _dayjs2 = _interopRequireDefault(_dayjs);
 var date = (date2) => !date2 || date2 === "now" ? _dayjs2.default.call(void 0, ) : date2 === "yesterday" ? _dayjs2.default.call(void 0, ).subtract(1, "day") : date2 === "tomorrow" ? _dayjs2.default.call(void 0, ).add(1, "day") : _dayjs2.default.call(void 0, date2);
 var dateFormat = (date2, format = "YYYY-MM-DD") => {
-  if (_chunkU4TVRTVKcjs.isEmpty.call(void 0, date2)) return "";
-  if (_chunkU4TVRTVKcjs.isString.call(void 0, date2)) date2 = date2.toLowerCase();
+  if (_chunkFMCVNC7Qcjs.isEmpty.call(void 0, date2)) return "";
+  if (_chunkFMCVNC7Qcjs.isString.call(void 0, date2)) date2 = date2.toLowerCase();
   const day = !date2 || date2 === "now" || date2 === "today" ? _dayjs2.default.call(void 0, ) : date2 === "yesterday" ? _dayjs2.default.call(void 0, ).subtract(1, "day") : date2 === "tomorrow" ? _dayjs2.default.call(void 0, ).add(1, "day") : (
     /* 开始时间 */
     date2 === "weekstart" ? _dayjs2.default.call(void 0, ).startOf("week") : date2 === "monthstart" ? _dayjs2.default.call(void 0, ).startOf("month") : date2 === "yearstart" ? _dayjs2.default.call(void 0, ).startOf("year") : (

@@ -20,8 +20,8 @@
 
 import dayjs from 'dayjs';
 import { SERVERMODE } from '../config';
-import { cleanDuplicate, hasArray, hasObject, isArray, isObject, isString } from './base';
-import { NVs } from './types';
+import { cleanDuplicate, hasArray, hasObject, isArray, isFn, isObject, isString } from './base';
+import { Func, NVs } from './types';
 
 /** 获取浏览器自动样式 */
 export function UIThemeQuery(options?: {
@@ -196,14 +196,27 @@ export const createImportantStyle = (days: string | string[] | NVs) => {
 	el.style.backgroundImage = background;
 };
 
+/** 样式类名基础类型 */
+export type ClassNameValue =
+	| string
+	| boolean
+	| string[]
+	| Record<string, boolean>
+	| undefined
+	| null;
+
 /** 样式类名类型 */
-export type ClassName = string | boolean | undefined | string[] | Record<string, boolean>;
+export type ClassName = ClassNameValue | Func<ClassNameValue>;
 
 /** 合并样式中的类名，自动移除重复类名、空值 */
 export const mergeClass = (...classNames: ClassName[]) => {
 	let result: string[] = [];
 
-	for (const className of classNames) {
+	for (let className of classNames) {
+		if (isFn(className)) {
+			className = className();
+		}
+
 		if (isString(className)) {
 			result.push(className);
 		} else if (isArray(className)) {

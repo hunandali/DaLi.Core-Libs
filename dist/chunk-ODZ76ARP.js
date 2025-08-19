@@ -1,30 +1,30 @@
-"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _chunkU4TVRTVKcjs = require('./chunk-U4TVRTVK.cjs');
+import {
+  LOGO,
+  SERVERMODE,
+  cleanDuplicate,
+  hasArray,
+  hasObject,
+  hasString,
+  isArray,
+  isBoolean,
+  isChinese,
+  isEmail,
+  isEnglish,
+  isFn,
+  isGuid,
+  isHttp,
+  isIP,
+  isJSON,
+  isMobile,
+  isName,
+  isNil,
+  isNumber,
+  isObject,
+  isPhone,
+  isString,
+  merge,
+  toJSON
+} from "./chunk-IESO4G4V.js";
 
 // src/encrypt/base64.ts
 var base64_default = class {
@@ -513,8 +513,8 @@ var xor = (input, key) => {
 // src/files/excel.ts
 function exportJson(data, fileName, title, filter) {
   var _a;
-  data = _chunkU4TVRTVKcjs.toJSON.call(void 0, data);
-  if (!_chunkU4TVRTVKcjs.hasArray.call(void 0, data)) return;
+  data = toJSON(data);
+  if (!hasArray(data)) return;
   const excel = ["<table>"];
   for (var i = 0; i < data.length; i++) {
     excel.push("<tr>");
@@ -527,7 +527,7 @@ function exportJson(data, fileName, title, filter) {
   exportTable(excel.join(""), fileName, title);
 }
 function exportTable(tableHtml, fileName, title) {
-  if (!tableHtml || !_chunkU4TVRTVKcjs.isString.call(void 0, tableHtml)) return;
+  if (!tableHtml || !isString(tableHtml)) return;
   let excelFile = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>";
   excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
   excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel';
@@ -576,7 +576,7 @@ var objectDownload = (obj, fileName = "\u7ED3\u679C") => {
 };
 var jsonDownload = (json, fileName = "\u7ED3\u679C") => {
   if (!json) return;
-  objectDownload(_chunkU4TVRTVKcjs.toJSON.call(void 0, json), fileName);
+  objectDownload(toJSON(json), fileName);
 };
 
 // src/files/qr.d.ts
@@ -2047,7 +2047,7 @@ f.prototype = {
 // src/files/index.ts
 var QR = b;
 async function QRObject(params) {
-  if (!params || !_chunkU4TVRTVKcjs.hasObject.call(void 0, params) || !params.code) return;
+  if (!params || !hasObject(params) || !params.code) return;
   if (!params.size || params.size < 1) params.size = 200;
   const qr = new QR();
   qr.data = params.code;
@@ -2059,7 +2059,7 @@ async function QRObject(params) {
   qr.backgroundColor = params.reserve ? params.color : params.backColor;
   let logo = params.logo;
   if (logo === true) {
-    logo = _chunkU4TVRTVKcjs.LOGO;
+    logo = LOGO;
   } else if (!logo) {
     logo = false;
   } else {
@@ -2109,7 +2109,7 @@ async function remoteFileToBase64(url, onlyImage = true) {
     await fetch(url).then((res) => res.blob()).then((blob) => {
       const reader = new FileReader();
       reader.onload = () => {
-        if (_chunkU4TVRTVKcjs.hasString.call(void 0, reader.result)) {
+        if (hasString(reader.result)) {
           const data = reader.result;
           if (data.startsWith("data:")) {
             if (!onlyImage || data.startsWith("data:image")) {
@@ -2131,7 +2131,7 @@ async function remoteFileToBase64(url, onlyImage = true) {
 
 // src/cookies.ts
 function setCookie(name, value, options = {}) {
-  if (_chunkU4TVRTVKcjs.SERVERMODE) return;
+  if (SERVERMODE) return;
   try {
     let expires = "";
     const { expire = 86400, path = "/", secure = false, httpOnly = false } = options;
@@ -2154,7 +2154,7 @@ function setCookie(name, value, options = {}) {
   }
 }
 function getCookie(name) {
-  if (_chunkU4TVRTVKcjs.SERVERMODE) return null;
+  if (SERVERMODE) return null;
   try {
     const nameEQ = name + "=";
     const ca = document.cookie.split(";");
@@ -2173,7 +2173,7 @@ function getCookie(name) {
   }
 }
 function deleteCookie(name, path = "/") {
-  if (_chunkU4TVRTVKcjs.SERVERMODE) return;
+  if (SERVERMODE) return;
   try {
     document.cookie = name + "=; Path=" + path + "; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   } catch (error) {
@@ -2183,7 +2183,7 @@ function deleteCookie(name, path = "/") {
 var cookies_default = { set: setCookie, get: getCookie, del: deleteCookie };
 
 // src/formValidate.ts
-var _dayjs = require('dayjs'); var _dayjs2 = _interopRequireDefault(_dayjs);
+import dayjs from "dayjs";
 var FormValidate = class {
   /** 规则合并，并转换成数组规则列表 */
   concat(...args) {
@@ -2192,7 +2192,7 @@ var FormValidate = class {
     for (let index = 0; index < args.length; index++) {
       let rule = args[index];
       rule && (rule = this.updateRules(rule));
-      _chunkU4TVRTVKcjs.hasArray.call(void 0, rule) && (rules = _chunkU4TVRTVKcjs.merge.call(void 0, rules, rule));
+      hasArray(rule) && (rules = merge(rules, rule));
     }
     return rules;
   }
@@ -2206,8 +2206,8 @@ var FormValidate = class {
   validate(rules, value) {
     if (!rules) return true;
     rules = this.updateRules(rules);
-    if (!_chunkU4TVRTVKcjs.hasArray.call(void 0, rules)) return true;
-    const messages = rules.filter((rule) => _chunkU4TVRTVKcjs.hasObject.call(void 0, rule)).map((rule) => this.validateRule(rule, value)).filter((flag) => flag !== true);
+    if (!hasArray(rules)) return true;
+    const messages = rules.filter((rule) => hasObject(rule)).map((rule) => this.validateRule(rule, value)).filter((flag) => flag !== true);
     return messages.length === 0 ? true : messages.join("\uFF1B");
   }
   /**
@@ -2228,20 +2228,20 @@ var FormValidate = class {
   validateRequired(rule, value) {
     if (!rule || rule.required !== true) return true;
     const message = rule.message || "\u6B64\u9879\u76EE\u5FC5\u987B\u586B\u5199";
-    if (_chunkU4TVRTVKcjs.isNil.call(void 0, value)) return message;
-    if (_chunkU4TVRTVKcjs.isArray.call(void 0, value)) return value.length > 0 ? true : message;
-    if (_chunkU4TVRTVKcjs.isObject.call(void 0, value)) return Object.keys(value).length > 0 ? true : message;
-    if (_chunkU4TVRTVKcjs.isString.call(void 0, value)) {
+    if (isNil(value)) return message;
+    if (isArray(value)) return value.length > 0 ? true : message;
+    if (isObject(value)) return Object.keys(value).length > 0 ? true : message;
+    if (isString(value)) {
       if (rule.trim === true) value = value.trim();
       return value.length > 0 ? true : message;
     }
-    if (_chunkU4TVRTVKcjs.isBoolean.call(void 0, value)) return value === true ? true : message;
+    if (isBoolean(value)) return value === true ? true : message;
     return true;
   }
   /** 验证正则表达式，仅针对字符串 */
   validateRegular(rule, value) {
     if (!value || !rule || !rule.pattern) return true;
-    if (!_chunkU4TVRTVKcjs.isString.call(void 0, value)) return "\u975E\u6709\u6548\u6587\u672C\uFF0C\u4E0D\u80FD\u8FDB\u884C\u6B63\u5219\u6BD4\u8F83";
+    if (!isString(value)) return "\u975E\u6709\u6548\u6587\u672C\uFF0C\u4E0D\u80FD\u8FDB\u884C\u6B63\u5219\u6BD4\u8F83";
     const reg = new RegExp(rule.pattern);
     return reg.test(value) ? true : rule.message || "\u4E0D\u7B26\u5408\u6307\u5B9A\u6B63\u5219\u89C4\u5219";
   }
@@ -2253,71 +2253,71 @@ var FormValidate = class {
   validateType(rule, value) {
     if (!value || !rule || !rule.type) return true;
     const message = (name) => rule.message ? rule.message : `\u975E\u6709\u6548 ${name} \u6570\u636E`;
-    if (rule.type === "number") return _chunkU4TVRTVKcjs.isNumber.call(void 0, value) ? true : message("\u6570\u5B57");
-    if (!_chunkU4TVRTVKcjs.isString.call(void 0, value) && !_chunkU4TVRTVKcjs.isNumber.call(void 0, value)) return message("\u7C7B\u578B\uFF0C\u4EC5\u652F\u6301\u5224\u65AD\u5B57\u7B26\u6216\u6570\u5B57\u683C\u5F0F");
+    if (rule.type === "number") return isNumber(value) ? true : message("\u6570\u5B57");
+    if (!isString(value) && !isNumber(value)) return message("\u7C7B\u578B\uFF0C\u4EC5\u652F\u6301\u5224\u65AD\u5B57\u7B26\u6216\u6570\u5B57\u683C\u5F0F");
     value = value.toString();
-    if (rule.type === "json") return _chunkU4TVRTVKcjs.isJSON.call(void 0, value) ? true : message("JSON");
-    if (rule.type === "url") return _chunkU4TVRTVKcjs.isHttp.call(void 0, value) ? true : message("\u7F51\u5740");
-    if (rule.type === "email") return _chunkU4TVRTVKcjs.isEmail.call(void 0, value) ? true : message("\u90AE\u7BB1");
-    if (rule.type === "tel") return _chunkU4TVRTVKcjs.isPhone.call(void 0, value) ? true : message("\u7535\u8BDD\u53F7\u7801");
-    if (rule.type === "phone") return _chunkU4TVRTVKcjs.isPhone.call(void 0, value) ? true : message("\u7535\u8BDD\u53F7\u7801");
-    if (rule.type === "mobile") return _chunkU4TVRTVKcjs.isMobile.call(void 0, value) ? true : message("\u624B\u673A\u53F7\u7801");
-    if (rule.type === "mobilephone") return _chunkU4TVRTVKcjs.isMobile.call(void 0, value) ? true : message("\u624B\u673A\u53F7\u7801");
-    if (rule.type === "guid") return _chunkU4TVRTVKcjs.isGuid.call(void 0, value) ? true : message("GUID");
-    if (rule.type === "chinese") return _chunkU4TVRTVKcjs.isChinese.call(void 0, value) ? true : message("\u4E2D\u6587\u5B57\u7B26");
-    if (rule.type === "english") return _chunkU4TVRTVKcjs.isEnglish.call(void 0, value) ? true : message("\u82F1\u6587\u5B57\u7B26");
-    if (rule.type === "ip") return _chunkU4TVRTVKcjs.isIP.call(void 0, value) ? true : message("IP");
+    if (rule.type === "json") return isJSON(value) ? true : message("JSON");
+    if (rule.type === "url") return isHttp(value) ? true : message("\u7F51\u5740");
+    if (rule.type === "email") return isEmail(value) ? true : message("\u90AE\u7BB1");
+    if (rule.type === "tel") return isPhone(value) ? true : message("\u7535\u8BDD\u53F7\u7801");
+    if (rule.type === "phone") return isPhone(value) ? true : message("\u7535\u8BDD\u53F7\u7801");
+    if (rule.type === "mobile") return isMobile(value) ? true : message("\u624B\u673A\u53F7\u7801");
+    if (rule.type === "mobilephone") return isMobile(value) ? true : message("\u624B\u673A\u53F7\u7801");
+    if (rule.type === "guid") return isGuid(value) ? true : message("GUID");
+    if (rule.type === "chinese") return isChinese(value) ? true : message("\u4E2D\u6587\u5B57\u7B26");
+    if (rule.type === "english") return isEnglish(value) ? true : message("\u82F1\u6587\u5B57\u7B26");
+    if (rule.type === "ip") return isIP(value) ? true : message("IP");
     if (rule.type === "name")
-      return _chunkU4TVRTVKcjs.isName.call(void 0, value) ? true : "\u4EC5\u652F\u6301\u5B57\u6BCD\u6570\u5B57\u6A2A\u7EBF\u5C0F\u6570\u70B9\uFF0C\u4E14\u9700\u5B57\u6BCD\u5F00\u5934";
+      return isName(value) ? true : "\u4EC5\u652F\u6301\u5B57\u6BCD\u6570\u5B57\u6A2A\u7EBF\u5C0F\u6570\u70B9\uFF0C\u4E14\u9700\u5B57\u6BCD\u5F00\u5934";
     return "\u4E0D\u652F\u6301\u6B64\u683C\u5F0F [" + rule.type + "] \u9A8C\u8BC1";
   }
   /** 验证区间 */
   validateRange(rule, value) {
-    if (_chunkU4TVRTVKcjs.isNil.call(void 0, value) || !rule) return true;
+    if (isNil(value) || !rule) return true;
     if (rule.min) {
       const min = Number(rule.min);
       if (!isNaN(min)) {
-        if (_chunkU4TVRTVKcjs.isString.call(void 0, value)) value = Number(value);
+        if (isString(value)) value = Number(value);
         if (isNaN(value)) return "\u6B64\u503C\u5FC5\u987B\u4E3A\u6570\u503C";
-        if (_chunkU4TVRTVKcjs.isNumber.call(void 0, value) && value < min)
+        if (isNumber(value) && value < min)
           return rule.message || "\u6B64\u503C\u5FC5\u987B\u5927\u4E8E\u7B49\u4E8E " + min;
       }
     }
     if (rule.max) {
       const max = Number(rule.max);
       if (!isNaN(max)) {
-        if (_chunkU4TVRTVKcjs.isString.call(void 0, value)) value = Number(value);
+        if (isString(value)) value = Number(value);
         if (isNaN(value)) return "\u6B64\u503C\u5FC5\u987B\u4E3A\u6570\u503C";
-        if (_chunkU4TVRTVKcjs.isNumber.call(void 0, value) && value > max)
+        if (isNumber(value) && value > max)
           return rule.message || "\u6B64\u503C\u5FC5\u987B\u5C0F\u4E8E\u7B49\u4E8E " + max;
       }
     }
     if (rule.minLength) {
       const min = Number(rule.minLength);
       if (!isNaN(min)) {
-        if (_chunkU4TVRTVKcjs.isNumber.call(void 0, value)) value = value.toString();
-        if ((_chunkU4TVRTVKcjs.isString.call(void 0, value) || _chunkU4TVRTVKcjs.isArray.call(void 0, value)) && value.length < min)
+        if (isNumber(value)) value = value.toString();
+        if ((isString(value) || isArray(value)) && value.length < min)
           return rule.message || "\u6B64\u503C\u957F\u5EA6\u5FC5\u987B\u5927\u4E8E\u7B49\u4E8E " + min;
       }
     }
     if (rule.maxLength) {
       const max = Number(rule.maxLength);
       if (!isNaN(max)) {
-        if (_chunkU4TVRTVKcjs.isNumber.call(void 0, value)) value = value.toString();
-        if ((_chunkU4TVRTVKcjs.isString.call(void 0, value) || _chunkU4TVRTVKcjs.isArray.call(void 0, value)) && value.length > max)
+        if (isNumber(value)) value = value.toString();
+        if ((isString(value) || isArray(value)) && value.length > max)
           return rule.message || "\u6B64\u503C\u957F\u5EA6\u5FC5\u987B\u5C0F\u4E8E\u7B49\u4E8E " + max;
       }
     }
-    const now = _dayjs2.default.call(void 0, value);
+    const now = dayjs(value);
     if (rule.minDate) {
       if (!now.isValid()) return rule.message || "\u65E0\u6548\u65E5\u671F\u6570\u636E";
-      const min = _dayjs2.default.call(void 0, rule.minDate);
+      const min = dayjs(rule.minDate);
       if (min.isValid() && now.isBefore(min, "day"))
         return rule.message || "\u65F6\u95F4\u5FC5\u987B\u665A\u4E8E\u6216\u8005\u7B49\u4E8E " + min.format("YYYY\u5E74MM\u6708DD\u65E5");
     }
     if (rule.maxDate) {
       if (!now.isValid()) return rule.message || "\u65E0\u6548\u65E5\u671F\u6570\u636E";
-      const max = _dayjs2.default.call(void 0, rule.maxDate);
+      const max = dayjs(rule.maxDate);
       if (max.isValid() && now.isAfter(max, "day"))
         return rule.message || "\u65F6\u95F4\u5FC5\u987B\u65E9\u4E8E\u6216\u8005\u7B49\u4E8E " + max.format("YYYY\u5E74MM\u6708DD\u65E5");
     }
@@ -2325,7 +2325,7 @@ var FormValidate = class {
   }
   /** 验证自定义规则函数 */
   validateFunction(rule, value) {
-    if (!rule || !_chunkU4TVRTVKcjs.isFn.call(void 0, rule.validate)) return true;
+    if (!rule || !isFn(rule.validate)) return true;
     return rule.validate(value);
   }
   /********************************************************************/
@@ -2333,8 +2333,8 @@ var FormValidate = class {
   description(rules) {
     const ret = [];
     rules = this.updateRules(rules);
-    if (!_chunkU4TVRTVKcjs.hasArray.call(void 0, rules)) return "";
-    rules.filter((rule) => _chunkU4TVRTVKcjs.hasObject.call(void 0, rule)).forEach((rule) => {
+    if (!hasArray(rules)) return "";
+    rules.filter((rule) => hasObject(rule)).forEach((rule) => {
       ret.push(this.descriptionRequired(rule));
       ret.push(this.descriptionRange(rule));
       ret.push(this.descriptionType(rule));
@@ -2352,7 +2352,7 @@ var FormValidate = class {
   }
   /** 类型 */
   descriptionType(rule) {
-    if (!rule || !rule.type || !_chunkU4TVRTVKcjs.isString.call(void 0, rule.type)) return "";
+    if (!rule || !rule.type || !isString(rule.type)) return "";
     if (rule.type === "json") return "\u8981\u6C42\u683C\u5F0F\u4E3A JSON";
     if (rule.type === "url") return "\u8981\u6C42\u683C\u5F0F\u4E3A\u7F51\u5740";
     if (rule.type === "email") return "\u8981\u6C42\u683C\u5F0F\u4E3A\u90AE\u7BB1";
@@ -2389,11 +2389,11 @@ var FormValidate = class {
       if (!isNaN(max)) ret.push("\u957F\u5EA6\u5FC5\u987B\u5C0F\u4E8E\u7B49\u4E8E" + max);
     }
     if (rule.minDate) {
-      const min = _dayjs2.default.call(void 0, rule.minDate);
+      const min = dayjs(rule.minDate);
       if (min.isValid()) ret.push("\u65F6\u95F4\u5FC5\u987B\u665A\u4E8E\u6216\u8005\u7B49\u4E8E " + min.format("YYYY\u5E74MM\u6708DD\u65E5"));
     }
     if (rule.maxDate) {
-      const max = _dayjs2.default.call(void 0, rule.maxDate);
+      const max = dayjs(rule.maxDate);
       if (max.isValid()) ret.push("\u65F6\u95F4\u5FC5\u987B\u65E9\u4E8E\u6216\u8005\u7B49\u4E8E " + max.format("YYYY\u5E74MM\u6708DD\u65E5"));
     }
     return ret.length > 0 ? ret.join("\uFF1B") : "";
@@ -2401,12 +2401,12 @@ var FormValidate = class {
   /********************************************************************/
   /** 是否存在规则 */
   hasRules(rules) {
-    return _chunkU4TVRTVKcjs.hasArray.call(void 0, this.updateRules(rules));
+    return hasArray(this.updateRules(rules));
   }
   /** 将规则对象转换成规则列表 */
   updateRules(rules) {
-    if (_chunkU4TVRTVKcjs.hasArray.call(void 0, rules)) return rules;
-    if (!_chunkU4TVRTVKcjs.hasObject.call(void 0, rules)) return [];
+    if (hasArray(rules)) return rules;
+    if (!hasObject(rules)) return [];
     const rs = rules;
     rules = Object.keys(rs).map((key) => {
       if (key === "message") return;
@@ -2430,9 +2430,9 @@ var createFormValidate = () => {
 
 // src/waterMark.ts
 var waterMark_default = (background, interval = 5) => {
-  if (_chunkU4TVRTVKcjs.SERVERMODE || !background) return;
+  if (SERVERMODE || !background) return;
   const validate = () => {
-    const img = _chunkU4TVRTVKcjs.isFn.call(void 0, background) ? background() : background;
+    const img = isFn(background) ? background() : background;
     if (!img) return;
     let el = document.body.querySelector(".dl-watermark");
     if (!el) {
@@ -2457,9 +2457,9 @@ var waterMark_default = (background, interval = 5) => {
 };
 
 // src/theme.ts
-
+import dayjs2 from "dayjs";
 function UIThemeQuery(options) {
-  if (!_chunkU4TVRTVKcjs.SERVERMODE) {
+  if (!SERVERMODE) {
     let getTheme2 = function(el) {
       const theme2 = el.dataset.theme;
       if (theme2) return theme2;
@@ -2474,7 +2474,7 @@ function UIThemeQuery(options) {
       if (prefersLight.matches) return "light";
     }
     let defaultThemes = (options == null ? void 0 : options.defaultThemes) || [];
-    !_chunkU4TVRTVKcjs.hasArray.call(void 0, defaultThemes) && (defaultThemes = []);
+    !hasArray(defaultThemes) && (defaultThemes = []);
     !defaultThemes.includes("dark") && defaultThemes.push("dark");
     !defaultThemes.includes("light") && defaultThemes.push("light");
     const theme = getTheme2(document.documentElement) || getTheme2(document.body);
@@ -2486,17 +2486,17 @@ function UIThemeQuery(options) {
   return hour > start && hour <= end ? "light" : "dark";
 }
 function UIThemeSet(theme, el, defaultClass) {
-  if (_chunkU4TVRTVKcjs.SERVERMODE) return;
+  if (SERVERMODE) return;
   theme = theme || "light";
   el = el || document.documentElement;
-  defaultClass && (el.className = defaultClass);
+  el.className = defaultClass || "";
   el.classList.add(theme);
   el.dataset.theme = theme;
 }
 var createImportantStyle = (days) => {
-  if (!days || _chunkU4TVRTVKcjs.SERVERMODE) return;
-  if (_chunkU4TVRTVKcjs.isString.call(void 0, days)) days = days.split(",");
-  if (_chunkU4TVRTVKcjs.hasArray.call(void 0, days)) {
+  if (!days || SERVERMODE) return;
+  if (isString(days)) days = days.split(",");
+  if (hasArray(days)) {
     const list = {};
     days.forEach((day2) => {
       day2 = day2.trim();
@@ -2504,15 +2504,15 @@ var createImportantStyle = (days) => {
     });
     days = list;
   }
-  if (!_chunkU4TVRTVKcjs.hasObject.call(void 0, days)) return;
+  if (!hasObject(days)) return;
   const day = Object.keys(days).find((day2) => {
     if (day2.length < 8) day2 = `${(/* @__PURE__ */ new Date()).getFullYear()}-${day2}`;
-    return _dayjs2.default.call(void 0, ).isSame(day2, "day");
+    return dayjs2().isSame(day2, "day");
   });
   if (!day) return;
   let info = days[day];
   let background = "";
-  if (_chunkU4TVRTVKcjs.isString.call(void 0, info) && info !== "") {
+  if (isString(info) && info !== "") {
     if (info.startsWith("*")) {
       info = info.slice(1);
       document.body.style.webkitFilter = "grayscale(100%)";
@@ -2553,12 +2553,15 @@ var createImportantStyle = (days) => {
 };
 var mergeClass = (...classNames) => {
   let result = [];
-  for (const className of classNames) {
-    if (_chunkU4TVRTVKcjs.isString.call(void 0, className)) {
+  for (let className of classNames) {
+    if (isFn(className)) {
+      className = className();
+    }
+    if (isString(className)) {
       result.push(className);
-    } else if (_chunkU4TVRTVKcjs.isArray.call(void 0, className)) {
+    } else if (isArray(className)) {
       result.push(...className);
-    } else if (_chunkU4TVRTVKcjs.isObject.call(void 0, className)) {
+    } else if (isObject(className)) {
       for (const key in className) {
         if (className[key]) result.push(key);
       }
@@ -2566,19 +2569,19 @@ var mergeClass = (...classNames) => {
   }
   if (result.length < 1) return result;
   result = result.join("|").replace(/\s+/g, "|").trim().split("|").filter((x) => !!x);
-  return _chunkU4TVRTVKcjs.cleanDuplicate.call(void 0, result);
+  return cleanDuplicate(result);
 };
 
 // src/page.ts
 var screenType = (options) => {
-  if (_chunkU4TVRTVKcjs.SERVERMODE) return "server";
+  if (SERVERMODE) return "server";
   options = { desktop: (options == null ? void 0 : options.desktop) || 1024, mobile: (options == null ? void 0 : options.mobile) || 640 };
   if (window.innerWidth >= options.desktop) return "desktop";
   if (window.innerWidth <= options.mobile) return "mobile";
   return "tablet";
 };
 var isFullscreen = () => {
-  if (_chunkU4TVRTVKcjs.SERVERMODE) return false;
+  if (SERVERMODE) return false;
   return (
     // @ts-ignore
     document.webkitIsFullScreen || // @ts-ignore
@@ -2590,7 +2593,7 @@ var isFullscreen = () => {
 var _elementAction = (element, elementFunctionName) => {
   try {
     const fun = element[elementFunctionName];
-    if (_chunkU4TVRTVKcjs.isFn.call(void 0, fun)) {
+    if (isFn(fun)) {
       fun();
       return true;
     }
@@ -2599,44 +2602,44 @@ var _elementAction = (element, elementFunctionName) => {
   return false;
 };
 var fullscreenLaunch = (element) => {
-  if (_chunkU4TVRTVKcjs.SERVERMODE) return false;
-  let ele = _chunkU4TVRTVKcjs.isString.call(void 0, element) ? document.querySelector(element) : element;
+  if (SERVERMODE) return false;
+  let ele = isString(element) ? document.querySelector(element) : element;
   ele = ele || document.querySelector("#app") || document.body;
   if (!ele) return false;
   return _elementAction(ele, "requestFullscreen") || _elementAction(ele, "webkitRequestFullScreen") || _elementAction(ele, "msRequestFullscreen") || _elementAction(ele, "mozRequestFullScreen") || _elementAction(ele, "oRequestFullscreen");
 };
 var fullscreenExit = () => {
-  if (_chunkU4TVRTVKcjs.SERVERMODE) return false;
+  if (SERVERMODE) return false;
   return _elementAction(document, "exitFullscreen") || _elementAction(document, "webkitExitFullscreen") || _elementAction(document, "msExitFullscreen") || _elementAction(document, "mozCancelFullScreen") || _elementAction(document, "oCancelFullScreen");
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-exports.base64Encode = base64Encode; exports.base64Decode = base64Decode; exports.MD5 = MD52; exports.xor = xor; exports.exportJson = exportJson; exports.exportTable = exportTable; exports.objectDownload = objectDownload; exports.jsonDownload = jsonDownload; exports.QRErrorCorrectLevel = QRErrorCorrectLevel; exports.QR = QR; exports.QRObject = QRObject; exports.QRCreate = QRCreate; exports.remoteFileToBase64 = remoteFileToBase64; exports.setCookie = setCookie; exports.getCookie = getCookie; exports.deleteCookie = deleteCookie; exports.cookies_default = cookies_default; exports.FormValidate = FormValidate; exports.createFormValidate = createFormValidate; exports.waterMark_default = waterMark_default; exports.UIThemeQuery = UIThemeQuery; exports.UIThemeSet = UIThemeSet; exports.createImportantStyle = createImportantStyle; exports.mergeClass = mergeClass; exports.screenType = screenType; exports.isFullscreen = isFullscreen; exports.fullscreenLaunch = fullscreenLaunch; exports.fullscreenExit = fullscreenExit;
+export {
+  base64Encode,
+  base64Decode,
+  MD52 as MD5,
+  xor,
+  exportJson,
+  exportTable,
+  objectDownload,
+  jsonDownload,
+  QRErrorCorrectLevel,
+  QR,
+  QRObject,
+  QRCreate,
+  remoteFileToBase64,
+  setCookie,
+  getCookie,
+  deleteCookie,
+  cookies_default,
+  FormValidate,
+  createFormValidate,
+  waterMark_default,
+  UIThemeQuery,
+  UIThemeSet,
+  createImportantStyle,
+  mergeClass,
+  screenType,
+  isFullscreen,
+  fullscreenLaunch,
+  fullscreenExit
+};
