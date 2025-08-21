@@ -1,9 +1,9 @@
 import {
   ConsoleEcho
-} from "./chunk-7FLXMEVC.js";
+} from "./chunk-JRQ3M2ZW.js";
 import {
   $Global
-} from "./chunk-IESO4G4V.js";
+} from "./chunk-3PM3PNI2.js";
 
 // src/console/global.ts
 if (!$Global.con) {

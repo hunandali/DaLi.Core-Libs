@@ -1,10 +1,10 @@
 import {
   base64Encode
-} from "./chunk-ODZ76ARP.js";
+} from "./chunk-HMJGFK7S.js";
 import {
   cache_client_default,
   cache_server_default
-} from "./chunk-TXKNR53R.js";
+} from "./chunk-NYQ6ZTMV.js";
 import {
   LRU
 } from "./chunk-6QCBU3HR.js";
@@ -22,7 +22,7 @@ import {
   isString,
   modulesUpdate,
   sleep
-} from "./chunk-IESO4G4V.js";
+} from "./chunk-3PM3PNI2.js";
 
 // src/task.ts
 var Tasks = class {
@@ -620,7 +620,7 @@ async function HttpApi(http2, api, options) {
   api.keepalive && (options.keepalive = api.keepalive);
   let succ = false;
   let value;
-  await http2(api.url, options).then((res) => {
+  await (options.cacheTime && options.cacheTime > 0 ? HttpCache(http2, api.url, options) : http2(api.url, options)).then((res) => {
     value = res;
     succ = true;
     con.success("API \u8BF7\u6C42\u6210\u529F", api.url);

@@ -12,7 +12,7 @@
 
 
 
-var _chunkFMCVNC7Qcjs = require('./chunk-FMCVNC7Q.cjs');
+var _chunkEPHQJHZHcjs = require('./chunk-EPHQJHZH.cjs');
 
 // src/console/index.ts
 var _chalk = require('chalk'); var _chalk2 = _interopRequireDefault(_chalk);
@@ -20,10 +20,10 @@ var _ufo = require('ufo');
 var ConsoleEcho = class {
   /** 信息输出 */
   _echo(icon, bgColor, color, mode, message, ...optionalParams) {
-    if ((!_chunkFMCVNC7Qcjs.DEBUG || _chunkFMCVNC7Qcjs.TEST) && mode !== "error") return;
+    if ((!_chunkEPHQJHZHcjs.DEBUG || _chunkEPHQJHZHcjs.TEST) && mode !== "error") return;
     const stringify = (objColor, obj) => {
       obj = emptyString(obj);
-      const str = _chunkFMCVNC7Qcjs.isObject.call(void 0, obj) ? JSON.stringify(obj, null, "	") : obj;
+      const str = _chunkEPHQJHZHcjs.isObject.call(void 0, obj) ? JSON.stringify(obj, null, "	") : obj;
       return objColor(` ${str} `);
     };
     const emptyString = (obj) => {
@@ -34,12 +34,12 @@ var ConsoleEcho = class {
       if (obj === false) return _chalk2.default.bgGray.redBright(" False ");
       return obj;
     };
-    let source = _chalk2.default.reset.white(_chunkFMCVNC7Qcjs.errorTrace.call(void 0, 1, 1, ["$Global.echo", "consoleEcho."]));
-    if (_chunkFMCVNC7Qcjs.hasString.call(void 0, message) && _chunkFMCVNC7Qcjs.hasArray.call(void 0, optionalParams)) {
+    let source = _chalk2.default.reset.white(_chunkEPHQJHZHcjs.errorTrace.call(void 0, 1, 1, ["$Global.echo", "consoleEcho."]));
+    if (_chunkEPHQJHZHcjs.hasString.call(void 0, message) && _chunkEPHQJHZHcjs.hasArray.call(void 0, optionalParams)) {
       for (let i = 0; i < optionalParams.length; i++) {
-        if (!_chunkFMCVNC7Qcjs.hasObject.call(void 0, optionalParams[i])) continue;
+        if (!_chunkEPHQJHZHcjs.hasObject.call(void 0, optionalParams[i])) continue;
         if (message.includes("{") && message.includes("}")) break;
-        message = _chunkFMCVNC7Qcjs.template.call(void 0, message, optionalParams[i]);
+        message = _chunkEPHQJHZHcjs.template.call(void 0, message, optionalParams[i]);
       }
     }
     if (message) {
@@ -52,7 +52,7 @@ var ConsoleEcho = class {
     const showIndex = mode === "debug" && len > 1;
     console.group(message);
     optionalParams.forEach((par, index) => {
-      if (index === 0 && _chunkFMCVNC7Qcjs.isFn.call(void 0, par)) {
+      if (index === 0 && _chunkEPHQJHZHcjs.isFn.call(void 0, par)) {
         par();
       } else {
         if (showIndex) {
@@ -72,7 +72,7 @@ var ConsoleEcho = class {
   }
   /** 普通打印输出 */
   log(message, ...optionalParams) {
-    _chunkFMCVNC7Qcjs.DEBUG && console.log(message, ...optionalParams);
+    _chunkEPHQJHZHcjs.DEBUG && console.log(message, ...optionalParams);
   }
   /** 表格显示 */
   table(tabularData, properties) {
@@ -141,19 +141,19 @@ var ConsoleEcho = class {
   /** 调试信息 */
   debug(...optionalParams) {
     var _a, _b;
-    if (!_chunkFMCVNC7Qcjs.hasArray.call(void 0, optionalParams)) return;
+    if (!_chunkEPHQJHZHcjs.hasArray.call(void 0, optionalParams)) return;
     const enabled = optionalParams[optionalParams.length - 1];
     if (enabled === "~") return;
     let title = "";
-    let id = _chalk2.default.bgGray.yellowBright(` ${_chunkFMCVNC7Qcjs.globalId.call(void 0, )} `);
-    if (_chunkFMCVNC7Qcjs.isString.call(void 0, optionalParams[0]) && optionalParams[0]) {
+    let id = _chalk2.default.bgGray.yellowBright(` ${_chunkEPHQJHZHcjs.globalId.call(void 0, )} `);
+    if (_chunkEPHQJHZHcjs.isString.call(void 0, optionalParams[0]) && optionalParams[0]) {
       title = optionalParams[0];
       optionalParams = optionalParams.splice(1);
     }
-    if (!_chunkFMCVNC7Qcjs.SERVERMODE) {
-      let source = _chalk2.default.reset.white(_chunkFMCVNC7Qcjs.errorTrace.call(void 0, 1, 1, ["$Global.echo", "consoleEcho."]));
+    if (!_chunkEPHQJHZHcjs.SERVERMODE) {
+      let source = _chalk2.default.reset.white(_chunkEPHQJHZHcjs.errorTrace.call(void 0, 1, 1, ["$Global.echo", "consoleEcho."]));
       const infos = source == null ? void 0 : source.split(" (");
-      if (_chunkFMCVNC7Qcjs.hasArray.call(void 0, infos)) {
+      if (_chunkEPHQJHZHcjs.hasArray.call(void 0, infos)) {
         !title && infos[0] && (title = infos[0].indexOf("[37m") > -1 ? ((_a = infos[0]) == null ? void 0 : _a.split("[37m")[1]) || "" : infos[0]);
         infos[1] && (id += _chalk2.default.bgBlack.whiteBright(
           " " + ((_b = _ufo.parseFilename.call(void 0, infos[1], { strict: true })) == null ? void 0 : _b.split(":")[0])
@@ -165,11 +165,11 @@ var ConsoleEcho = class {
   }
 };
 var createConsoleEcho = () => {
-  if (!_chunkFMCVNC7Qcjs.$Global.con) {
-    _chunkFMCVNC7Qcjs.$Global.con = new ConsoleEcho();
-    _chunkFMCVNC7Qcjs.$Global.echo = (...optionalParams) => _chunkFMCVNC7Qcjs.$Global.con.debug(...optionalParams);
+  if (!_chunkEPHQJHZHcjs.$Global.con) {
+    _chunkEPHQJHZHcjs.$Global.con = new ConsoleEcho();
+    _chunkEPHQJHZHcjs.$Global.echo = (...optionalParams) => _chunkEPHQJHZHcjs.$Global.con.debug(...optionalParams);
   }
-  return _chunkFMCVNC7Qcjs.$Global.con;
+  return _chunkEPHQJHZHcjs.$Global.con;
 };
 
 

@@ -1,10 +1,10 @@
 "use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _chunkS4CVJG43cjs = require('./chunk-S4CVJG43.cjs');
+var _chunkNOGKNLYYcjs = require('./chunk-NOGKNLYY.cjs');
 
 
 
-var _chunkQUWPGWIPcjs = require('./chunk-QUWPGWIP.cjs');
+var _chunkX34CIJFScjs = require('./chunk-X34CIJFS.cjs');
 
 
 var _chunkP6IBSJ7Lcjs = require('./chunk-P6IBSJ7L.cjs');
@@ -22,7 +22,7 @@ var _chunkP6IBSJ7Lcjs = require('./chunk-P6IBSJ7L.cjs');
 
 
 
-var _chunkFMCVNC7Qcjs = require('./chunk-FMCVNC7Q.cjs');
+var _chunkEPHQJHZHcjs = require('./chunk-EPHQJHZH.cjs');
 
 // src/task.ts
 var Tasks = class {
@@ -32,7 +32,7 @@ var Tasks = class {
    * @param interval 轮询周期（单位：秒）
    */
   constructor(tasks, interval = 30) {
-    this.instance = _chunkFMCVNC7Qcjs.hasArray.call(void 0, tasks) ? tasks : [];
+    this.instance = _chunkEPHQJHZHcjs.hasArray.call(void 0, tasks) ? tasks : [];
     this.timer = void 0;
     this.interval = interval < 1 ? 30 : interval;
     this.counter = 0;
@@ -61,7 +61,7 @@ var Tasks = class {
   start() {
     this.stop();
     if (this.busy) return;
-    if (!_chunkFMCVNC7Qcjs.hasArray.call(void 0, this.instance)) return;
+    if (!_chunkEPHQJHZHcjs.hasArray.call(void 0, this.instance)) return;
     this.busy = true;
     this.counter += 1;
     this.last = /* @__PURE__ */ new Date();
@@ -75,21 +75,21 @@ var Tasks = class {
 };
 var createTasks = (modules, interval = 30, mode = true) => {
   if (!mode) return;
-  if (_chunkFMCVNC7Qcjs.SERVERMODE && mode === "client") return;
-  if (!_chunkFMCVNC7Qcjs.SERVERMODE && mode === "server") return;
-  if (!_chunkFMCVNC7Qcjs.hasObject.call(void 0, modules) && !_chunkFMCVNC7Qcjs.hasArray.call(void 0, modules)) return;
-  const packages = _chunkFMCVNC7Qcjs.modulesUpdate.call(void 0, modules);
-  if (!_chunkFMCVNC7Qcjs.hasObject.call(void 0, packages)) return;
+  if (_chunkEPHQJHZHcjs.SERVERMODE && mode === "client") return;
+  if (!_chunkEPHQJHZHcjs.SERVERMODE && mode === "server") return;
+  if (!_chunkEPHQJHZHcjs.hasObject.call(void 0, modules) && !_chunkEPHQJHZHcjs.hasArray.call(void 0, modules)) return;
+  const packages = _chunkEPHQJHZHcjs.modulesUpdate.call(void 0, modules);
+  if (!_chunkEPHQJHZHcjs.hasObject.call(void 0, packages)) return;
   const tasks = [];
   Object.keys(packages).forEach((key) => {
     const obj = packages[key];
-    if (obj && _chunkFMCVNC7Qcjs.isFn.call(void 0, obj.execute)) {
+    if (obj && _chunkEPHQJHZHcjs.isFn.call(void 0, obj.execute)) {
       obj.name = key;
       obj.interval = Number(obj.interval || 0);
       obj.last = 0;
       obj.count = 0;
       obj.busy = false;
-      _chunkFMCVNC7Qcjs.isFn.call(void 0, obj.init) && obj.init();
+      _chunkEPHQJHZHcjs.isFn.call(void 0, obj.init) && obj.init();
       if (obj.interval > 0) tasks.push(obj);
     }
   });
@@ -98,8 +98,8 @@ var createTasks = (modules, interval = 30, mode = true) => {
 
 // src/cache/index.ts
 var createCache = () => {
-  if (!_chunkFMCVNC7Qcjs.$Global.$cache) _chunkFMCVNC7Qcjs.$Global.$cache = new (_chunkFMCVNC7Qcjs.SERVERMODE ? _chunkQUWPGWIPcjs.cache_server_default : (0, _chunkQUWPGWIPcjs.cache_client_default))();
-  return _chunkFMCVNC7Qcjs.$Global.$cache;
+  if (!_chunkEPHQJHZHcjs.$Global.$cache) _chunkEPHQJHZHcjs.$Global.$cache = new (_chunkEPHQJHZHcjs.SERVERMODE ? _chunkX34CIJFScjs.cache_server_default : (0, _chunkX34CIJFScjs.cache_client_default))();
+  return _chunkEPHQJHZHcjs.$Global.$cache;
 };
 
 // src/http/utils.ts
@@ -113,16 +113,16 @@ function getToken(context, tokenContent = "") {
   if (!tokenContent) return;
   if (tokenContent === true) {
     const dataToken = (data) => {
-      if (_chunkFMCVNC7Qcjs.hasObjectName.call(void 0, data, "token")) {
+      if (_chunkEPHQJHZHcjs.hasObjectName.call(void 0, data, "token")) {
         const value = data.token;
-        if (_chunkFMCVNC7Qcjs.hasString.call(void 0, value)) {
+        if (_chunkEPHQJHZHcjs.hasString.call(void 0, value)) {
           delete data.token;
           return value;
         }
       }
     };
     return dataToken(context.options.body) || dataToken(context.options.params) || dataToken(context.options.query);
-  } else if (_chunkFMCVNC7Qcjs.isFn.call(void 0, tokenContent)) {
+  } else if (_chunkEPHQJHZHcjs.isFn.call(void 0, tokenContent)) {
     return tokenContent(context);
   } else {
     return tokenContent;
@@ -130,12 +130,12 @@ function getToken(context, tokenContent = "") {
 }
 function updateRequest(context, appenQuery = false) {
   const { request, options } = context;
-  const sourceUrl = _chunkFMCVNC7Qcjs.isString.call(void 0, request) ? request : request == null ? void 0 : request.url;
+  const sourceUrl = _chunkEPHQJHZHcjs.isString.call(void 0, request) ? request : request == null ? void 0 : request.url;
   const baseUrl = options.baseURL;
   let url = baseUrl ? _ufo.withBase.call(void 0, sourceUrl, baseUrl) : sourceUrl;
   url = url.replace(/%7B/gi, "{").replace(/%7D/gi, "}");
   const queryData = {};
-  const encode = _chunkFMCVNC7Qcjs.hasArray.call(void 0, options.encode) ? options.encode.map((x) => x.toLowerCase()) : [];
+  const encode = _chunkEPHQJHZHcjs.hasArray.call(void 0, options.encode) ? options.encode.map((x) => x.toLowerCase()) : [];
   const fields = [];
   const update = (name, isQuery = true) => {
     const data = options[name];
@@ -144,7 +144,7 @@ function updateRequest(context, appenQuery = false) {
       let value = data[key];
       const isEncode = encode.includes(key.toLowerCase());
       if (isEncode) {
-        value = _chunkS4CVJG43cjs.base64Encode.call(void 0, value);
+        value = _chunkNOGKNLYYcjs.base64Encode.call(void 0, value);
         fields.push(key);
       }
       const reg = new RegExp(`{${key}}`, "gi");
@@ -164,7 +164,7 @@ function updateRequest(context, appenQuery = false) {
   update("query", true);
   update("params", true);
   if (isPayloadMethod(options.method)) {
-    if (_chunkFMCVNC7Qcjs.hasArray.call(void 0, fields)) {
+    if (_chunkEPHQJHZHcjs.hasArray.call(void 0, fields)) {
       options.body = {
         ...options.body,
         _encode: fields.join(",")
@@ -172,11 +172,11 @@ function updateRequest(context, appenQuery = false) {
     }
   } else {
     delete options.body;
-    if (_chunkFMCVNC7Qcjs.hasArray.call(void 0, fields)) {
+    if (_chunkEPHQJHZHcjs.hasArray.call(void 0, fields)) {
       queryData["_encode"] = fields.join(",");
     }
   }
-  if (_chunkFMCVNC7Qcjs.hasObject.call(void 0, queryData)) {
+  if (_chunkEPHQJHZHcjs.hasObject.call(void 0, queryData)) {
     if (appenQuery) {
       url = _ufo.withQuery.call(void 0, url, queryData);
     } else {
@@ -184,7 +184,7 @@ function updateRequest(context, appenQuery = false) {
     }
   }
   if (sourceUrl !== url) {
-    if (_chunkFMCVNC7Qcjs.isString.call(void 0, request)) {
+    if (_chunkEPHQJHZHcjs.isString.call(void 0, request)) {
       context.request = url;
     } else {
       context.request = new Request(url, request);
@@ -194,21 +194,21 @@ function updateRequest(context, appenQuery = false) {
 }
 function showError(config, error) {
   if (!config || !error || error.alerted) return false;
-  if (error.alert && _chunkFMCVNC7Qcjs.isFn.call(void 0, config.alert)) error.alerted = config.alert(error, config);
+  if (error.alert && _chunkEPHQJHZHcjs.isFn.call(void 0, config.alert)) error.alerted = config.alert(error, config);
   return !!error.alerted;
 }
 function updateId(item) {
   var _a;
-  const hasData = _chunkFMCVNC7Qcjs.hasObjectName.call(void 0, item, "data");
-  const hasID = _chunkFMCVNC7Qcjs.hasObjectName.call(void 0, item, "_ID_");
+  const hasData = _chunkEPHQJHZHcjs.hasObjectName.call(void 0, item, "data");
+  const hasID = _chunkEPHQJHZHcjs.hasObjectName.call(void 0, item, "_ID_");
   if (hasData && !hasID) {
     item.data = updateId(item.data);
   } else if (hasID) {
     item.id = (_a = item._ID_) != null ? _a : item.id;
-  } else if (_chunkFMCVNC7Qcjs.hasArray.call(void 0, item)) {
+  } else if (_chunkEPHQJHZHcjs.hasArray.call(void 0, item)) {
     item = item.map((x) => updateId(x));
   }
-  if (_chunkFMCVNC7Qcjs.hasObjectName.call(void 0, item, "children")) item.children = updateId(item.children);
+  if (_chunkEPHQJHZHcjs.hasObjectName.call(void 0, item, "children")) item.children = updateId(item.children);
   return item;
 }
 function getResponseErrorMessage(code, message) {
@@ -258,9 +258,9 @@ var HTTP_DEBUG = {
   show: true
 };
 function debug(succ, title, context, config) {
-  if (_chunkFMCVNC7Qcjs.TEST) return;
+  if (_chunkEPHQJHZHcjs.TEST) return;
   if (HTTP_DEBUG.output === false) return;
-  if (HTTP_DEBUG.debugOnly && !_chunkFMCVNC7Qcjs.DEBUG) return;
+  if (HTTP_DEBUG.debugOnly && !_chunkEPHQJHZHcjs.DEBUG) return;
   const space = _chalk2.default.reset(" ".repeat(4));
   const outputs = [];
   if (HTTP_DEBUG.show) {
@@ -286,7 +286,7 @@ function debug(succ, title, context, config) {
   const bgColor = succ ? _chalk2.default.bgGreen : _chalk2.default.bgRed;
   outputs.push(succ ? _chalk2.default.bgGreen(title) : _chalk2.default.bgRed(title));
   const { request, response, options, error } = context;
-  let url = response ? response.url : _chunkFMCVNC7Qcjs.isObject.call(void 0, request) ? request.url : request;
+  let url = response ? response.url : _chunkEPHQJHZHcjs.isObject.call(void 0, request) ? request.url : request;
   let method = options.method || "GET";
   outputs.push(color(`[${method}] ${url}`));
   if (HTTP_DEBUG.output !== "simple") {
@@ -358,23 +358,23 @@ async function onRequest(context, config) {
   if (!options.headers) options.headers = new Headers();
   const data = updateRequest(context);
   config.last = {
-    url: _chunkFMCVNC7Qcjs.isString.call(void 0, request) ? request : request.url,
+    url: _chunkEPHQJHZHcjs.isString.call(void 0, request) ? request : request.url,
     method: options.method || "GET",
     time: /* @__PURE__ */ new Date(),
     id: "",
     status: 0
   };
-  if (options.auth && _chunkFMCVNC7Qcjs.isFn.call(void 0, config.auth) && !config.auth(data.url, options.method, config)) {
+  if (options.auth && _chunkEPHQJHZHcjs.isFn.call(void 0, config.auth) && !config.auth(data.url, options.method, config)) {
     con.error("\u65E0\u6B64\u63A5\u53E3\u64CD\u4F5C\u6743\u9650", data.url, options.method);
     const error = new Error("[NotAllowedError]: No permission for this interface operation");
     error.name = "NotAllowedError";
     error.code = 35;
     throw error;
   }
-  if (_chunkFMCVNC7Qcjs.isFn.call(void 0, config.sign)) await config.sign(data.url, options, config);
+  if (_chunkEPHQJHZHcjs.isFn.call(void 0, config.sign)) await config.sign(data.url, options, config);
   if (!options.headers.has("Authorization")) {
     const token = getToken(context, config.token);
-    if (_chunkFMCVNC7Qcjs.hasString.call(void 0, token)) {
+    if (_chunkEPHQJHZHcjs.hasString.call(void 0, token)) {
       options.headers.set("Authorization", `Bearer ${token}`);
     }
   }
@@ -385,7 +385,7 @@ function onResponse(context, config) {
   const { request, response, options } = context;
   if (!response) return;
   config.last = {
-    url: _chunkFMCVNC7Qcjs.isString.call(void 0, request) ? request : request.url,
+    url: _chunkEPHQJHZHcjs.isString.call(void 0, request) ? request : request.url,
     method: options.method || "GET",
     time: /* @__PURE__ */ new Date(),
     id: "",
@@ -393,10 +393,10 @@ function onResponse(context, config) {
   };
   if (!config.private) return;
   const map = config.privateMap || defaultMap;
-  response.traceId = _chunkFMCVNC7Qcjs.hasObjectName.call(void 0, response._data, map.Id) ? response._data[map.Id] : "";
+  response.traceId = _chunkEPHQJHZHcjs.hasObjectName.call(void 0, response._data, map.Id) ? response._data[map.Id] : "";
   config.last.id = response.traceId;
   if (!response.ok) return;
-  const message = _chunkFMCVNC7Qcjs.hasObjectName.call(void 0, response._data, map.message) ? response._data[map.message] : "";
+  const message = _chunkEPHQJHZHcjs.hasObjectName.call(void 0, response._data, map.message) ? response._data[map.message] : "";
   if (message && response.ok) {
     con.information("\u670D\u52A1\u5668\u53CD\u9988\u5F02\u5E38\u4FE1\u606F", response.url, options.method);
     showError(config, {
@@ -405,7 +405,7 @@ function onResponse(context, config) {
       alert: "modal"
     });
   }
-  if (_chunkFMCVNC7Qcjs.hasObjectName.call(void 0, response._data, map.data)) response._data = response._data[map.data];
+  if (_chunkEPHQJHZHcjs.hasObjectName.call(void 0, response._data, map.data)) response._data = response._data[map.data];
   if (options.convert) response._data = updateId(response._data);
 }
 function onRequestError(context, config) {
@@ -424,16 +424,16 @@ async function onResponseError(context, config) {
   const { response, options } = context;
   if (!response) return;
   const { status, statusText, _data } = response;
-  if (!_chunkFMCVNC7Qcjs.SERVERMODE && status === 401 && options.autoLogin && _chunkFMCVNC7Qcjs.isFn.call(void 0, config.login)) {
+  if (!_chunkEPHQJHZHcjs.SERVERMODE && status === 401 && options.autoLogin && _chunkEPHQJHZHcjs.isFn.call(void 0, config.login)) {
     const res = await RetryLogin(context, config);
     if (!res) return res;
   }
   const map = config.privateMap || defaultMap;
-  const mapData = _chunkFMCVNC7Qcjs.hasObjectName.call(void 0, _data, map.data) ? _data[map.data] : "";
-  const mapCode = _chunkFMCVNC7Qcjs.hasObjectName.call(void 0, _data, map.code) ? _data[map.code] : status;
-  const mapMessage = _chunkFMCVNC7Qcjs.hasObjectName.call(void 0, _data, map.message) ? _data[map.message] : statusText;
+  const mapData = _chunkEPHQJHZHcjs.hasObjectName.call(void 0, _data, map.data) ? _data[map.data] : "";
+  const mapCode = _chunkEPHQJHZHcjs.hasObjectName.call(void 0, _data, map.code) ? _data[map.code] : status;
+  const mapMessage = _chunkEPHQJHZHcjs.hasObjectName.call(void 0, _data, map.message) ? _data[map.message] : statusText;
   const url = response.url;
-  if (_chunkFMCVNC7Qcjs.hasObject.call(void 0, mapData))
+  if (_chunkEPHQJHZHcjs.hasObject.call(void 0, mapData))
     throw {
       ..._data,
       code: mapCode,
@@ -460,7 +460,7 @@ async function HttpCache(http2, request, options) {
     options,
     http2.runtime
   );
-  if (cacheValue && _chunkFMCVNC7Qcjs.hasObjectName.call(void 0, cacheValue, "succ")) {
+  if (cacheValue && _chunkEPHQJHZHcjs.hasObjectName.call(void 0, cacheValue, "succ")) {
     con.information("HTTP \u7F13\u5B58\u547D\u4E2D", request, cacheTime, cacheKey, cacheValue);
     if (cacheValue.succ) {
       return cacheValue.result;
@@ -503,16 +503,16 @@ var cacheRead = async (request, options, config) => {
     cacheTime = (isQuery ? (_a = config.cacheTime) == null ? void 0 : _a.GET : (_b = config.cacheTime) == null ? void 0 : _b.POST) || 0;
   }
   if (cacheTime < 1) return nothing();
-  let cacheKey = _chunkFMCVNC7Qcjs.isString.call(void 0, options.cacheKey) ? options.cacheKey : _chunkFMCVNC7Qcjs.isFn.call(void 0, options.cacheKey) ? options.cacheKey(request, options) : void 0;
+  let cacheKey = _chunkEPHQJHZHcjs.isString.call(void 0, options.cacheKey) ? options.cacheKey : _chunkEPHQJHZHcjs.isFn.call(void 0, options.cacheKey) ? options.cacheKey(request, options) : void 0;
   if (cacheKey === "") return nothing();
   if (!cacheKey) {
-    const url = _chunkFMCVNC7Qcjs.isString.call(void 0, request) ? request : request.url;
+    const url = _chunkEPHQJHZHcjs.isString.call(void 0, request) ? request : request.url;
     const method = (options.method || "GET").toUpperCase();
     const data = {};
-    _chunkFMCVNC7Qcjs.hasObject.call(void 0, options.query) && Object.assign(data, options.query);
-    _chunkFMCVNC7Qcjs.hasObject.call(void 0, options.params) && Object.assign(data, options.params);
-    _chunkFMCVNC7Qcjs.hasObject.call(void 0, options.body) && Object.assign(data, options.body);
-    _chunkFMCVNC7Qcjs.hasObject.call(void 0, options.headers) && Object.assign(data, options.headers);
+    _chunkEPHQJHZHcjs.hasObject.call(void 0, options.query) && Object.assign(data, options.query);
+    _chunkEPHQJHZHcjs.hasObject.call(void 0, options.params) && Object.assign(data, options.params);
+    _chunkEPHQJHZHcjs.hasObject.call(void 0, options.body) && Object.assign(data, options.body);
+    _chunkEPHQJHZHcjs.hasObject.call(void 0, options.headers) && Object.assign(data, options.headers);
     cacheKey = JSON.stringify({
       url,
       method,
@@ -522,7 +522,7 @@ var cacheRead = async (request, options, config) => {
   let cacheValue = cache.get(cacheKey);
   if (cacheValue) return { cacheTime, cacheKey, cacheValue, cacheError: options.cacheError };
   for (let i = 0; i < 10; i++) {
-    await _chunkFMCVNC7Qcjs.sleep.call(void 0, 100);
+    await _chunkEPHQJHZHcjs.sleep.call(void 0, 100);
     const status = !!cacheStatus.get(cacheKey);
     if (!status) break;
   }
@@ -566,7 +566,7 @@ async function HttpUpload(http2, files, request, options) {
   return http2(request, options);
 }
 async function HttpDownload(http2, request, options) {
-  if (_chunkFMCVNC7Qcjs.SERVERMODE || !window) return false;
+  if (_chunkEPHQJHZHcjs.SERVERMODE || !window) return false;
   let succ = false;
   await http2(request, options).then((res) => {
     const file = window.URL.createObjectURL(res);
@@ -604,10 +604,10 @@ async function HttpDownload(http2, request, options) {
   return succ;
 }
 async function HttpApi(http2, api, options) {
-  if (!_chunkFMCVNC7Qcjs.hasObjectName.call(void 0, api, "url") || !_chunkFMCVNC7Qcjs.isString.call(void 0, api.url)) throw new Error("\u65E0\u6548\u7684 API \u914D\u7F6E");
+  if (!_chunkEPHQJHZHcjs.hasObjectName.call(void 0, api, "url") || !_chunkEPHQJHZHcjs.isString.call(void 0, api.url)) throw new Error("\u65E0\u6548\u7684 API \u914D\u7F6E");
   api.method = api.method || "GET";
   api.method = api.method.toUpperCase();
-  !_chunkFMCVNC7Qcjs.hasObject.call(void 0, options) && (options = {});
+  !_chunkEPHQJHZHcjs.hasObject.call(void 0, options) && (options = {});
   options.method = api.method;
   options.headers = api.headers;
   const isPayload = isPayloadMethod(api.method);
@@ -620,7 +620,7 @@ async function HttpApi(http2, api, options) {
   api.keepalive && (options.keepalive = api.keepalive);
   let succ = false;
   let value;
-  await http2(api.url, options).then((res) => {
+  await (options.cacheTime && options.cacheTime > 0 ? HttpCache(http2, api.url, options) : http2(api.url, options)).then((res) => {
     value = res;
     succ = true;
     con.success("API \u8BF7\u6C42\u6210\u529F", api.url);
@@ -629,16 +629,16 @@ async function HttpApi(http2, api, options) {
     con.error("API \u8BF7\u6C42\u5F02\u5E38", api.url);
   });
   if (succ) {
-    _chunkFMCVNC7Qcjs.isFn.call(void 0, api.success) && api.success(value);
+    _chunkEPHQJHZHcjs.isFn.call(void 0, api.success) && api.success(value);
   } else {
-    _chunkFMCVNC7Qcjs.isFn.call(void 0, api.fail) && api.fail(value);
+    _chunkEPHQJHZHcjs.isFn.call(void 0, api.fail) && api.fail(value);
   }
-  return _chunkFMCVNC7Qcjs.isFn.call(void 0, api.complete) ? await api.complete({ succ, value, api }) : { succ, value, api };
+  return _chunkEPHQJHZHcjs.isFn.call(void 0, api.complete) ? await api.complete({ succ, value, api }) : { succ, value, api };
 }
 async function RetryLogin(context, config) {
-  if (_chunkFMCVNC7Qcjs.SERVERMODE || !config || !config.http) return;
+  if (_chunkEPHQJHZHcjs.SERVERMODE || !config || !config.http) return;
   const { request, options, response } = context;
-  if (!response || response.status !== 401 || !options.autoLogin || !_chunkFMCVNC7Qcjs.isFn.call(void 0, config.login)) return;
+  if (!response || response.status !== 401 || !options.autoLogin || !_chunkEPHQJHZHcjs.isFn.call(void 0, config.login)) return;
   const info = `[${options.method}]${response.url}`;
   con.debug("401 \u9519\u8BEF\uFF0C\u5C1D\u8BD5\u91CD\u65B0\u767B\u9646", config.reLogin, info);
   if (config.reLogin === 0) {
@@ -654,7 +654,7 @@ async function RetryLogin(context, config) {
     }
   }
   while (config.reLogin === 1) {
-    await _chunkFMCVNC7Qcjs.sleep.call(void 0, 2e3);
+    await _chunkEPHQJHZHcjs.sleep.call(void 0, 2e3);
     con.debug("\u7B49\u5F85\u5237\u65B0", config.reLogin, info);
   }
   if (config.reLogin === 3) {

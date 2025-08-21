@@ -711,7 +711,7 @@ export async function HttpDownload(http: HttpClient, request: HttpRequest, optio
 }
 
 /** 标准 API　处理, 不验证是否已经授权, 强制通过授权 */
-export async function HttpApi(http: HttpClient, api: IApi, options?: HttpOptions) {
+export async function HttpApi(http: HttpClient, api: IApi, options?: HttpCacheOptions) {
 	/** 无效参数 */
 	if (!hasObjectName(api, 'url') || !isString(api.url)) throw new Error('无效的 API 配置');
 
@@ -745,7 +745,10 @@ export async function HttpApi(http: HttpClient, api: IApi, options?: HttpOptions
 	let succ = false;
 	let value: any;
 
-	await http(api.url, options)
+	await (options.cacheTime && options.cacheTime > 0
+		? HttpCache(http, api.url, options)
+		: http(api.url, options)
+	)
 		.then((res: any) => {
 			value = res;
 			succ = true;
