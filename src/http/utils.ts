@@ -23,7 +23,14 @@ import { hasArray, hasObject, hasObjectName, hasString, isFn, isString } from '.
 import { base64Encode } from '../encrypt';
 import type { Dict } from '../types';
 
-import type { HttpConfig, HttpContext, HttpError, HttpOptions, TokenContent } from './types';
+import type {
+	HttpConfig,
+	HttpContext,
+	HttpError,
+	HttpOptions,
+	ResolvedHttpOptions,
+	TokenContent
+} from './types';
 import { withBase, withQuery } from 'ufo';
 
 /** 可以携带 body 的响应数据类型 */
@@ -40,8 +47,11 @@ export function isPayloadMethod(method = 'GET') {
  * @param tokenContent	token 请求方式，上下文不存在有效 token 时，则从此参数获取。
  * @returns			token 数据
  */
-export function getToken<C extends HttpContext = HttpContext>(
-	context: C,
+export function getToken(
+	context: {
+		request: RequestInfo;
+		options: ResolvedHttpOptions;
+	},
 	tokenContent: TokenContent = ''
 ): string | undefined {
 	tokenContent = context.options.token || tokenContent;
@@ -79,7 +89,13 @@ export function getToken<C extends HttpContext = HttpContext>(
  * @param options		请求参数
  * @param appenQuery	是否追加 query 参数
  */
-export function updateRequest(context: HttpContext, appenQuery = false) {
+export function updateRequest(
+	context: {
+		request: RequestInfo;
+		options: ResolvedHttpOptions;
+	},
+	appenQuery = false
+) {
 	const { request, options } = context;
 
 	// 分析请求地址

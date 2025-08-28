@@ -44,7 +44,8 @@ import {
 	HttpRequest,
 	HttpResponseMap,
 	HttpRuntime,
-	ResponseType
+	ResponseType,
+	ResolvedHttpOptions
 } from './types';
 import { createFetch, createFetchError, CreateFetchOptions, MappedResponseType } from 'ofetch';
 import { DEBUG, SERVERMODE, TEST } from '../../config';
@@ -205,16 +206,21 @@ export function createHttp(globalOptions?: CreateFetchOptions, globalConfig?: Ht
 	// 重置登陆状态
 	http.resetLoginStatus = (state = 0) => (runtime.reLogin = state > 4 || state < 0 ? 0 : state);
 
+	// http 请求预处理，以便将处理后的头部数据，请求数据暴露方便第三方需要时调用
+	http.processRequest = processRequest;
+
 	// 记录对象
 	runtime.http = http;
 
 	return http;
 }
 
-/** 请求相关拦截 */
-export async function onRequest(context: HttpContext, config: HttpRuntime) {
-	const { request, options } = context;
-
+/** http 请求预处理，以便将处理后的头部数据，请求数据暴露方便第三方需要时调用 */
+export async function processRequest(
+	request: RequestInfo,
+	options: ResolvedHttpOptions,
+	config: HttpRuntime
+) {
 	// 如果 Config 中基础配置存在，则使用基础配置，防止 config 中基础参数修改后无法及时更新
 	config.baseURL && options.baseURL !== config.baseURL && (options.baseURL = config.baseURL);
 	config.timeout && config.timeout > 0 && (options.timeout = config.timeout);
@@ -226,7 +232,7 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
 	if (!options.headers) options.headers = new Headers();
 
 	// 更新请求
-	const data = updateRequest(context);
+	const data = updateRequest({ request, options });
 
 	// 更新最后状态
 	config.last = {
@@ -254,7 +260,7 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
 
 	// 增加 Token 授权信息
 	if (!options.headers.has('Authorization')) {
-		const token = getToken(context, config.token);
+		const token = getToken({ request, options }, config.token);
 		if (hasString(token)) {
 			options.headers.set('Authorization', `Bearer ${token}`);
 		}
@@ -262,6 +268,12 @@ export async function onRequest(context: HttpContext, config: HttpRuntime) {
 
 	// 更新超时默认值
 	if (!options.timeout) options.timeout = config.timeout;
+}
+
+/** 请求相关拦截 */
+export async function onRequest(context: HttpContext, config: HttpRuntime) {
+	const { request, options } = context;
+	await processRequest(request, options, config);
 }
 
 /**

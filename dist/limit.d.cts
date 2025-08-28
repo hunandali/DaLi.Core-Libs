@@ -4,7 +4,7 @@ export { b as AsyncAction, a as AsyncFunc, F as Func, I as IList, e as IListMap,
 export { C as ConsoleEcho, c as createConsoleEcho } from './index-1m5FH_4Z.cjs';
 export { c as createEventBus } from './index-CEEnhOX0.cjs';
 import { I as ICache } from './cache.d-BZHaRzyS.cjs';
-import { ResponseMap, FetchOptions, FetchContext, FetchRequest, FetchResponse, FetchError, MappedResponseType, $Fetch } from 'ofetch';
+import { ResponseMap, FetchOptions, FetchRequest, FetchResponse, FetchError, MappedResponseType, $Fetch } from 'ofetch';
 import 'chalk';
 
 /** 定时任务 */
@@ -224,9 +224,11 @@ interface HttpClient extends $Fetch {
      * @param api api 数据
      * @returns api 执行结果
      */
-    api: (api: IApi, options?: HttpOptions) => Promise<void | IApiResult>;
+    api: (api: IApi, options?: HttpCacheOptions) => Promise<void | IApiResult>;
     /** 重置登陆状态 */
     resetLoginStatus: (status?: number) => void;
+    /** 请求预处理，以便将处理后的头部数据，请求数据暴露方便第三方需要时调用 */
+    processRequest: (request: RequestInfo, options: ResolvedHttpOptions, config: HttpRuntime) => Promise<void>;
 }
 /**
  * token 获取方式
@@ -234,7 +236,10 @@ interface HttpClient extends $Fetch {
  * 2. token 值如果为 ture, 则从请求头中获取 token 值；
  * 3. token 值存在有效文本则在请求头部增加 Authorization 信息
  */
-type TokenContent = string | true | ((context: FetchContext) => string);
+type TokenContent = string | true | ((context: {
+    request: RequestInfo;
+    options: ResolvedHttpOptions;
+}) => string);
 /**
  * http 默认参数
  * 关于专有格式接口的说明：

@@ -220,10 +220,17 @@ export interface HttpClient extends $Fetch {
 	 * @param api api 数据
 	 * @returns api 执行结果
 	 */
-	api: (api: IApi, options?: HttpOptions) => Promise<void | IApiResult>;
+	api: (api: IApi, options?: HttpCacheOptions) => Promise<void | IApiResult>;
 
 	/** 重置登陆状态 */
 	resetLoginStatus: (status?: number) => void;
+
+	/** 请求预处理，以便将处理后的头部数据，请求数据暴露方便第三方需要时调用 */
+	processRequest: (
+		request: RequestInfo,
+		options: ResolvedHttpOptions,
+		config: HttpRuntime
+	) => Promise<void>;
 }
 
 /**
@@ -232,7 +239,10 @@ export interface HttpClient extends $Fetch {
  * 2. token 值如果为 ture, 则从请求头中获取 token 值；
  * 3. token 值存在有效文本则在请求头部增加 Authorization 信息
  */
-export type TokenContent = string | true | ((context: FetchContext) => string);
+export type TokenContent =
+	| string
+	| true
+	| ((context: { request: RequestInfo; options: ResolvedHttpOptions }) => string);
 
 /**
  * http 默认参数
