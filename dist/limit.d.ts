@@ -228,7 +228,7 @@ interface HttpClient extends $Fetch {
     /** 重置登陆状态 */
     resetLoginStatus: (status?: number) => void;
     /** 请求预处理，以便将处理后的头部数据，请求数据暴露方便第三方需要时调用 */
-    processRequest: (request: RequestInfo, options: ResolvedHttpOptions, config: HttpRuntime) => Promise<void>;
+    processRequest: (request: RequestInfo, options: ResolvedHttpOptions, config: HttpRuntime) => Promise<string>;
 }
 /**
  * token 获取方式

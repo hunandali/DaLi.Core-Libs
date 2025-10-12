@@ -1,10 +1,10 @@
 import {
   base64Encode
-} from "./chunk-OQG3TDXH.js";
+} from "./chunk-CVFKWLYE.js";
 import {
   cache_client_default,
   cache_server_default
-} from "./chunk-XB5GV6QA.js";
+} from "./chunk-OHIAEXXS.js";
 import {
   LRU
 } from "./chunk-6QCBU3HR.js";
@@ -22,7 +22,7 @@ import {
   isString,
   modulesUpdate,
   sleep
-} from "./chunk-C63VA6BJ.js";
+} from "./chunk-JSKPTUZJ.js";
 
 // src/task.ts
 var Tasks = class {
@@ -150,6 +150,7 @@ function updateRequest(context, appenQuery = false) {
       const reg = new RegExp(`{${key}}`, "gi");
       if (reg.test(url)) {
         url = url.replace(reg, value);
+        isQuery && delete data[key];
       }
       if (isQuery) {
         queryData[key] = value;
@@ -379,10 +380,17 @@ async function processRequest(request, options, config) {
     }
   }
   if (!options.timeout) options.timeout = config.timeout;
+  return data.url;
 }
 async function onRequest(context, config) {
   const { request, options } = context;
-  await processRequest(request, options, config);
+  const url = await processRequest(request, options, config);
+  if (!url) return;
+  if (isString(request)) {
+    context.request = url;
+  } else {
+    context.request = new Request(url, request);
+  }
 }
 function onResponse(context, config) {
   debug(true, "HTTP Response", context, config);

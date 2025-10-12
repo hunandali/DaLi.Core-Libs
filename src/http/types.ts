@@ -230,7 +230,7 @@ export interface HttpClient extends $Fetch {
 		request: RequestInfo,
 		options: ResolvedHttpOptions,
 		config: HttpRuntime
-	) => Promise<void>;
+	) => Promise<string>;
 }
 
 /**

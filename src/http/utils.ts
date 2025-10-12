@@ -134,7 +134,9 @@ export function updateRequest(
 			if (reg.test(url)) {
 				// 替换地址参数
 				url = url.replace(reg, value);
-				// delete data[key];
+
+				// 查询模式下，需要删除路径参数
+				isQuery && delete data[key];
 			}
 			if (isQuery) {
 				// 加入请求参数

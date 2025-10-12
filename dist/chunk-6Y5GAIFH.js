@@ -1,8 +1,8 @@
-"use strict";Object.defineProperty(exports, "__esModule", {value: true});
-
-
-
-var _chunkXDQMWDHBcjs = require('./chunk-XDQMWDHB.cjs');
+import {
+  hasArray,
+  isFn,
+  isString
+} from "./chunk-JSKPTUZJ.js";
 
 // src/eventBus/index.ts
 var EventBus = class {
@@ -17,7 +17,7 @@ var EventBus = class {
      * @param immediate 是否立即执行一次
      */
     this.on = (name, event, duplicate = false, immediate = false, ...args) => {
-      if (!_chunkXDQMWDHBcjs.isString.call(void 0, name) || !name || !_chunkXDQMWDHBcjs.isFn.call(void 0, event)) return;
+      if (!isString(name) || !name || !isFn(event)) return;
       name = name.toLowerCase();
       if (this.instance.has(name)) {
         const events = this.instance.get(name);
@@ -37,16 +37,16 @@ var EventBus = class {
      * @param event 要移除的事件，不设置则所有都移除
      */
     this.off = (name, event) => {
-      if (!_chunkXDQMWDHBcjs.isString.call(void 0, name) || !name) return;
+      if (!isString(name) || !name) return;
       name = name.toLowerCase();
       if (!this.instance.has(name)) return;
       if (!event) this.instance.delete(name);
-      if (!_chunkXDQMWDHBcjs.isFn.call(void 0, event)) return;
+      if (!isFn(event)) return;
       const list = this.instance.get(name);
       if (!list) return;
       const index = list.indexOf(event);
       if (index > -1) list.splice(index, 1);
-      if (!_chunkXDQMWDHBcjs.hasArray.call(void 0, list)) this.instance.delete(name);
+      if (!hasArray(list)) this.instance.delete(name);
     };
     /**
      * 执行事件
@@ -54,7 +54,7 @@ var EventBus = class {
      * @param args 提交参数
      */
     this.emit = (name, ...args) => {
-      if (!_chunkXDQMWDHBcjs.isString.call(void 0, name) || !name) return;
+      if (!isString(name) || !name) return;
       name = name.toLowerCase();
       if (!this.instance.has(name)) return;
       const list = this.instance.get(name);
@@ -64,7 +64,7 @@ var EventBus = class {
 };
 var createEventBus = () => new EventBus();
 
-
-
-
-exports.EventBus = EventBus; exports.createEventBus = createEventBus;
+export {
+  EventBus,
+  createEventBus
+};

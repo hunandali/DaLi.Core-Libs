@@ -215,7 +215,7 @@ export function createHttp(globalOptions?: CreateFetchOptions, globalConfig?: Ht
 	return http;
 }
 
-/** http 请求预处理，以便将处理后的头部数据，请求数据暴露方便第三方需要时调用 */
+/** http 请求预处理，以便将处理后的头部数据，请求数据暴露方便第三方需要时调用，并返回处理后的请求地址 */
 export async function processRequest(
 	request: RequestInfo,
 	options: ResolvedHttpOptions,
@@ -268,12 +268,22 @@ export async function processRequest(
 
 	// 更新超时默认值
 	if (!options.timeout) options.timeout = config.timeout;
+
+	return data.url;
 }
 
 /** 请求相关拦截 */
 export async function onRequest(context: HttpContext, config: HttpRuntime) {
 	const { request, options } = context;
-	await processRequest(request, options, config);
+	const url = await processRequest(request, options, config);
+	if (!url) return;
+
+	// 更新请求地址
+	if (isString(request)) {
+		context.request = url;
+	} else {
+		context.request = new Request(url, request);
+	}
 }
 
 /**
