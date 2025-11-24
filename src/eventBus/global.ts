@@ -64,12 +64,11 @@ declare global {
 		execute: () => void;
 	};
 }
+/** 全局默认事件总线 */
+const defaultEvents = new eventBus();
 
 /** 全局挂载 */
 if (!$Global.$on) {
-	/** 全局默认事件总线 */
-	const defaultEvents = new eventBus();
-
 	/** 窗口调整事件, 最小 100ms 防抖 */
 	const resizeEvent = debounce(
 		() => !SERVERMODE && defaultEvents.emit('window:resize'),
@@ -106,3 +105,5 @@ if (!$Global.$on) {
 		execute: () => !SERVERMODE && resizeEvent()
 	};
 }
+
+export default defaultEvents;

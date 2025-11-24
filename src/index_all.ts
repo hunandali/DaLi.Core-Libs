@@ -22,3 +22,5 @@ export * from './index';
 import './cache/global';
 import './eventBus/global';
 import './console/global';
+
+export { default as globalEvents } from './eventBus/global';
