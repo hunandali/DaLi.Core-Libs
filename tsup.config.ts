@@ -30,7 +30,8 @@ export default defineConfig([
 			eventBus: 'src/eventBus/global.ts',
 			console: 'src/console/global.ts'
 		},
-		format: ['esm', 'cjs'],
+		// format: ['esm', 'cjs'],
+		format: ['esm'],
 		dts: true,
 		splitting: true,
 		clean: true,

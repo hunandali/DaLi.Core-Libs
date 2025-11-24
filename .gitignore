@@ -153,3 +153,6 @@ components.d.ts
 pnpm-lock.yaml
 package-lock.json
 demo 
+
+
+dist/
