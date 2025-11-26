@@ -387,7 +387,7 @@ export interface IApiBase {
 	method?: string;
 
 	/** 提交参数 */
-	data?: Dict | RequestInit['body'];
+	data?: Dict | RequestInit['body'] | any[];
 
 	/** 头部参数 */
 	headers?: Headers;

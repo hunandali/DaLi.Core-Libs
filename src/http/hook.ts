@@ -22,7 +22,16 @@
 // #region 参数导入
 // ==============================================
 
-import { hasObject, hasObjectName, hasString, isFn, isObject, isString, sleep } from '../base';
+import {
+	hasObject,
+	hasObjectName,
+	hasString,
+	isArray,
+	isFn,
+	isObject,
+	isString,
+	sleep
+} from '../base';
 import {
 	getResponseErrorMessage,
 	getToken,
@@ -558,7 +567,7 @@ const cacheRead = async <R extends ResponseType>(
 		/** 所有参数 */
 		const data: Dict = {};
 		hasObject(options.query) && Object.assign(data, options.query);
-		hasObject(options.params) && Object.assign(data, options.params);
+		// hasObject(options.params) && Object.assign(data, options.params);
 		hasObject(options.body) && Object.assign(data, options.body);
 		hasObject(options.headers) && Object.assign(data, options.headers);
 
@@ -750,8 +759,8 @@ export async function HttpApi(http: HttpClient, api: IApi, options?: HttpCacheOp
 	options.headers = api.headers;
 
 	const isPayload = isPayloadMethod(api.method);
-	if (isPayload) {
-		// POST 类请求,且提交参数为对象则直接附加到 body
+	if (isPayload || isArray(api.data)) {
+		// POST 类请求或者数组,且提交参数为对象则直接附加到 body
 		options.body = api.data;
 	} else {
 		// GET 类请求,参数加入 query,非有效对象将忽略

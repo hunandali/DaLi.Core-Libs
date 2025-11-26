@@ -71,7 +71,7 @@ export function getToken(
 
 		return (
 			dataToken(context.options.body) ||
-			dataToken(context.options.params) ||
+			// dataToken(context.options.params) ||
 			dataToken(context.options.query)
 		);
 	} else if (isFn(tokenContent)) {
@@ -118,7 +118,7 @@ export function updateRequest(
 	// 替换地址数据
 	const update = (name: keyof HttpOptions, isQuery = true) => {
 		const data = options[name] as Dict;
-		if (!data) return;
+		if (!data || !hasObject(data)) return;
 
 		for (const key of Object.keys(data)) {
 			// 加密参数处理
@@ -154,12 +154,12 @@ export function updateRequest(
 	update('headers', false);
 	update('body', false);
 	update('query', true);
-	update('params', true);
+	// update('params', true);
 
 	// body 中加入加密字段
 	if (isPayloadMethod(options.method)) {
 		// 是否可携带 body 数据
-		if (hasArray(fields)) {
+		if (hasArray(fields) && hasObject(options.body)) {
 			options.body = {
 				...(options.body as Dict),
 				_encode: fields.join(',')
