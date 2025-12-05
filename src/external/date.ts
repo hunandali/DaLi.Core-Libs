@@ -57,8 +57,9 @@ export const date = (date?: any) =>
  * 所有早于 2000 年的时间都无效
  * @param date 		用于格式化的时间（字符串支持:now,today,yesterday,tomorrow,weekstart,monthstart,yearstart,weekend,monthend,yearend)
  * @param format 	格式。支持：YYYY MM DD HH mm ss / desc 间隔描述
+ * @param validate 	是否校验时间是否有效，只允许 2000 年之后的时间。默认 true
  */
-export const dateFormat = (date?: any, format: string = 'YYYY-MM-DD') => {
+export const dateFormat = (date?: any, format: string = 'YYYY-MM-DD', validate = true) => {
 	if (isEmpty(date)) return '';
 
 	if (isString(date)) date = date.toLowerCase();
@@ -87,8 +88,12 @@ export const dateFormat = (date?: any, format: string = 'YYYY-MM-DD') => {
 			: /* 自定义时间 */
 			  dayjs(date);
 
-	if (!day.isValid()) return '✖';
-	if (day.isBefore('2000-01-01', 'day')) return '➖';
+	if (validate) {
+		if (!day.isValid()) return '✖';
+		if (day.isBefore('2000-01-01', 'day')) return '➖';
+	} else if (!day.isValid()) {
+		return '';
+	}
 
 	if (format !== 'desc') return day.format(format);
 
