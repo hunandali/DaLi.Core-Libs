@@ -128,7 +128,7 @@ export class ConsoleEcho {
 	}
 
 	/** 表格显示 */
-	table(tabularData: any, properties?: ReadonlyArray<string>) {
+	table(tabularData: any, properties?: string[]) {
 		console.table(tabularData, properties);
 	}
 

@@ -44,6 +44,9 @@ export * from './modules';
 /** 其他相关操作 */
 export * from './utils';
 
+/** 常用 Emoji 正则表达式 */
+export * from './emoji';
+
 /** 获取全局顶级对象 */
 export const $Global = (function () {
 	if (typeof globalThis !== 'undefined') return globalThis;
